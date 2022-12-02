@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import RegexValidator
-from .models import User
+from .models import User, Club
 
 class SignUpForm(forms.ModelForm):
     class Meta:
@@ -37,3 +37,8 @@ class SignUpForm(forms.ModelForm):
             password = self.cleaned_data.get('new_password')
         )
         return user
+
+class CreateClubForm(forms.ModelForm):
+    class Meta:
+        model = Club
+        fields = ['name','bio','rules']
