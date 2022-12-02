@@ -5,4 +5,9 @@ from blogs.forms import SignUpForm
 from blogs.models import User
 
 class SignUpFormTestCase(TestCase):
-    pass
+    def setUp(self):
+        self.form_input = {
+            'first_name': 'Jane',
+            'last_name': 'Doe',
+            'username': 
+        }
