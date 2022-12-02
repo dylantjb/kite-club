@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
 
+def feed(request):
+    return render(request, 'feed.html')
+
 def home(request):
     return render(request, 'home.html')
 
@@ -11,6 +14,6 @@ def sign_up(request):
             form.save()
             return redirect('feed')
 
-        else:
-            form = SignUpForm()
+    else:
+        form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
