@@ -1,0 +1,38 @@
+[
+  {
+    "model": "blogs.user",
+    "pk": 2,
+    "fields": {
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "username": "janedoe",
+      "email": "janedoe@example.org",
+      "password": "pbkdf2_sha256$260000$iGkOGC00dvNVncr3rtGWdL$IkIyONd+R4mPoN4APRvVqk5tGVLa3xocSQ2qJur+VZo=",
+      "bio": "Hi, my name is Jane."
+    }
+  },
+  {
+    "model": "blogs.user",
+    "pk": 3,
+    "fields": {
+      "first_name": "Adam",
+      "last_name": "Johnson",
+      "username": "adamjohnson",
+      "email": "adamjohnson@example.org",
+      "password": "pbkdf2_sha256$260000$iGkOGC00dvNVncr3rtGWdL$IkIyONd+R4mPoN4APRvVqk5tGVLa3xocSQ2qJur+VZo=",
+      "bio": "Hello, my name is Adam."
+    }
+  },
+  {
+    "model": "blogs.user",
+    "pk": 4,
+    "fields": {
+      "first_name": "James",
+      "last_name": "Brown",
+      "username": "jamesbrown",
+      "email": "jamesbrown@example.org",
+      "password": "pbkdf2_sha256$260000$iGkOGC00dvNVncr3rtGWdL$IkIyONd+R4mPoN4APRvVqk5tGVLa3xocSQ2qJur+VZo=",
+      "bio": "Hello, my name is James."
+    }
+  }
+]
