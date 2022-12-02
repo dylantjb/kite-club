@@ -14,7 +14,7 @@ class UserModelTestCase(TestCase):
     ]
 
     def setUp(self):
-        self.user = User.objects.get(username="johnsmith")
+        self.user = User.objects.get(username="@johnsmith")
 
     def _assert_user_is_valid(self):
         try:
@@ -38,23 +38,23 @@ class UserModelTestCase(TestCase):
 
     def test_username_can_be_30_characters_long(self):
         """Test username can be 30 characters long."""
-        self.user.username = "x" * 30
+        self.user.username = "@" + "x" * 29
         self._assert_user_is_valid()
 
     def test_username_cannot_be_over_30_characters_long(self):
         """Test username cannot be over 30 characters long."""
-        self.user.username = "x" * 31
+        self.user.username = "@" + "x" * 30
         self._assert_user_is_invalid()
 
     def test_username_must_be_unique(self):
         """Test username must be unique."""
-        second_user = User.objects.get(username="janedoe")
+        second_user = User.objects.get(username="@janedoe")
         self.user.username = second_user.username
         self._assert_user_is_invalid()
 
     def test_username_has_numbers(self):
         """Test username has numbers."""
-        self.user.username = "j0hnd03"
+        self.user.username = "@j0hnd03"
         self._assert_user_is_valid()
 
     def test_first_name_is_not_blank(self):
@@ -64,7 +64,7 @@ class UserModelTestCase(TestCase):
 
     def test_first_name_is_not_unique(self):
         """Test first name is not unique."""
-        second_user = User.objects.get(username="janedoe")
+        second_user = User.objects.get(username="@janedoe")
         self.user.first_name = second_user.first_name
         self._assert_user_is_valid()
 
@@ -85,7 +85,7 @@ class UserModelTestCase(TestCase):
 
     def test_last_name_is_not_unique(self):
         """Test last name is not unique."""
-        second_user = User.objects.get(username="janedoe")
+        second_user = User.objects.get(username="@janedoe")
         self.user.last_name = second_user.last_name
         self._assert_user_is_valid()
 
@@ -106,7 +106,7 @@ class UserModelTestCase(TestCase):
 
     def test_bio_may_not_be_unique(self):
         """Test bio may not be unique."""
-        second_user = User.objects.get(username="janedoe")
+        second_user = User.objects.get(username="@janedoe")
         self.user.bio = second_user.bio
         self._assert_user_is_valid()
 
