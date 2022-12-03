@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, CreateClubForm
+from django.contrib.auth.decorators import login_required
 
 def feed(request):
     return render(request, 'feed.html')
@@ -18,12 +19,13 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
+@login_required
 def create_club(request):
     if request.method == 'POST':
         form = CreateClubForm(request.POST)
         if form.is_valid():
-            #club = form.save(commit=False)
             club = form.save()
+            # Can only add to a ManyToManyField once form has been saved
             club.admins.add(request.user)
             club.members.add(request.user)
             return redirect('feed') # should take you to the newly created club's page - not implemented yet
