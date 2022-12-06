@@ -1,10 +1,10 @@
-"""Unit tests for the User model"""
+"""Unit tests for the Club form"""
 from django.core.exceptions import ValidationError
 from django.test import TestCase, Client
 from blogs.forms import CreateClubForm
 from blogs.models import User, Club
 
-
+# Not finished - may need to test views create_club method directly
 class ClubFormTestCase(TestCase):
     """Unit tests of the club form."""
 
