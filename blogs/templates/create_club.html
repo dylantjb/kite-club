@@ -1,0 +1,13 @@
+<html>
+<head>
+  <title>Create Club</title>
+</head>
+<body>
+  <h1>Page where you can create a club</h1>
+  <form action="{% url 'create_club' %}" method='post'>
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Create club">
+  </form>
+</body>
+</html>
