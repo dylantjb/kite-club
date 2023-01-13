@@ -3,7 +3,6 @@ from .forms import SignUpForm, CreateClubForm, LogInForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-
 def feed(request):
     return render(request, 'feed.html')
 
@@ -16,6 +15,7 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            
             return redirect('feed')
 
     else:
@@ -32,11 +32,10 @@ def log_in(request):
             if user is not None:
                 login(request, user)
                 return redirect('feed')
-        messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
+            messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
 
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
-
 
 def log_out(request):
     logout(request)
