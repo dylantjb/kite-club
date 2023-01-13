@@ -1,13 +1,17 @@
-<html>
-<head>
-  <title>Default HOme</title>
-</head>
-<body>
+{% extends 'base_content.html'%}
+{% block content%}
+<div class="container">
+  <div class="row">
+      <div class="col-12">
   <h1>Default Title</h1>
   <form action="{% url 'sign_up' %}" method="post">
     {% csrf_token %}
-    {{form.as_p}}
+    {% include 'partials/bootstrap_form.html' with form=form%}
     <input type="submit" value = "Sign up">
   </form>
-</body>
-</html>
+
+</div>
+</div>
+</div>
+
+{%endblock%} 
