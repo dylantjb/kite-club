@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, CreateClubForm, LogInForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 def feed(request):
     return render(request, 'feed.html')
@@ -30,6 +30,10 @@ def log_in(request):
             if user is not None:
                 login(request, user)
                 return redirect('feed')
+
+def log_out(request):
+    logout(request)
+    return redirect('home')
 
 @login_required
 def create_club(request):
