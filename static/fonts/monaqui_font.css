@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "MonaqiBold-L3Bzn";
+    src: url("fonts/MonaqiBold-L3Bzn.ttf") format("truetype");
+}
+
+style {
+    font-family: "MonaqiBold-L3Bzn", sans-serif;
+    margin: 0px;
+    background-color: white;
+}

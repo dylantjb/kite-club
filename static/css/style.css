@@ -23,10 +23,16 @@
 
 *****************************************/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Mulish:wght@400;600;700&display=swap");
+@font-face {
+  font-family: "ZilapMinimalistDemo-nR1vg";
+  src: url("ZilapMinimalistDemo-nR1vg.ttf") format("truetype");
+}
 body {
-  font-family: "Mulish", sans-serif;
+  font-family: "ZilapMinimalistDemo-nR1vg", sans-serif;
   overflow-x: hidden !important;
   position: relative;
+  margin: 0px;
+  background-color: white;
 }
 
 h1,
@@ -35,7 +41,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Mulish', sans-serif;
+  font-family: 'ZilapMinimalistDemo-nR1vg', sans-serif;
 }
 
 .btn,

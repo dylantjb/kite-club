@@ -1,6 +1,10 @@
 {% extends 'base.html'%}
-{% block body%}
-    {%include 'partials/navbar.html'%}
-    {% block content %}
+{% block body_credits%}
+    {% block body %}
+        {%include 'partials/navbar.html'%}
+        {% block content %}
+        {% endblock  %}
     {% endblock  %}
+    {%include 'partials/credits.html'%} 
+    {% comment %} here we need to implement a credits render {% endcomment %}
 {%endblock%}
