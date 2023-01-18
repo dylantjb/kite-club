@@ -30,6 +30,8 @@ def log_in(request):
             if user is not None:
                 login(request, user)
                 return redirect('feed')
+    form = LogInForm()
+    return render(request, 'log_in.html', {'form': form})
 
 def log_out(request):
     logout(request)
