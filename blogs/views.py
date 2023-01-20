@@ -56,7 +56,7 @@ def log_in(request):
             user = authenticate(username = username, password = password)
             if user is not None:
                 login(request, user)
-                return redirect('feed')
+                return redirect('home')
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
 
     form = LogInForm()
@@ -74,7 +74,7 @@ def create_club(request):
             club = form.save()
             club.admins.add(request.user)
             club.members.add(request.user)
-            return redirect('feed') # should take you to the newly created club's page - not implemented yet
+            return redirect('home') # should take you to the newly created club's page - not implemented yet
 
     form = CreateClubForm()
     return render(request, 'create_club.html', {'form': form})
