@@ -1,23 +1,48 @@
-from django.shortcuts import render, redirect
-from .forms import SignUpForm, CreateClubForm, LogInForm
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-def feed(request):
-    return render(request, 'feed.html')
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+
+from .forms import CreateClubForm, LogInForm, SignUpForm, UpdateProfileForm
+
+
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'change_password.html'
+    success_message = "Successfully changed Your password"
+    success_url = reverse_lazy('home')
+
 
 def home(request):
+    if request.user.is_authenticated:
+        data = {'user': request.user}
+        return render(request, 'feed.html', data)
     return render(request, 'home.html')
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        form = UpdateProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            return redirect('home')
+    else:
+        form = UpdateProfileForm(instance=request.user)
+
+    return render(request, 'profile.html', {'form': form})
 
 def sign_up(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
+            user.set_password(form.cleaned_data['password_confirmation'])
+            user.save()
             login(request, user)
-            
-            return redirect('feed')
-
+            return redirect('home')
     else:
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})

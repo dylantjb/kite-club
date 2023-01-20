@@ -33,7 +33,7 @@ class SignUpForm(forms.ModelForm):
     def save(self):
         super().save(commit = False)
         user = User.objects.create_user(
-            self.cleaned_data.get('username'),
+            username = self.cleaned_data.get('username'),
             first_name = self.cleaned_data.get('first_name'),
             last_name = self.cleaned_data.get('last_name'),
             email = self.cleaned_data.get('email'),
@@ -41,6 +41,12 @@ class SignUpForm(forms.ModelForm):
             password = self.cleaned_data.get('new_password')
         )
         return user
+
+class UpdateProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio']
+        widgets = {'bio': forms.Textarea()}
 
 class CreateClubForm(forms.ModelForm):
     class Meta:
