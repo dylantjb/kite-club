@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "MonaqiBold";
+    src: url("static/fonts/MonaqiBold-L3Bzn.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Nexus";
+    src: url("static/fonts/Nexus-ZV54m.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Zilap";
+    src: url("static/fonts/ZilapMinimalistDemo-nR1vg.ttf") format("truetype");
+}
+
+/* style {
+    font-family: "MonaqiBold-L3Bzn", sans-serif;
+    margin: 0px;
+    background-color: white;
+} */
