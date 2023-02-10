@@ -1,3 +1,4 @@
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -13,6 +14,7 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     template_name = 'change_password.html'
     success_message = "Successfully changed Your password"
     success_url = reverse_lazy('home')
+
 
 
 def home(request):
@@ -56,8 +58,10 @@ def log_in(request):
             user = authenticate(username = username, password = password)
             if user is not None:
                 login(request, user)
+
                 return redirect('home')
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
+
 
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})

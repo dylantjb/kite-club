@@ -23,10 +23,48 @@
 
 *****************************************/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Mulish:wght@400;600;700&display=swap");
-body {
-  font-family: "Mulish", sans-serif;
+
+
+@font-face {
+  font-family: "MonaqiBold";
+  src: url("static/fonts/MonaqiBold-L3Bzn.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Nexus";
+  src: url("static/fonts/Nexus-ZV54m.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Zilap";
+  src: url("static/fonts/ZilapMinimalistDemo-nR1vg.ttf") format("truetype");
+}
+html {
+  height: 100%;
+}
+body{
+  background-image: url("images/Bg_white_modern.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: "Nexus", sans-serif;
   overflow-x: hidden !important;
   position: relative;
+  margin: 0px;
+  height: 100%;
+  line-height: 1.8;
+}
+.bg-image { 
+  /* The image used */
+  background-image: url("images/Bg_white_modern.jpg");
+
+  /* Full height */
+  height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 h1,
@@ -35,7 +73,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Mulish', sans-serif;
+  font-family: 'Zilap', sans-serif;
 }
 
 .btn,
@@ -46,6 +84,8 @@ button:focus {
 }
 
 a {
+  font-family: "Nexus";
+  font-weight: bolder;
   text-decoration: none !important;
   outline: none;
 }

@@ -7,6 +7,10 @@ from blogs.tests.helpers import LogInTester
 
 class SignUpViewTestCase(TestCase, LogInTester):
 
+
+    fixtures = ['blogs/tests/fixtures/default_user.json']
+
+
     def setUp(self):
         self.url = reverse('sign_up')
         self.form_input = {
@@ -19,6 +23,9 @@ class SignUpViewTestCase(TestCase, LogInTester):
             'password_confirmation': 'Password123'
         }
 
+        self.user = User.objects.get(username = '@johnsmith')
+
+
     def test_sign_up_url(self):
         self.assertEqual(self.url, '/sign_up/')
 
@@ -29,6 +36,7 @@ class SignUpViewTestCase(TestCase, LogInTester):
         form = response.context['form']
         self.assertTrue(isinstance(form, SignUpForm))
         self.assertFalse(form.is_bound)
+
 
     def test_unsuccessful_sign_up(self):
         self.form_input['username'] = 'BAD_USERNAME'
