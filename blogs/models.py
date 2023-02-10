@@ -3,6 +3,78 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
+    def _init_(self):
+        self.members = []
+        self.admins = []
+        self.genres = []
+        self.themes = []
+        self.visibility = "private"
+
+    def invite_member(self, member):
+        if member in self.members:
+            print(f"Error: {member} is already a member of the club.")
+        else:
+            self.members.append(member)
+            print(f"{member} has been invited to the club.")
+
+    def remove_member(self, member):
+        if member in self.members:
+            self.members.remove(member)
+            print(f"{member} has been removed from the club.")
+        else:
+            print(f"Error: {member} is not a member of the club.")
+
+    def set_admin(self, member):
+        if member in self.members:
+            self.admins.append(member)
+            print(f"{member} has been set as an admin of the club.")
+        else:
+            print(f"Error: {member} is not a member of the club.")
+
+    def remove_admin(self, member):
+        if member in self.admins:
+            self.admins.remove(member)
+            print(f"{member} has been removed as an admin of the club.")
+        else:
+            print(f"Error: {member} is not an admin of the club.")
+
+    def add_genre(self, genre):
+        self.genres.append(genre)
+        print(f"{genre} has been added as a genre of the club.")
+
+    def remove_genre(self, genre):
+        if genre in self.genres:
+            self.genres.remove(genre)
+            print(f"{genre} has been removed as a genre of the club.")
+        else:
+            print(f"Error: {genre} is not a genre of the club.")
+
+    def add_theme(self, theme):
+        self.themes.append(theme)
+        print(f"{theme} has been added as a theme of the club.")
+
+    def remove_theme(self, theme):
+        if theme in self.themes:
+            self.themes.remove(theme)
+            print(f"{theme} has been removed as a theme of the club.")
+        else:
+            print(f"Error: {theme} is not a theme of the club.")
+
+    def set_visibility(self, visibility):
+        if visibility in ["private", "public"]:
+            self.visibility = visibility
+            print(f"The club visibility has been set to {visibility}.")
+        else:
+            print("Error: Visibility can only be set to 'private' or 'public'.")
+
+    def close_club(self):
+        self.members = []
+        self.admins = []
+        self.genres = []
+        self.themes = []
+        self.visibility = "private"
+        print("The club has been closed.")
+
     username = models.CharField(
         max_length=30,
         unique=True,
