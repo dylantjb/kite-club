@@ -1,12 +1,15 @@
 {% extends 'base.html'%}
 {% block body_credits%}
-    <main class="flex-shrink-0 padding-bottom-30px">
+    {% comment %} <main 
+        class="flex-shrink-0 padding-bottom-30px"
+    > {% endcomment %}
     {% block body %}
         {%include 'partials/navbar.html'%}
         {% block content %}
         {% endblock  %}
     {% endblock  %}
-    </main>
+    {% comment %} </main> {% endcomment %}
     {%include 'partials/footer.html'%} 
+    
     {% comment %} here we need to implement a credits render {% endcomment %}
 {%endblock%}

@@ -3,12 +3,13 @@
 {% load static %}
 {% block body%}
  
-<header class="py-5 ">
+<header class="py-5"
+>
     <div
-    class="p-5 text-center bg-image "
+    class="py-5 text-center bg-image shadow-lg"
     style="
       background-image: url('static/images/Book_Glow.jpg');
-      height: 700px;
+      height: 100%
       background-size: cover; /* or "contain" depending on what you want */
       background-position: center center;
       background-repeat: no-repeat;
@@ -16,29 +17,27 @@
       margin:0;
     "
     >
-    <div class="container px-5">
-        <div class="d-flex justify-content-center align-items-center h-100 ">
-            <div class="row gx-5 align-items-center justify-content-center">
-                <div class="col-lg-8 col-xl-7 col-xxl-6">
-                    <div class="my-5 text-center text-xl-start">
-                        <img src='{% static 'logos/logo-no-background.png' %}' class="img-fluid rounded img-thumbnail" width="200" height="200" alt="">
-                        <p></p>
-                        <h1 class="display-5 fw-bolder text-white mb-2">Indulge yourself into the reads. you. love.</h1>
-                        <p class="lead fw-normal text-white-50 mb-4">Fly your kite between the <em>clouds</em>, where our diverse community of readers share their knowledge and opinions about man's best friend (hint: we are not talking about pets). Discover new reads that match your interests, get access to exclusive events and even create your own cloud that members can join, tailored to your exact taste.</p>
-                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                            <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
+        <div class="container px-5">
+            <div class="d-flex justify-content-center align-items-center h-100 ">
+                <div class="row gx-5 align-items-center justify-content-center">
+                    <div class="col-lg-8 col-xl-7 col-xxl-6">
+                        <div class="my-5 text-xl-start">
+                            <img src='{% static 'logos/logo-no-background.png' %}' class="img-fluid rounded img-thumbnail" width="200" height="200" alt="">
+                            <p></p>
+                            <h1 class="display-5 fw-bolder text-white mb-2">Indulge yourself into the reads. you. love.</h1>
+                            <p class="lead fw-normal text-white-50 mb-4">Fly your kite between the <em>clouds</em>, where our diverse community of readers share their knowledge and opinions about man's best friend (hint: we are not talking about pets). Discover new reads that match your interests, get access to exclusive events and even create your own cloud that members can join, tailored to your exact taste.</p>
+                            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                                <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center">
+                        <img class="img-fluid img-thumbnail rounded-3 my-5 " src='{% static 'images/Library.jpg' %}' alt="..." href="#!"/>
+                    </div>
                 </div>
-                <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid img-thumbnail rounded-3 my-5 " src='{% static 'images/Library.jpg' %}' alt="..." href="#!"/></div>
             </div>
         </div>
     </div>
-</div>
-
-
-
-
     {% comment %} <div class="container px-5">
         <div class="row gx-5 align-items-center justify-content-center">
             <div class="col-lg-8 col-xl-7 col-xxl-6">
@@ -55,31 +54,60 @@
         </div>
     </div> {% endcomment %}
 </header>
-        <div id="cover-image">
-            <div class="container px-5 vh-300 ">
-                <div class="row h-100">
-                    <div class="col-6 mr-auto ">
+<div class="py-5 text-left">
+    <div class="container px-5">
+        <div class="d-flex justify-content-center align-items-center h-100 ">
+            <div class="row gx-5 align-items-center justify-content-center">
+                <div class="col-lg-12 col-xl-7 col-xxl-6">
+                    <div class="my-5 text-xl-start">
+                    
                         <h1 class="cover-heading mx-auto"> Start exploring our <a class="font-family: Nexus">Reading clouds</a></h1>
                         <div class="offset-15px">
                             <p> </p>
                         </div>
-                        <div class="text-left">
-                            <p><a href='{% url 'sign_up' %}' class="btn btn-outline-dark btn-round">
-                                Sign up now
+                        <div class="text-center">
+                            <p> <a href='{% url 'sign_up' %}' class="btn btn-outline-dark btn-round">
+                                    Sign up now
                                 </a>
                             </p>
                         </div>
-                        <div class="card cover-card mx-auto ">
-
+                        <div class="card cover-card mx-auto shadow-lg">
                             <p class="cover-text mx-auto lead">Already a member?</p>
                             <div class="text-center">
-
                                 <p><a href='{% url 'log_in' %}' class="btn w-50 mt-3 btn-secondary btn-round">Log in</a></p>
                             </div>
                         </div>
                     </div>
                 </div>
-        
-            </div>
-
+            </div> 
+        </div>    
+    </div>
+</div>
+{% comment %} <div>
+    <div class="container px-5 vh-300 ">
+        <div class="d-flex justify-content-center align-items-center h-100 ">
+            <div class="row gx-5 align-items-center justify-content-center">
+                <div class="col-6 mr-auto" >
+                    
+                    <h1 class="cover-heading mx-auto"> Start exploring our <a class="font-family: Nexus">Reading clouds</a></h1>
+                    <div class="offset-15px">
+                        <p> </p>
+                    </div>
+                    <div class="text-left">
+                        <p> <a href='{% url 'sign_up' %}' class="btn btn-outline-dark btn-round">
+                                Sign up now
+                            </a>
+                        </p>
+                    </div>
+                    <div class="card cover-card mx-auto shadow-lg">
+                        <p class="cover-text mx-auto lead">Already a member?</p>
+                        <div class="text-center">
+                            <p><a href='{% url 'log_in' %}' class="btn w-50 mt-3 btn-secondary btn-round">Log in</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>    
+    </div>
+</div> {% endcomment %}
 {%endblock%} 

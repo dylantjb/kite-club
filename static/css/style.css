@@ -39,14 +39,32 @@
   font-family: "Zilap";
   src: url("static/fonts/ZilapMinimalistDemo-nR1vg.ttf") format("truetype");
 }
+html {
+  height: 100%;
+}
 body{
+  background-image: url("images/Bg_white_modern.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   font-family: "Nexus", sans-serif;
   overflow-x: hidden !important;
   position: relative;
   margin: 0px;
   height: 100%;
-  color: #777;
   line-height: 1.8;
+}
+.bg-image { 
+  /* The image used */
+  background-image: url("images/Bg_white_modern.jpg");
+
+  /* Full height */
+  height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 h1,

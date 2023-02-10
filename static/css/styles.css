@@ -75,20 +75,37 @@
     scroll-behavior: smooth;
   }
 }
+html {
+  height: 100%;
+}
 
-body {
+body{
+  /* background-image: url("images/Bg_white_modern.jpg"); */
+  background-color: black;
   margin: 0;
+  height: 100%;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
   text-align: var(--bs-body-text-align);
-  background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.bg-image { 
+  /* The image used */
+  background-image: url("images/Bg_white_modern.jpg");
+
+  /* Full height */
+  height: 100%; 
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 hr {
   margin: 1rem 0;
   color: inherit;
@@ -101,7 +118,7 @@ hr:not([size]) {
   height: 1px;
 }
 #cover-image {
-  background: url('images/book_cloud_cover.jpg') no-repeat center center fixed;
+  background: url('static/images/Bg_white_modern.jpg');
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
