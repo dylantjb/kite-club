@@ -1,39 +1,61 @@
-<html>
-
-<head>
-  <title>Profile Page</title>
-</head>
-<h1>Profile Page</h1>
-<div class="form-content">
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-row">
-      <div class="col-md-5">
-        <div class="form-group">
-          <label class="small mb-1">First name:</label>
-          {{ form.first_name }}
-          </br></br>
-          <label class="small mb-1">Last name:</label>
-          {{ form.last_name }}
-          </br></br>
-          <label class="small mb-1">Username:</label>
-          {{ form.username }}
-          </br></br>
-          <label class="small mb-1">Email:</label>
-          {{ form.email }}
-          </br></br>
+{% extends 'base_content.html' %}
+{% block title %}
+    Profile Page
+{% endblock title %}
+{% block content %}
+    {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div id="form_errors">
+                {% for key, value in form.errors.items %}<strong>Error:</strong>{{ value }}{% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <div class="form-group">
-          <a href="{% url 'change_password' %}">Change Password</a>
-          </br></br>
-        </div>
-        <label class="small mb-1">Bio:</label> {{ form.bio }}
-      </div>
+    {% else %}
+        {% for msg in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div id="form_success">
+                    <strong>Success:</strong> {{ msg }}
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="form-content col-md-6">
+        <h2 class="my-4">Profile page</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="small mb-1">First name:</label>
+                        {{ form.first_name }}
+                    </br>
+                    <label class="small mb-1 my-4">Last name:</label>
+                    {{ form.last_name }}
+                </br>
+                <label class="small mb-1 my-4">Username:</label>
+                {{ form.username }}
+            </br>
+            <label class="small mb-1 my-4">Email:</label>
+            {{ form.email }}
+        </br>
     </div>
-    <br><br>
-    <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
-    <button type="reset" class="btn btn-dark btn-lg">Reset</button>
-  </form>
+    <div class="form-group">
+        <a href="{% url 'change_password' %}">Change Password</a>
+        <hr>
+    </div>
+    <label class="small mb-1">Bio:</label>
+    {{ form.bio }}
 </div>
-
-</html>
+</div>
+<br>
+<button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
+<button type="reset" class="btn btn-dark btn-lg">Reset</button>
+</form>
+<br>
+</div>
+{% endblock content %}
