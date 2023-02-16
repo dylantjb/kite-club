@@ -4,17 +4,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 from .forms import CreateClubForm, LogInForm, SignUpForm, UpdateProfileForm
 
 
-class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
     template_name = 'change_password.html'
-    success_message = "Successfully changed Your password"
+    success_message = "Your password has changed successfully"
     success_url = reverse_lazy('home')
-
 
 
 def home(request):
@@ -30,7 +30,8 @@ def profile(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
-            return redirect('home')
+            messages.success(request, 'Your profile updated successfully')
+            return redirect('profile')
     else:
         form = UpdateProfileForm(instance=request.user)
 
