@@ -12,17 +12,6 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    {% else %}
-        {% for msg in messages %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <div id="form_success">
-                    <strong>Success:</strong> {{ msg }}
-                </div>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
     {% endif %}
     <div class="form-content col-md-6">
         <h2 class="my-4">Profile page</h2>
