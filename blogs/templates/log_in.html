@@ -1,17 +1,18 @@
 
 {% extends 'base_content.html' %}
 {% load static%}
-{% block content%}
+{% block body_credits%}
+{%include 'partials/navbar_minimal.html'%}
 <body>
   <section class="vh-100 h-auto h-100" >
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-xl-10">
           <div class="card gradient-form" style="border-radius: 1rem; background-color: #eee;">
-            <div class="row g-0">
-              <div class="col-md-6 col-lg-6 d-none d-md-block">
+            <div class="row g-0 ">
+              <div class="col-md-6 col-lg-6 d-none d-md-block ">
                 <img <img src='{% static 'images/Kites.jpg' %}'
-                  alt="Responsive image" class="img-fluid height: auto" style="border-radius: 1rem 0 0 1rem;" />
+                   alt="" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
               </div>
               <div class="col-md-6 col-lg-6 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-5 text-black">
