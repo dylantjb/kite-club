@@ -22,6 +22,9 @@ def home(request):
         data = {'user': request.user}
         return render(request, 'feed.html', data)
     return log_in(request, 'home.html') #accomodate login modal in home view
+
+def about(request):
+    return render(request, 'about.html')
     
 @login_required
 def profile(request):

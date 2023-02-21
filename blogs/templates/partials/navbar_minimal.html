@@ -12,19 +12,25 @@
       <ul class="navbar-nav  mb-2 mb-lg-0">
       
         <li class="nav-item">
-          <a class="nav-link" href="#">Users</a>
+          {% comment %} <a class="nav-link" href="#">Users</a> {% endcomment %}
         </li>
 
         </ul>
           <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="bi bi-person-circle">
-
-            </span>
-       
-          </a>
-        </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="bi bi-person-square">
+    
+                </span>
+           
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'sign_up'%}">Register</a>
+                <a class="dropdown-item" href="{% url 'about'%}">About us</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'log_in'%}">Log in</a>
+              </div>
+              </li>
          
       </ul>
     </div>
