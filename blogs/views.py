@@ -18,10 +18,22 @@ class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChange
 
 
 def home(request):
+    if request.method == 'POST':
+        form = LogInForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username = username, password = password)
+            if user is not None:
+                login(request, user)
+
+                return redirect('home')
+            messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     if request.user.is_authenticated:
         data = {'user': request.user}
         return render(request, 'feed.html', data)
-    return render(request, 'home.html')
+    form = LogInForm()
+    return render(request, 'home.html', {'form': form})
 
 @login_required
 def profile(request):
@@ -59,13 +71,11 @@ def log_in(request):
             user = authenticate(username = username, password = password)
             if user is not None:
                 login(request, user)
-
                 return redirect('home')
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
-
-
     form = LogInForm()
     return render(request, 'log_in.html', {'form': form})
+
 
 def log_out(request):
     logout(request)
