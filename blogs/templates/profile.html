@@ -24,14 +24,14 @@
             </div>
         {% endfor %}
     {% endif %}
-    <div class="form-content col-md-6">
+    <div class="form-content col-md-8 col-md-offset-4">
         <h2 class="my-4">Profile page</h2>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-row">
                 <div class="col-md-5">
                     <div class="form-group">
-                        {% comment %} <label class="small mb-1">First name:</label> {% endcomment %}
+                        <label class="small mb-1">First name:</label>
                         {{ form.first_name }}
                     </br>
                     <label class="small mb-1 my-4">Last name:</label>
@@ -46,25 +46,31 @@
     </div>
     <div class="form-group">
         <!-- Button trigger Modal -->
-        {% comment %} <button type="button" href="{% url 'change_password' %}" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ChangePassModal">
+        <button type="button"
+                href="{% url 'change_password' %}"
+                class="btn btn-primary btn-lg"
+                data-toggle="modal"
+                data-target="#ChangePassModal">
             Change Password
         </button>
-         <!-- Change Password Modal -->
-        <div class="modal fade" id="ChangePassModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <!-- Change Password Modal -->
+        <div class="modal fade"
+             id="ChangePassModal"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-               
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Change password</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">{% include 'change_password.html' %}</div>
                 </div>
-                <div class="modal-body">
-                    {%include 'change_password.html'%}
-                </div>
-                
             </div>
-            </div>
-            </div> {% endcomment %}
-        <a href="{% url 'change_password' %}">Change Password</a>
+        </div>
         <hr>
     </div>
     <label class="small mb-1">Bio:</label>
@@ -75,6 +81,7 @@
 <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
 <button type="reset" class="btn btn-dark btn-lg">Reset</button>
 </form>
+<br>
 <br>
 </div>
 {% endblock content %}
