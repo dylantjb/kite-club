@@ -45,6 +45,25 @@
         </br>
     </div>
     <div class="form-group">
+        <!-- Button trigger Modal -->
+        {% comment %} <button type="button" href="{% url 'change_password' %}" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ChangePassModal">
+            Change Password
+        </button>
+         <!-- Change Password Modal -->
+        <div class="modal fade" id="ChangePassModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               
+                </div>
+                <div class="modal-body">
+                    {%include 'change_password.html'%}
+                </div>
+                
+            </div>
+            </div>
+            </div> {% endcomment %}
         <a href="{% url 'change_password' %}">Change Password</a>
         <hr>
     </div>
