@@ -9,6 +9,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 from .forms import CreateClubForm, LogInForm, SignUpForm, UpdateProfileForm
+from .models import Club 
 
 
 class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
@@ -82,7 +83,14 @@ def create_club(request):
             club.admins.add(request.user)
             club.members.add(request.user)
             return redirect('home') # should take you to the newly created club's page - not implemented yet
-
     form = CreateClubForm()
     return render(request, 'create_club.html', {'form': form})
+
+def club_list(request):
+    clubs = Club.objects.all()
+    return render(request, 'club_list.html', {'clubs': clubs})
+
+@login_required
+def club(request):
+    return render(request, 'club_page.html')
 

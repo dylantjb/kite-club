@@ -24,9 +24,10 @@ urlpatterns = [
     path('about/', views.about, name = 'about'),
     path('sign_up/', views.sign_up, name = 'sign_up'),
     path('log_in/', views.log_in, name = 'log_in'),
-    path('log_out/', views.log_out, name = 'log_out'),
+    path('/log_out/', views.log_out, name = 'log_out'),
     path('create_club/', views.create_club, name = 'create_club'),
-
+    path('club/', views.club, name = 'club'),
+    path('clubs/', views.club_list, name='club_list'),
     path("profile/", views.profile, name="profile"),
     path(
         "change-password/", views.ChangePasswordView.as_view(), name="change_password"
