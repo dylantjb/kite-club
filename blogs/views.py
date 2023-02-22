@@ -21,8 +21,11 @@ def home(request):
     if request.user.is_authenticated:
         data = {'user': request.user}
         return render(request, 'feed.html', data)
-    return render(request, 'home.html')
+    return log_in(request, 'home.html') #accomodate login modal in home view
 
+def about(request):
+    return render(request, 'about.html')
+    
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -50,7 +53,7 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
-def log_in(request):
+def log_in(request, temp = 'log_in.html'):
     if request.method == 'POST':
         form = LogInForm(request.POST)
         if form.is_valid():
@@ -59,13 +62,12 @@ def log_in(request):
             user = authenticate(username = username, password = password)
             if user is not None:
                 login(request, user)
-
                 return redirect('home')
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
-
-
     form = LogInForm()
-    return render(request, 'log_in.html', {'form': form})
+    return render(request, temp, {'form': form})
+
+
 
 def log_out(request):
     logout(request)
@@ -83,3 +85,4 @@ def create_club(request):
 
     form = CreateClubForm()
     return render(request, 'create_club.html', {'form': form})
+

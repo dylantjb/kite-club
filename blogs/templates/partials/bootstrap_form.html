@@ -1,23 +1,22 @@
 
 {% load widget_tweaks %}
-                {% for field in form %}
-                    <div class="form-outline mb-4">
-
-                        {{ field.label_tag}}
-                        {% if form.is_bound%}
-                            {% if field.errors %}
-                                {%render_field field class="form-control is-invalid"%}
-                            {%else%}
-                                {%render_field field class="form-control"%}
-                            {%endif%}
-                        {%else%}
-                            {%render_field field class="form-control"%}
-                        {%endif%}
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                        <div class="invalid-feedback">
-                            {{ field.errors}} 
-                        </div>
-                    </div>
-                {%endfor%}
+{% for field in form %}
+    <div class="form-outline mb-4">
+        {{ field.label_tag}}
+        {% if form.is_bound%}
+            {% if field.errors %}
+                {%render_field field class="form-control is-invalid"%}
+            {%else%}
+                {%render_field field class="form-control"%}
+            {%endif%}
+        {%else%}
+            {%render_field field class="form-control"%}
+        {%endif%}
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            {{ field.errors}} 
+        </div>
+    </div>
+{%endfor%}

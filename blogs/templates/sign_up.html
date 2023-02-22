@@ -1,7 +1,10 @@
 
 {% extends 'base_content.html'%}
-{% block content%}
-<div class="container">
+{% block body_credits%}
+{%include 'partials/navbar_minimal.html'%}
+<div class="blur "> 
+
+<div class="container pb-5 pt-3">
   <div class="row">
       <div class="col-12">
   <h1>Sign up and start flying your kite!</h1>
@@ -11,9 +14,9 @@
     {% include 'partials/bootstrap_form.html' with form=form%}
     <input class="btn btn-dark btn-lg btn-block" type="submit" value = "Sign up">
   </form>
-
 </div>
 </div>
 </div>
-
+</div>
+{%include 'partials/footer.html'%} 
 {%endblock%} 
