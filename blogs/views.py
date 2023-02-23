@@ -41,7 +41,9 @@ def profile(request):
     return render(request, 'profile.html', {'form': form})
 
 def sign_up(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        return redirect('home')     
+    elif request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
@@ -54,7 +56,9 @@ def sign_up(request):
     return render(request, 'sign_up.html', {'form': form})
 
 def log_in(request, temp = 'log_in.html'):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        return redirect('home')     
+    elif request.method == 'POST':
         form = LogInForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
