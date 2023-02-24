@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.test import TestCase
 from django.urls import reverse
 
-from blogs.forms import UpdateProfileForm
+from blogs.forms import UserForm
 from blogs.models import User
 from blogs.tests.helpers import reverse_with_next
 
@@ -18,7 +18,7 @@ class ProfileViewTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username="@johnsmith")
-        self.url = reverse("profile")
+        self.url = reverse("account_details")
         self.form_input = {
             "first_name": "John2",
             "last_name": "Smith2",
@@ -28,15 +28,15 @@ class ProfileViewTest(TestCase):
         }
 
     def test_profile_url(self):
-        self.assertEqual(self.url, "/profile/")
+        self.assertEqual(self.url, "/accounts/account-details/")
 
     def test_get_profile(self):
         self.client.login(username=self.user.username, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "profile.html")
+        self.assertTemplateUsed(response, "account_details.html")
         form = response.context["form"]
-        self.assertTrue(isinstance(form, UpdateProfileForm))
+        self.assertTrue(isinstance(form, UserForm))
         self.assertEqual(form.instance, self.user)
 
     def test_get_profile_redirects_when_not_logged_in(self):
@@ -54,9 +54,9 @@ class ProfileViewTest(TestCase):
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "profile.html")
+        self.assertTemplateUsed(response, "account_details.html")
         form = response.context["form"]
-        self.assertTrue(isinstance(form, UpdateProfileForm))
+        self.assertTrue(isinstance(form, UserForm))
         self.assertTrue(form.is_bound)
         self.user.refresh_from_db()
         self.assertEqual(self.user.username, "@johnsmith")
@@ -73,9 +73,9 @@ class ProfileViewTest(TestCase):
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "profile.html")
+        self.assertTemplateUsed(response, "account_details.html")
         form = response.context["form"]
-        self.assertTrue(isinstance(form, UpdateProfileForm))
+        self.assertTrue(isinstance(form, UserForm))
         self.assertTrue(form.is_bound)
         self.user.refresh_from_db()
         self.assertEqual(self.user.username, "@johnsmith")

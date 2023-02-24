@@ -1,7 +1,7 @@
 """Unit tests of the user form."""
 from django import forms
 from django.test import TestCase
-from blogs.forms import UpdateProfileForm
+from blogs.forms import UserForm
 from blogs.models import User
 
 class UpdateProfileFormTestCase(TestCase):
@@ -21,7 +21,7 @@ class UpdateProfileFormTestCase(TestCase):
         }
 
     def test_form_has_necessary_fields(self):
-        form = UpdateProfileForm()
+        form = UserForm()
         self.assertIn('first_name', form.fields)
         self.assertIn('last_name', form.fields)
         self.assertIn('username', form.fields)
@@ -31,17 +31,17 @@ class UpdateProfileFormTestCase(TestCase):
         self.assertIn('bio', form.fields)
 
     def test_valid_user_form(self):
-        form = UpdateProfileForm(data=self.form_input)
+        form = UserForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 
     def test_form_uses_model_validation(self):
         self.form_input['username'] = 'badusername'
-        form = UpdateProfileForm(data=self.form_input)
+        form = UserForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
     def test_form_must_save_correctly(self):
         user = User.objects.get(username='@johnsmith')
-        form = UpdateProfileForm(instance=user, data=self.form_input)
+        form = UserForm(instance=user, data=self.form_input)
         before_count = User.objects.count()
         form.save()
         after_count = User.objects.count()

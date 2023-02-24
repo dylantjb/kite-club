@@ -3,18 +3,41 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordChangeView
+from django.views.generic.edit import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
-from .forms import CreateClubForm, LogInForm, SignUpForm, UpdateProfileForm
+from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm
+
+
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    model = UserForm
+    form_class = UserForm
+    template_name = "account_details.html"
+    extra_context = {"nbar": "account"}
+
+    def get_object(self):
+        return self.request.user
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request, messages.SUCCESS, "Your profile updated successfully!"
+        )
+        return reverse_lazy("home")
 
 
 class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
-    template_name = 'change_password.html'
-    success_message = "Your password has changed successfully"
-    success_url = reverse_lazy('home')
+    template_name = "change_password.html"
+    success_url = reverse_lazy("home")
+    extra_context = {"nbar": "password"}
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request, messages.SUCCESS, "Your password changed successfully!"
+        )
+        return reverse_lazy("home")
 
 
 def home(request):
@@ -25,20 +48,6 @@ def home(request):
 
 def about(request):
     return render(request, 'about.html')
-    
-@login_required
-def profile(request):
-    if request.method == 'POST':
-        form = UpdateProfileForm(request.POST, instance=request.user)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
-            messages.success(request, "Your profile updated successfully")
-            return redirect('home')
-    else:
-        form = UpdateProfileForm(instance=request.user)
-
-    return render(request, 'profile.html', {'form': form})
 
 def sign_up(request):
     if request.user.is_authenticated:
