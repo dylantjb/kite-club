@@ -10,11 +10,11 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm
+from .models import User
 
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
-    model = UserForm
-    form_class = UserForm
+    model = form_class = UserForm
     template_name = "account_details.html"
     extra_context = {"nbar": "account"}
 
@@ -48,6 +48,11 @@ def home(request):
 
 def about(request):
     return render(request, 'about.html')
+
+@login_required
+def profile(request, username):
+    user = User.objects.get(username=username)
+    return render(request, 'profile.html', {'user': user})
 
 def sign_up(request):
     if request.user.is_authenticated:

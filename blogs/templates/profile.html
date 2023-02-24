@@ -1,0 +1,101 @@
+{% extends 'base_content.html' %}
+{% load static %}
+{% block title %}
+    {{ user.first_name }}'s profile
+{% endblock title %}
+{% block content %}
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="{{ user.gravatar }}"
+                             alt="gravatar"
+                             class="rounded-circle img-fluid"
+                             style="width: 150px">
+                        <h5 class="my-3">{{ user.username }}</h5>
+                        {% if request.user.username == user.username %}
+                            <div class="d-flex justify-content-center mb-2">
+                                <a href="{% url 'account_details' %}"
+                                   type="button"
+                                   class="btn btn-primary">Edit Profile</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card mb-4 mb-lg-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{ user.first_name }} {{ user.last_name }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{ user.email }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Favourite Genre</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">
+                                    {% if user.favourite_genre == '' %}
+                                        --
+                                    {% else %}
+                                        {{ user.get_favourite_genre_display }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4 mb-lg-0">
+                    <div class="mb-4">
+                        <div class="p-4">
+                            <div class="card-body p-0">
+                                <h4 class="font-italic mb-2">About</h4>
+                                <p class="font-italic mb-0">
+                                    {% if user.bio == '' %}
+                                        --
+                                    {% else %}
+                                        {{ user.bio }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4 mb-lg-0">
+                    <div class="mb-4">
+                        <div class="p-4">
+                            <div class="card-body p-0">
+                                <h4 class="font-italic mb-2">Posts</h4>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                                    ex
+                                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+                                    deserunt
+                                    mollit anim id est laborum.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
