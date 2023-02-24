@@ -1,6 +1,8 @@
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.functions import Lower
+from libgravatar import Gravatar
 
 class User(AbstractUser):
     def _init_(self):
@@ -87,6 +89,48 @@ class User(AbstractUser):
     last_name = models.CharField(max_length = 50, blank = False)
     email = models.EmailField(unique = True, blank = False)
     bio = models.CharField(max_length = 520, blank = True)
+    favourite_genre = models.CharField(
+        max_length = 2,
+        choices = [ # Taken from Google Books
+            ("E", "Ebooks"),
+            ("A", "Arts"),
+            ("BM", "Biographies & Memoirs"),
+            ("BI", "Business & Investing"),
+            ("C", "Comics"),
+            ("CT", "Computers & Technology"),
+            ("CF", "Cookery, Food & Wine"),
+            ("F", "Fantasy"),
+            ("FL", "Fiction & Literature"),
+            ("G", "Gardening"),
+            ("HF", "Health & Fitness"),
+            ("HM", "Health, Mind & Body"),
+            ("H", "History"),
+            ("M", "Mystery & Thrillers"),
+            ("N", "Nature"),
+            ("P", "Poetry"),
+            ("PC", "Politics & Current Affairs"),
+            ("R", "Reference"),
+            ("RO", "Romance"),
+            ("RS", "Religion & Spirituality"),
+            ("S", "Science"),
+            ("SF", "Science Fiction"),
+            ("SP", "Sports"),
+            ("T", "Travel"),
+            ("Y", "Young Adult"),
+        ],
+        blank = True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower("email"),
+                name="unique_lower_user_email",
+            )
+        ]
+
+    def gravatar(self, size=120):
+        return Gravatar(self.email).get_image(size=size, default='mp')
+
 
 class Club(models.Model):
     admins = models.ManyToManyField(User, related_name='admin_of', blank=False)
