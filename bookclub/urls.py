@@ -33,3 +33,5 @@ urlpatterns = [
     path("<username>/", views.profile, name = 'profile'),
 
 ]
+
+handler404 = 'blogs.views.error_404'

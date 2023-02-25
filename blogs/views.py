@@ -49,10 +49,17 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+def error_404(request, exception):
+    return render(request, '404.html')
+
 @login_required
 def profile(request, username):
-    user = User.objects.get(username=username)
-    return render(request, 'profile.html', {'user': user})
+    if User.objects.filter(username=username).exists():
+        return render(
+            request, 'profile.html', {'user': User.objects.get(username=username)}
+        )
+    else:
+        return redirect('/404.html')
 
 def sign_up(request):
     if request.user.is_authenticated:
