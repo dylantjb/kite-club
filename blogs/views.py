@@ -6,6 +6,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.views.generic.edit import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
@@ -49,9 +50,6 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-def error_404(request, exception):
-    return render(request, '404.html')
-
 @login_required
 def profile(request, username):
     if User.objects.filter(username=username).exists():
@@ -59,7 +57,7 @@ def profile(request, username):
             request, 'profile.html', {'user': User.objects.get(username=username)}
         )
     else:
-        return redirect('/404.html')
+        raise Http404
 
 def sign_up(request):
     if request.user.is_authenticated:
