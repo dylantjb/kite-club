@@ -8,8 +8,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from .forms import CreateClubForm, LogInForm, SignUpForm, UpdateProfileForm
-from .models import Club 
+from .models import Club, User 
 
 
 class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
@@ -91,6 +93,21 @@ def club_list(request):
     return render(request, 'club_list.html', {'clubs': clubs})
 
 @login_required
-def club(request):
-    return render(request, 'club_page.html')
+def club(request, club_id):
+    try:
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+        return redirect('club_list')
+    else:
+        return render(request, 'club_page.html', {'club': club})
+    
+@login_required
+def view_user_profile(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist:
+        return redirect('club_page')
+    else:
+        return render(request, 'profile_view.html', {'user': user})
+
 

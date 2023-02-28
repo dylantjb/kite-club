@@ -1,0 +1,12 @@
+[
+    {
+      "model": "blogs.club",
+      "pk": 1,
+      "fields": {
+        "name": "Testing Club",
+        "bio": "The default club used for testing.",
+        "rules": "No swearing. Only speak of the theme",
+        "theme": "Comedy"
+      }
+    }
+  ]
