@@ -118,7 +118,8 @@ class User(AbstractUser):
             ("T", "Travel"),
             ("Y", "Young Adult"),
         ],
-        blank = True)
+        blank = True,
+        default='')
 
     class Meta:
         constraints = [
