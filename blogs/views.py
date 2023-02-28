@@ -10,8 +10,12 @@ from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
-from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm
-from .models import User
+
+from django.core.exceptions import ObjectDoesNotExist
+
+from .forms import CreateClubForm, LogInForm, SignUpForm, UpdateProfileForm
+from .models import Club, User 
+
 
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
@@ -27,6 +31,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
             self.request, messages.SUCCESS, "Your profile updated successfully!"
         )
         return reverse_lazy("home")
+
 
 
 class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
@@ -105,7 +110,29 @@ def create_club(request):
             club.admins.add(request.user)
             club.members.add(request.user)
             return redirect('home') # should take you to the newly created club's page - not implemented yet
-
     form = CreateClubForm()
     return render(request, 'create_club.html', {'form': form})
+
+def club_list(request):
+    clubs = Club.objects.all()
+    return render(request, 'club_list.html', {'clubs': clubs})
+
+@login_required
+def club(request, club_id):
+    try:
+        club = Club.objects.get(id=club_id)
+    except ObjectDoesNotExist:
+        return redirect('club_list')
+    else:
+        return render(request, 'club_page.html', {'club': club})
+    
+@login_required
+def view_user_profile(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist:
+        return redirect('club_page')
+    else:
+        return render(request, 'profile_view.html', {'user': user})
+
 

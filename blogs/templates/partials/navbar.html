@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
     <div class="container">
     <a class="navbar-brand" href="{% url 'home'%}">
       <img src='{% static 'logos/logo-no-background.png' %}' class="img-fluid rounded img-thumbnail" width="150" height="150" alt="">
@@ -21,7 +21,7 @@
       <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
       
         <li class="nav-item">
-          <a class="nav-link navbar-brand" href="#">
+          <a class="nav-link navbar-brand" href="{% url 'club_list'%}">
             <span class="bi bi-book-half" data-toggle="tooltip" data-placement="top" title="Your clubs">
 
             </span>

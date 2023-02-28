@@ -1,0 +1,48 @@
+{% extends 'base.html'%}
+{% block body_credits%}
+
+{%include 'partials/navbar.html'%} 
+    <div class="row" style="height: 100vh">
+        <div id="left" class="col-3 mt-0 pt-0 shadow-lg p-3 mb-5 bg-dark ">
+            <a href="/" class="d-flex align-items-lg-start mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+                <span class="fs-4">Admins</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-0">
+                {% for admin in club.admins.all %}
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url 'show_user' admin.id %}" aria-current="page">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use> </svg>
+                                {{admin.username}}
+                            </a>
+                        </li>
+                        {% endfor %}
+            </ul>
+            <hr>
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+                <span class="fs-4">Club Members</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-0">
+                {% for member in club.members.all %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'show_user' member.id %}" aria-current="page">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use> </svg>
+                            {{member.username }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <hr>
+
+        </div>
+
+
+        <div id="right" class="col-9">
+            <h1>{{ club.name }}</h1>
+            <p>{{ club.theme }}
+        </div>
+    </div>  
+{% endblock %}
