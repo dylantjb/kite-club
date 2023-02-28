@@ -133,6 +133,6 @@ def view_user_profile(request, user_id):
     except ObjectDoesNotExist:
         return redirect('club_page')
     else:
-        return render(request, 'profile_view.html', {'user': user})
+        return render(request, 'profile.html', {'user': user})
 
 
