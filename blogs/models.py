@@ -147,3 +147,16 @@ class Club(models.Model):
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
     theme = models.CharField(max_length = 50, blank = True)
+    
+class Post(models.Model):
+    """Posts by users in a given club."""
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.CharField(max_length=280)
+    created_at = models.DateTimeField(auto_now_add=True)
+    in_club = models.ForeignKey(Club, on_delete=models.CASCADE)
+
+    class Meta:
+        """Model options."""
+
+        ordering = ['-created_at']
