@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from .forms import CreateClubForm, LogInForm, SignUpForm, UpdateProfileForm, UserForm
+from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm
 from .models import Club, User 
 
 
