@@ -57,6 +57,12 @@ class UserModelTestCase(TestCase):
         self.user.username = "@j0hnd03"
         self._assert_user_is_valid()
 
+    def test_username_is_case_insensitive(self):
+        """Test user is case insensitive."""
+        second_user = User.objects.get(username="@janedoe")
+        self.user.username = second_user.username.upper()
+        self._assert_user_is_valid()
+
     def test_first_name_is_not_blank(self):
         """Test first name must not be blank."""
         self.user.first_name = ""
@@ -99,6 +105,75 @@ class UserModelTestCase(TestCase):
         self.user.last_name = "x" * 51
         self._assert_user_is_invalid()
 
+    def test_email_must_not_be_blank(self):
+        """Test email must not be blank."""
+        self.user.email = ""
+        self._assert_user_is_invalid()
+
+    def test_email_must_contain_domain_name(self):
+        """Test email must contain a domain name."""
+        self.user.email = "johndoe@example"
+        self._assert_user_is_invalid()
+
+    def test_email_must_not_contain_more_than_one_at(self):
+        """Test email must not contain more than one @"""
+        self.user.email = "johndoe@@example.org"
+        self._assert_user_is_invalid()
+
+    def test_email_must_contain_at_symbol(self):
+        """Test email must contain @."""
+        self.user.email = "johndoe.example.org"
+        self._assert_user_is_invalid()
+
+    def test_email_must_be_unique(self):
+        """Test email must be unique."""
+        second_user = User.objects.get(username="@janedoe")
+        self.user.email = second_user.email
+        self._assert_user_is_invalid()
+
+    def test_email_is_not_case_sensitive(self):
+        """Test email is not case sensitive."""
+        second_user = User.objects.get(username="@janedoe")
+        self.user.email = second_user.email.upper()
+        self._assert_user_is_invalid()
+
+    def test_genre_can_be_blank(self):
+        """Test genre can be blank."""
+        self.user.favourite_genre = ""
+        self._assert_user_is_valid()
+
+    def test_valid_favourite_genre(self):
+        """Test all favourite genres."""
+        for i in [
+            "E",
+            "A",
+            "BM",
+            "BI",
+            "C",
+            "CT",
+            "CF",
+            "F",
+            "FL",
+            "G",
+            "HF",
+            "HM",
+            "H",
+            "M",
+            "N",
+            "P",
+            "PC",
+            "R",
+            "RO",
+            "RS",
+            "S",
+            "SF",
+            "SP",
+            "T",
+            "Y",
+        ]:
+            self.user.favourite_genre = i
+            self._assert_user_is_valid()
+
     def test_bio_can_be_blank(self):
         """Test bio can be blank."""
         self.user.bio = ""
@@ -119,3 +194,8 @@ class UserModelTestCase(TestCase):
         """Test bio cannot have over 520 characters."""
         self.user.bio = "x" * 521
         self._assert_user_is_invalid()
+
+    def test_bio_may_contain_numbers(self):
+        """Test bio may contain numbers."""
+        self.user.bio = "bio 2"
+        self._assert_user_is_valid()

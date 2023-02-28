@@ -11,12 +11,20 @@
 
   <form action="{% url 'sign_up' %}" method="post">
     {% csrf_token %}
-    {% include 'partials/bootstrap_form.html' with form=form%}
+    {% include 'partials/bootstrap_form.html' %}
     <input class="btn btn-dark btn-lg btn-block" type="submit" value = "Sign up">
   </form>
 </div>
 </div>
 </div>
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 {%include 'partials/footer.html'%} 
 {%endblock%} 

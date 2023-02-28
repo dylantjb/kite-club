@@ -8,6 +8,7 @@
       "username": "@johnsmith",
       "email": "johnsmith@example.org",
       "bio": "Hello, I'm John Smith.",
+      "favourite_genre": "PC",
       "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc="
     }
   }

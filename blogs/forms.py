@@ -9,7 +9,7 @@ class LogInForm(forms.Form):
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio']
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'favourite_genre']
         widgets = {'bio': forms.Textarea()}
 
     new_password = forms.CharField(
@@ -38,14 +38,15 @@ class SignUpForm(forms.ModelForm):
             last_name = self.cleaned_data.get('last_name'),
             email = self.cleaned_data.get('email'),
             bio = self.cleaned_data.get('bio'),
+            favourite_genre = self.cleaned_data.get('favourite_genre'),
             password = self.cleaned_data.get('new_password')
         )
         return user
 
-class UpdateProfileForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio']
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'favourite_genre']
         widgets = {'bio': forms.Textarea()}
 
 class CreateClubForm(forms.ModelForm):

@@ -32,8 +32,11 @@ urlpatterns = [
     path('clubs/', views.club_list, name='club_list'),
     #user profile
     path("profile/", views.profile, name="profile"),
+    path("accounts/account-details/", views.UpdateProfileView.as_view(), name="account_details"),
     path(
-        "change-password/", views.ChangePasswordView.as_view(), name="change_password"
+        "accounts/change-password/", views.ChangePasswordView.as_view(), name="change_password"
     ),
+    path("<username>/", views.profile, name = 'profile'),
 
 ]
+
