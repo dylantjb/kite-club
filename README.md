@@ -36,6 +36,10 @@ Migrate the database:
 
 ```
 $ python3 manage.py migrate
+sqlite3.exe db.sqlite3
+.mode csv
+.import books.csv blogs_books
+
 ```
 
 Seed the development database with:
