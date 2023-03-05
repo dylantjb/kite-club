@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blogs',
     'widget_tweaks',
-    'books',
 ]
 
 MIDDLEWARE = [
