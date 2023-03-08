@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import RegexValidator
-from .models import User, Club
+from .models import User, Club, Post
 
 class LogInForm(forms.Form):
     username = forms.CharField(label='Username')
@@ -53,3 +53,18 @@ class CreateClubForm(forms.ModelForm):
     class Meta:
         model = Club
         fields = ['name','bio','rules']
+        
+class PostForm(forms.ModelForm):
+    """Form to ask user for post text.
+
+    The post author must be by the post creator.
+    """
+
+    class Meta:
+        """Form options."""
+
+        model = Post
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea()
+        }

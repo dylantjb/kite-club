@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm
+from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm
 from .models import Club, User 
 
 
@@ -124,7 +124,8 @@ def club(request, club_id):
     except ObjectDoesNotExist:
         return redirect('club_list')
     else:
-        return render(request, 'club_page.html', {'club': club})
+        form = PostForm()        
+        return render(request, 'club_page.html', {'club': club}, {'form': form})
     
 @login_required
 def view_user_profile(request, user_id):

@@ -44,5 +44,22 @@
             <h1>{{ club.name }}</h1>
             <p>{{ club.theme }}
         </div>
+
+        <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-lg-6 col-xl-4">
+            <h3>New post</h3>
+                <form action="{% url 'show_club' club.id%}" method="post">
+                {% csrf_token %}
+                {% include 'partials/bootstrap_form.html' with form=form %}
+                <button type="submit" class="btn btn-primary">Cluck</button>
+            </form>
+            </div>
+            <div class="col-xs-12 col-lg-6 col-xl-8">
+            <h1>Feed</h1>
+            <p><b>UNDER CONSTRUCTION</b>: This page will contain a user-specific feed of clucks.</p>
+            </div>
+        </div>
+        </div>
     </div>  
 {% endblock %}
