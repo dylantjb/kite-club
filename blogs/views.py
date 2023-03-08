@@ -125,7 +125,7 @@ def club(request, club_id):
         return redirect('club_list')
     else:
         form = PostForm()        
-        return render(request, 'club_page.html', {'club': club}, {'form': form})
+        return render(request, 'club_page.html', {'club': club, 'form': form})
     
 @login_required
 def view_user_profile(request, user_id):
