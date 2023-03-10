@@ -2,6 +2,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.functions import Lower
+from django.utils.translation import gettext as _
 from libgravatar import Gravatar
 
 class User(AbstractUser):
@@ -147,3 +148,14 @@ class Club(models.Model):
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
     theme = models.CharField(max_length = 50, blank = True)
+
+
+class books (models.Model):
+    isbn = models.CharField(_("ISBN"),max_length=255)
+    book_title = models.CharField(_("Book-Title"),max_length=255)
+    book_author = models.CharField(_("Book-Author"),max_length=255)
+    year_of_publication = models.IntegerField(_("Year-Of-Publication"))
+    publisher = models.CharField(_("Publisher"),max_length=255)
+    image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
+    image_url_m = models.CharField(_("Image-URL-M"),max_length=255)
+    image_url_l = models.CharField(_("Image-URL-L"),max_length=255)
