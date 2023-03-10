@@ -31,7 +31,7 @@ urlpatterns = [
     path('show_user/<int:user_id>', views.view_user_profile, name = 'show_user'),
     path('clubs/', views.club_list, name='club_list'),
     #posts
-    path('new_post/', views.new_post, name='new_post'),
+    # path('new_post/', views.new_post, name='new_post'),
     #user profile
     path("profile/", views.profile, name="profile"),
     path("accounts/account-details/", views.UpdateProfileView.as_view(), name="account_details"),

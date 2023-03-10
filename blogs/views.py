@@ -114,27 +114,28 @@ def create_club(request):
             return redirect('home') # should take you to the newly created club's page - not implemented yet
     form = CreateClubForm()
     return render(request, 'create_club.html', {'form': form})
+
 @login_required
 def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 
 
-def new_post(request):
-        if request.method == 'POST':
-            if request.user.is_authenticated:
-                current_user = request.user
-                form = PostForm(request.POST)
-                if form.is_valid():
-                    text = form.cleaned_data.get('text')
-                    post = Post.objects.create(author=current_user, text=text)
-                    return redirect('show_club')
-                else:
-                    return render(request, 'club_page.html', {'form': form})
-            else:
-                return redirect('log_in')
-        else:
-            return HttpResponseForbidden()
+# def new_post(request):
+#         if request.method == 'POST':
+#             if request.user.is_authenticated:
+#                 current_user = request.user
+#                 form = PostForm(request.POST)
+#                 if form.is_valid():
+#                     text = form.cleaned_data.get('text')
+#                     post = Post.objects.create(author=current_user, text=text)
+#                     return redirect('show_club')
+#                 else:
+#                     return render(request, 'club_page.html', {'form': form})
+#             else:
+#                 return redirect('log_in')
+#         else:
+#             return HttpResponseForbidden()
 
     
 @login_required
@@ -152,9 +153,9 @@ def club(request, club_id):
                 if form.is_valid():
                     text = form.cleaned_data.get('text')
                     post = Post.objects.create(author=current_user, text=text, in_club=club)
-                    return redirect('show_club', club.id)
+                    return redirect('show_club', club_id)
                 else:
-                    return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts})
+                    return render(request, 'club_page.html', {'club': club, 'form': form, 'post': post})
             else:
                 return redirect('log_in')
         form = PostForm()        

@@ -106,6 +106,7 @@ def run_seed(self, mode):
     # Clear data from tables
     clear_data()
     if mode == MODE_CLEAR:
+        Club.objects.all().delete()
         return
 
     # Creating 25 clubs
