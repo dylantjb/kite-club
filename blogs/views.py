@@ -6,7 +6,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.views.generic.edit import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden 
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
@@ -14,7 +14,9 @@ from django.urls import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
 
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm
-from .models import Club, User 
+from .models import Club, User, Post
+
+
 
 
 
@@ -112,11 +114,30 @@ def create_club(request):
             return redirect('home') # should take you to the newly created club's page - not implemented yet
     form = CreateClubForm()
     return render(request, 'create_club.html', {'form': form})
-
+@login_required
 def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 
+@login_required
+def new_post(request, club_id):
+        club = Club.objects.get(id=club_id)
+        if request.method == 'POST':
+            if request.user.is_authenticated:
+                current_user = request.user
+                form = PostForm(request.POST)
+                if form.is_valid():
+                    text = form.cleaned_data.get('text')
+                    post = Post.objects.create(author=current_user, text=text, in_club=club)
+                    return redirect('club/<int:club_id>')
+                else:
+                    return render(request, 'club_page.html', {'form': form})
+            else:
+                return redirect('log_in')
+        else:
+            return HttpResponseForbidden()
+
+    
 @login_required
 def club(request, club_id):
     try:
