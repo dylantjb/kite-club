@@ -3,7 +3,7 @@
     <div class="nav flex-column nav-pills" id="tab">
         <a class="nav-link"
            id="profile-tab"
-           href="{% url 'profile' request.user.get_username %}">Profile</a>
+           href="{% url 'profile' request.user.id %}">Profile</a>
         <a class="nav-link {% if nbar == 'account' %}active{% endif %}"
            id="account-tab"
            href="{% if nbar == 'account' %}#{{ nbar }}{% else %}{% url 'account_details' %}{% endif %}">Account details</a>

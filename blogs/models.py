@@ -5,6 +5,8 @@ from django.db.models.functions import Lower
 from django.utils.translation import gettext as _
 from libgravatar import Gravatar
 
+from .helpers import get_genres, get_themes
+
 class User(AbstractUser):
     def _init_(self):
         self.members = []
@@ -90,37 +92,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length = 50, blank = False)
     email = models.EmailField(unique = True, blank = False)
     bio = models.CharField(max_length = 520, blank = True)
-    favourite_genre = models.CharField(
-        max_length = 2,
-        choices = [ # Taken from Google Books
-            ("E", "Ebooks"),
-            ("A", "Arts"),
-            ("BM", "Biographies & Memoirs"),
-            ("BI", "Business & Investing"),
-            ("C", "Comics"),
-            ("CT", "Computers & Technology"),
-            ("CF", "Cookery, Food & Wine"),
-            ("F", "Fantasy"),
-            ("FL", "Fiction & Literature"),
-            ("G", "Gardening"),
-            ("HF", "Health & Fitness"),
-            ("HM", "Health, Mind & Body"),
-            ("H", "History"),
-            ("M", "Mystery & Thrillers"),
-            ("N", "Nature"),
-            ("P", "Poetry"),
-            ("PC", "Politics & Current Affairs"),
-            ("R", "Reference"),
-            ("RO", "Romance"),
-            ("RS", "Religion & Spirituality"),
-            ("S", "Science"),
-            ("SF", "Science Fiction"),
-            ("SP", "Sports"),
-            ("T", "Travel"),
-            ("Y", "Young Adult"),
-        ],
-        blank = True,
-        default='')
+    favourite_genre = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"))
 
     class Meta:
         constraints = [
@@ -147,7 +119,7 @@ class Club(models.Model):
     )
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
-    theme = models.CharField(max_length = 50, blank = True)
+    theme = models.CharField(max_length = 2, choices = get_themes(), default="")
 
 
 class books (models.Model):
