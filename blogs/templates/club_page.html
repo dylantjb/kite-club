@@ -1,9 +1,8 @@
 {% extends 'base.html'%}
 {% block body_credits%}
 
-{%include 'partials/navbar.html'%} 
-    <div class="row" style="height: 100vh">
-        <div id="left" class="col-3 mt-0 pt-0 shadow-lg p-3 mb-5 bg-dark ">
+    <div class="row mx-0" >
+        <div id="sidebar" class="column col-sm-2 col-xs-1 my-0 mx-0 pt-0 shadow-lg p-3  bg-dark sidebar-offcanvas" style="height: 100vh">
             <a href="/" class="d-flex align-items-lg-start mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
                 <span class="fs-4">Admins</span>
@@ -40,25 +39,27 @@
         </div>
 
 
-        <div id="right" class="col-9">
-            <h1>{{ club.name }}</h1>
-            <p>{{ club.theme }}
+        <div id="main" class="column col-sm-10 col-xs-11 px-0 ">
+            {%include 'partials/navbar.html'%} 
+            <div class="row px-2">
+                <h1>{{ club.name }}</h1>
+                <p>{{ club.theme }}
+                <div class="container mx-0 my-5">
+                    <div>
+                        <h3>New post</h3>
+                        <form action="{% url 'show_club' club.id %}" method="post">
+                                {% csrf_token %}
+                                {% include 'partials/bootstrap_form.html' with form=form %}
+                                <button type="submit" class="btn btn-primary">Cluck</button>
+                        </form>
+                    </div>
+                    <div>       
+                            {% include 'partials/posts_as_table.html' with posts=posts %}
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-lg-6 col-xl-4">
-            <h3>New post</h3>
-                <form action="{% url 'new_post' club.id%}" method="post">
-                {% csrf_token %}
-                {% include 'partials/bootstrap_form.html' with form=form %}
-                <button type="submit" class="btn btn-primary">Cluck</button>
-            </form>
-            </div>
-            <div class="col-xs-12 col-lg-6 col-xl-8">
-                {% include 'partials/posts_as_table.html' with posts=posts %}
-            </div>
-        </div>
-        </div>
+        
     </div>  
 {% endblock %}

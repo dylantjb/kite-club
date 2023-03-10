@@ -131,6 +131,11 @@ class User(AbstractUser):
 
     def gravatar(self, size=120):
         return Gravatar(self.email).get_image(size=size, default='mp')
+    def mini_gravatar(self):
+        """Return a URL to a miniature version of the user's gravatar."""
+        return self.gravatar(size=60)
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class Club(models.Model):

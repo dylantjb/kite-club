@@ -68,3 +68,10 @@ class PostForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea()
         }
+    def save(self):
+        super().save(commit = False)
+        
+        post = Post.objects.create(
+            
+        )
+        return post

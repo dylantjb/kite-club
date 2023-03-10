@@ -119,17 +119,16 @@ def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 
-@login_required
-def new_post(request, club_id):
-        club = Club.objects.get(id=club_id)
+
+def new_post(request):
         if request.method == 'POST':
             if request.user.is_authenticated:
                 current_user = request.user
                 form = PostForm(request.POST)
                 if form.is_valid():
                     text = form.cleaned_data.get('text')
-                    post = Post.objects.create(author=current_user, text=text, in_club=club)
-                    return redirect('club/<int:club_id>')
+                    post = Post.objects.create(author=current_user, text=text)
+                    return redirect('show_club')
                 else:
                     return render(request, 'club_page.html', {'form': form})
             else:
@@ -142,11 +141,24 @@ def new_post(request, club_id):
 def club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)
+        posts = Post.objects.filter(in_club = club)
     except ObjectDoesNotExist:
         return redirect('club_list')
     else:
+        if request.method == 'POST':
+            if request.user.is_authenticated:
+                current_user = request.user
+                form = PostForm(request.POST)
+                if form.is_valid():
+                    text = form.cleaned_data.get('text')
+                    post = Post.objects.create(author=current_user, text=text, in_club=club)
+                    return redirect('show_club', club.id)
+                else:
+                    return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts})
+            else:
+                return redirect('log_in')
         form = PostForm()        
-        return render(request, 'club_page.html', {'club': club, 'form': form})
+        return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts})
     
 @login_required
 def view_user_profile(request, user_id):
