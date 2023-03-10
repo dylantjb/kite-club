@@ -1,8 +1,7 @@
 {% extends 'base.html'%}
 {% block body_credits%}
-
-    <div class="row mx-0" >
-        <div id="sidebar" class="column col-sm-2 col-xs-1 my-0 mx-0 pt-0 shadow-lg p-3  bg-dark sidebar-offcanvas" style="height: 100vh">
+    <div class="row mx-0 row-height" >
+        <div id="sdb" class="column col-sm-2 col-xs-1 left overflow-auto my-0 mx-0 pt-0 shadow-lg p-3 bg-dark" style="height: 100vh">
             <a href="/" class="d-flex align-items-lg-start mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
                 <span class="fs-4">Admins</span>
@@ -39,7 +38,7 @@
         </div>
 
 
-        <div id="main" class="column col-sm-10 col-xs-11 px-0 ">
+        <div id="content" class="column col-sm-10 col-xs-11 right px-0 overflow-auto " style="height: 100vh">
             {%include 'partials/navbar.html'%} 
             <div class="row px-2">
                 <h1>{{ club.name }}</h1>
@@ -61,5 +60,5 @@
         </div>
 
         
-    </div>  
+    </div> 
 {% endblock %}

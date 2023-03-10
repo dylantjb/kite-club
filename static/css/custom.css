@@ -6,6 +6,16 @@
   border-radius: 0px;
 }
 
+#content{
+  height: 100%;
+  overflow-y: scroll;
+}
+
+#sdb{
+  height: 100%;
+  overflow-y: scroll;
+}
+
 .bkg{
   background-image: url('/static/images/Bg_white_modern.jpg');
   /* Full height */
@@ -18,6 +28,21 @@
   margin:0;
 }
 
+.row-height{
+  height: 100vh;
+}
+
+.left{
+  background-color: red;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.right{
+  background-color: blue;
+  height: 100%;
+  overflow-y: scroll;
+}
 /* .bkg{
   background-image: url('/static/images/Bg_white_modern.jpg');
   Full height
@@ -58,35 +83,23 @@ hr {
   border: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
-
-#main {
-  background-color:#e9eaed;
-  padding-left:0;
-  padding-right:0;
-}
-#main .img-circle {
+#main{
   margin-top:18px;
   margin-left:0;
   margin-right:0;
   padding-left:0;
   padding-right:0 ;
-  height:100vh;
-  width:70px;
-}
-.row{
-  height: 100%;
-}
-.row > div {
+  height:1%;
   overflow-y: scroll;
-  height: 100%;
-}
+} 
+
 #sidebar {
   float: left;
   padding:0px;
   padding-top:15px;
   margin-left: 150px;
   height:100%;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 #sidebar, #sidebar a, #sidebar-footer a {
