@@ -1,5 +1,6 @@
 from BookData import BookData
 from surprise import SVD
+import os
 
 
 def BuildAntiTestSetForUser(testSubject, trainset):

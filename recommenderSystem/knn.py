@@ -6,7 +6,7 @@ from collections import defaultdict
 from operator import itemgetter
 import heapq
 
-import os
+from pathlib import Path
 import csv
 
 
@@ -14,11 +14,11 @@ import csv
 def load_dataset():
     print("Loading book ratings...")
     reader = Reader(line_format='user item rating', sep=',', skip_lines=1)
-    ratings_dataset = Dataset.load_from_file('C:/Users/Saurav Miah/Documents/GitHub/Kite/book-review-dataset/top_ratings.csv', reader=reader)
+    ratings_dataset = Dataset.load_from_file(Path("book-review-dataset/top_ratings.csv"), reader=reader)
 
     # Lookup a book's name with it's ISBN/BookID as key
     bookID_to_name = {}
-    with open('C:/Users/Saurav Miah/Documents/GitHub/Kite/book-review-dataset/BX_Books.csv', newline='', encoding='ISO-8859-1') as csvfile:
+    with open(Path('book-review-dataset/BX_Books.csv'), newline='', encoding='ISO-8859-1') as csvfile:
             book_reader = csv.reader(csvfile)
             next(book_reader)
             for row in book_reader:

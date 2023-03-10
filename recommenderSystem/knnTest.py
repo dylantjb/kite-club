@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 from surprise import Dataset, Reader
 from surprise import KNNBasic, KNNWithMeans, KNNWithZScore, KNNBaseline
@@ -41,7 +42,7 @@ def generate_models_dict(models, sim_names, user_based):
 
     return models_dict
 
-df = pd.read_csv('C:/Users/Saurav Miah/Documents/GitHub/Kite/book-review-dataset/top_ratings.csv')
+df = pd.read_csv(Path('book-review-dataset/top_ratings.csv'))
 
 reader = Reader(rating_scale=(1, 10))
 data = Dataset.load_from_df(df[['user_id', 'isbn', 'book_rating']], reader)
