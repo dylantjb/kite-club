@@ -17,7 +17,7 @@ class BookData:
 
 
     booksPath = 'C:/Users/Saurav Miah/Documents/GitHub/Kite/book-review-dataset/BX_Books.csv'
-    ratingsPath ='C:/Users/Saurav Miah/Documents/GitHub/Kite/book-review-dataset/top_ratings.csv'
+    ratingsPath = 'C:/Users/Saurav Miah/Documents/GitHub/Kite/book-review-dataset/top_ratings.csv'
 
 
     def loadBookData(self):
