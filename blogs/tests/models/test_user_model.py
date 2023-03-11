@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from blogs.models import User
+from blogs.helpers import get_themes
 
 
 class UserModelTestCase(TestCase):
@@ -137,40 +138,14 @@ class UserModelTestCase(TestCase):
         self.user.email = second_user.email.upper()
         self._assert_user_is_invalid()
 
-    def test_genre_can_be_blank(self):
+    def test_favourite_genre_can_be_blank(self):
         """Test genre can be blank."""
         self.user.favourite_genre = ""
         self._assert_user_is_valid()
 
     def test_valid_favourite_genre(self):
         """Test all favourite genres."""
-        for i in [
-            "E",
-            "A",
-            "BM",
-            "BI",
-            "C",
-            "CT",
-            "CF",
-            "F",
-            "FL",
-            "G",
-            "HF",
-            "HM",
-            "H",
-            "M",
-            "N",
-            "P",
-            "PC",
-            "R",
-            "RO",
-            "RS",
-            "S",
-            "SF",
-            "SP",
-            "T",
-            "Y",
-        ]:
+        for i in [j[0] for j in get_themes()[0]]:
             self.user.favourite_genre = i
             self._assert_user_is_valid()
 

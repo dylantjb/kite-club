@@ -13,10 +13,10 @@ from django.urls import reverse_lazy
 
 from django.core.exceptions import ObjectDoesNotExist
 
+
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm
 from .models import Club, User, Post
-
-
+from .helpers import login_prohibited
 
 
 
@@ -50,26 +50,23 @@ class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChange
 
 def home(request):
     if request.user.is_authenticated:
-        data = {'user': request.user}
-        return render(request, 'feed.html', data)
-    return log_in(request, 'home.html') #accomodate login modal in home view
+        return render(request, 'feed.html', {'user': request.user})
+    return render(request, 'home.html', {'form': LogInForm()})
 
 def about(request):
     return render(request, 'about.html')
 
 @login_required
-def profile(request, username):
-    if User.objects.filter(username=username).exists():
-        return render(
-            request, 'profile.html', {'user': User.objects.get(username=username)}
-        )
-    else:
+def profile(request, user_id):
+    try:
+        user = User.objects.filter(id=user_id)
+    except ObjectDoesNotExist:
         raise Http404
+    return render(request, 'profile.html', {'user': user})
 
+@login_prohibited
 def sign_up(request):
-    if request.user.is_authenticated:
-        return redirect('home')     
-    elif request.method == 'POST':
+    if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
@@ -81,10 +78,9 @@ def sign_up(request):
         form = SignUpForm()
     return render(request, 'sign_up.html', {'form': form})
 
-def log_in(request, temp = 'log_in.html'):
-    if request.user.is_authenticated:
-        return redirect('home')     
-    elif request.method == 'POST':
+@login_prohibited
+def log_in(request):
+    if request.method == 'POST':
         form = LogInForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -94,11 +90,11 @@ def log_in(request, temp = 'log_in.html'):
                 login(request, user)
                 return redirect('home')
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
-    form = LogInForm()
-    return render(request, temp, {'form': form})
+    return render(request, 'log_in.html', {'form': LogInForm()})
 
 
 
+@login_required
 def log_out(request):
     logout(request)
     return redirect('home')
@@ -120,24 +116,6 @@ def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
 
-
-# def new_post(request):
-#         if request.method == 'POST':
-#             if request.user.is_authenticated:
-#                 current_user = request.user
-#                 form = PostForm(request.POST)
-#                 if form.is_valid():
-#                     text = form.cleaned_data.get('text')
-#                     post = Post.objects.create(author=current_user, text=text)
-#                     return redirect('show_club')
-#                 else:
-#                     return render(request, 'club_page.html', {'form': form})
-#             else:
-#                 return redirect('log_in')
-#         else:
-#             return HttpResponseForbidden()
-
-    
 @login_required
 def club(request, club_id):
     try:
@@ -161,13 +139,3 @@ def club(request, club_id):
         form = PostForm()        
         return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts})
     
-@login_required
-def view_user_profile(request, user_id):
-    try:
-        user = User.objects.get(id=user_id)
-    except ObjectDoesNotExist:
-        return redirect('club_page')
-    else:
-        return render(request, 'profile.html', {'user': user})
-
-

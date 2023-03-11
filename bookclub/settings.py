@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blogs',
+    'recommenderSystem',
     'widget_tweaks',
 ]
 
@@ -136,5 +137,6 @@ MESSAGE_TAGS = {
     message_constants.ERROR: 'danger',
 }
 
+REDIRECT_URL_WHEN_LOGGED_IN = 'home'
 LOGIN_REDIRECT_URL = 'log_in'
 LOGIN_URL = 'log_in'

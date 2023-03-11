@@ -28,18 +28,18 @@ urlpatterns = [
     #club paths
     path('create_club/', views.create_club, name = 'create_club'),
     path('club/<int:club_id>', views.club, name = 'show_club'),
-    path('show_user/<int:user_id>', views.view_user_profile, name = 'show_user'),
+    path('user/<int:user_id>', views.profile, name = 'profile'),
     path('clubs/', views.club_list, name='club_list'),
     #posts
     # path('new_post/', views.new_post, name='new_post'),
     #user profile
     path("profile/", views.profile, name="profile"),
+
     path("accounts/account-details/", views.UpdateProfileView.as_view(), name="account_details"),
     path(
         "accounts/change-password/", views.ChangePasswordView.as_view(), name="change_password"
     ),
     path("<username>/", views.profile, name = 'profile'),
-    
 
 ]
 
