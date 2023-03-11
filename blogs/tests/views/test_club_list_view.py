@@ -10,6 +10,7 @@ class ClubListTest(TestCase):
         "blogs/tests/fixtures/other_users.json",
     ]
     
+    #do we need the super class call?
     def setUp(self):
         self.url = reverse('club_list')
         self.club = Club.objects.get(name = 'Testing Club')
@@ -24,6 +25,7 @@ class ClubListTest(TestCase):
         self.assertEqual(self.url,'/clubs/')
 
     def test_get_club_list(self):
+        self.client.login(username=self.first_user.username, password='Password123')
         other_club = Club.objects.get(name = 'Other Club')
         other_club.admins.add(self.second_user)
         other_club.members.add(self.first_user)

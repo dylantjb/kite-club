@@ -6,16 +6,18 @@ from django.contrib.auth.views import PasswordChangeView
 from django.views.generic.edit import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden 
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm
-from .models import User, Club
+
+from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm
+from .models import Club, User, Post
 from .helpers import login_prohibited
+
 
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
@@ -109,6 +111,7 @@ def create_club(request):
     form = CreateClubForm()
     return render(request, 'create_club.html', {'form': form})
 
+@login_required
 def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs})
@@ -117,17 +120,22 @@ def club_list(request):
 def club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)
+        posts = Post.objects.filter(in_club = club)
     except ObjectDoesNotExist:
         return redirect('club_list')
     else:
-        return render(request, 'club_page.html', {'club': club})
-    
-@login_required
-def club(request, club_id):
-    try:
-        club = Club.objects.get(id=club_id)
-    except ObjectDoesNotExist:
-        return redirect('club_list')
-    else:
-        return render(request, 'club_page.html', {'club': club})
+        if request.method == 'POST':
+            if request.user.is_authenticated:
+                current_user = request.user
+                form = PostForm(request.POST)
+                if form.is_valid():
+                    text = form.cleaned_data.get('text')
+                    post = Post.objects.create(author=current_user, text=text, in_club=club)
+                    return redirect('show_club', club_id)
+                else:
+                    return render(request, 'club_page.html', {'club': club, 'form': form, 'post': post})
+            else:
+                return redirect('log_in')
+        form = PostForm()        
+        return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts})
     

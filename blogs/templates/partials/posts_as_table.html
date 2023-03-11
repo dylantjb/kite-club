@@ -1,0 +1,7 @@
+<table class="table">
+  {% for post in posts %}
+  <div class="container rounded">
+    {% include 'partials/post_as_table_row.html' with post=post %}
+  </div>
+  {% endfor %}
+</table>

@@ -4,27 +4,28 @@
 {%include 'partials/navbar.html'%} 
 
     <div class="container">
-    <div class="row">
-        <div class="col-12">
-        <h1>Clubs</h1>
-        <table class="table table-hover ">
-            <thead class="thead-dark mb-0">
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Reading Theme</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for club in clubs %}
-                <tr class="table-active">
-                    <th scope="row"><a href="{% url 'show_club' club.id %}" class="btn btn-secondary stretched-link">{{ club.name}}</a></td>
-                    <td>{{ club.theme }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-12">
+                
+                <h1>Clubs</h1>
+                <table class="table table-hover ">
+                    <thead class="thead-dark mb-0">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Reading Theme</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for cluby in clubs %}
+                            <tr class="table-active">
+                                <td><a href="{% url 'show_club' cluby.id %}" class="btn btn-secondary ">{{ cluby.name}}</a></td>
+                                <td>{{ cluby.theme }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> 
+            </div>
         </div>
-    </div>
     </div>
 
 {% endblock %}

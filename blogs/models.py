@@ -104,6 +104,11 @@ class User(AbstractUser):
 
     def gravatar(self, size=120):
         return Gravatar(self.email).get_image(size=size, default='mp')
+    def mini_gravatar(self):
+        """Return a URL to a miniature version of the user's gravatar."""
+        return self.gravatar(size=60)
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class Club(models.Model):
@@ -119,7 +124,21 @@ class Club(models.Model):
     )
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
-    theme = models.CharField(max_length = 2, choices = get_themes(), default="")
+    theme = models.CharField(max_length = 50, blank = True)
+    
+class Post(models.Model):
+    """Posts by users in a given club."""
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.CharField(max_length=280)
+    created_at = models.DateTimeField(auto_now_add=True)
+    in_club = models.ForeignKey(Club, on_delete=models.CASCADE)
+
+    class Meta:
+        """Model options."""
+
+        ordering = ['-created_at']
+   
 
 
 class books (models.Model):
@@ -131,3 +150,4 @@ class books (models.Model):
     image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
     image_url_m = models.CharField(_("Image-URL-M"),max_length=255)
     image_url_l = models.CharField(_("Image-URL-L"),max_length=255)
+
