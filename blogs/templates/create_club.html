@@ -1,13 +1,21 @@
-<html>
-<head>
-  <title>Create Club</title>
-</head>
-<body>
-  <h1>Page where you can create a club</h1>
-  <form action="{% url 'create_club' %}" method='post'>
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Create club">
-  </form>
-</body>
-</html>
+{% extends 'base_content.html' %}
+{% block body_credits %}
+{% include 'partials/navbar_minimal.html' %}
+<div class="blur">
+
+  <div class="container pb-5 pt-3">
+    <div class="row">
+      <div class="col-12">
+    <h1>Club Creation Form</h1>
+
+    <form action="{% url 'create_club' %}" method="post">
+      {% csrf_token %}
+      {% include 'partials/bootstrap_form.html' %}
+      <input class="btn btn-dark btn-lg btn-block" type="submit" value = "Create Club">
+    </form>
+</div>
+</div>
+</div>
+</div>
+{% include 'partials/footer.html' %}
+{% endblock %}

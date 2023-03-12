@@ -122,10 +122,11 @@ class Club(models.Model):
             message = 'Club name must consist of at least 3 alphanumericals.'
         )]
     )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
     theme = models.CharField(max_length = 50, blank = True)
-    
+
 class Post(models.Model):
     """Posts by users in a given club."""
 
@@ -138,10 +139,10 @@ class Post(models.Model):
         """Model options."""
 
         ordering = ['-created_at']
-   
 
 
-class books (models.Model):
+
+class books(models.Model):
     isbn = models.CharField(_("ISBN"),max_length=255)
     book_title = models.CharField(_("Book-Title"),max_length=255)
     book_author = models.CharField(_("Book-Author"),max_length=255)
@@ -150,4 +151,3 @@ class books (models.Model):
     image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
     image_url_m = models.CharField(_("Image-URL-M"),max_length=255)
     image_url_l = models.CharField(_("Image-URL-L"),max_length=255)
-

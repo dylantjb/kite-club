@@ -6,7 +6,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.views.generic.edit import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404, HttpResponseForbidden 
+from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
@@ -105,11 +105,15 @@ def create_club(request):
         form = CreateClubForm(request.POST)
         if form.is_valid():
             club = form.save()
+            messages.add_message(request, messages.SUCCESS, "Club created successfully.")
             club.admins.add(request.user)
             club.members.add(request.user)
-            return redirect('home') # should take you to the newly created club's page - not implemented yet
-    form = CreateClubForm()
-    return render(request, 'create_club.html', {'form': form})
+            return redirect('club_page') # should take you to the newly created club's page - not implemented yet
+        else:
+            messages.add_message(request, messages.ERROR, "This club name is already taken, please choose another name.")
+    else:
+        form = CreateClubForm(initial = {'owner': request.user})
+        return render(request, 'create_club.html', {'form': form})
 
 @login_required
 def club_list(request):
@@ -136,6 +140,5 @@ def club(request, club_id):
                     return render(request, 'club_page.html', {'club': club, 'form': form, 'post': post})
             else:
                 return redirect('log_in')
-        form = PostForm()        
+        form = PostForm()
         return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts})
-    

@@ -52,8 +52,12 @@ class UserForm(forms.ModelForm):
 class CreateClubForm(forms.ModelForm):
     class Meta:
         model = Club
-        fields = ['name','bio','rules']
-        
+        fields = ['name', 'owner', 'bio', 'rules']
+        widgets = {
+            'owner': forms.HiddenInput(attrs = {'is_hidden': True}),
+            'bio': forms.Textarea()
+        }
+
 class PostForm(forms.ModelForm):
     """Form to ask user for post text.
 
@@ -70,8 +74,8 @@ class PostForm(forms.ModelForm):
         }
     def save(self):
         super().save(commit = False)
-        
+
         post = Post.objects.create(
-            
+
         )
         return post
