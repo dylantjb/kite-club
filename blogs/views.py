@@ -59,7 +59,7 @@ def about(request):
 @login_required
 def profile(request, user_id):
     try:
-        user = User.objects.filter(id=user_id)
+        user = User.objects.get(id=user_id)
     except ObjectDoesNotExist:
         raise Http404
     return render(request, 'profile.html', {'user': user})

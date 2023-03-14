@@ -33,7 +33,7 @@ class SignUpForm(forms.ModelForm):
     def save(self):
         super().save(commit = False)
         user = User.objects.create_user(
-            username = self.cleaned_data.get('username'),
+            self.cleaned_data.get('username'),
             first_name = self.cleaned_data.get('first_name'),
             last_name = self.cleaned_data.get('last_name'),
             email = self.cleaned_data.get('email'),

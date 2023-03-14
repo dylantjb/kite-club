@@ -10,7 +10,7 @@
             <ul class="nav nav-pills flex-column mb-0">
                 {% for admin in club.admins.all %}
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="{% url 'show_user' admin.id %}" aria-current="page">
+                            <a class="nav-link text-white" href="{% url 'profile' admin.id %}" aria-current="page">
                                 <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use> </svg>
                                 {{admin.username}}
                             </a>
@@ -26,7 +26,7 @@
             <ul class="nav nav-pills flex-column mb-0">
                 {% for member in club.members.all %}
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'show_user' member.id %}" aria-current="page">
+                        <a class="nav-link text-white" href="{% url 'profile' member.id %}" aria-current="page">
                             <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use> </svg>
                             {{member.username }}
                         </a>
