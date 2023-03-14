@@ -33,13 +33,13 @@ urlpatterns = [
     #posts
     # path('new_post/', views.new_post, name='new_post'),
     #user profile
-    path("profile/", views.profile, name="profile"),
+    # path("profile/", views.profile, name="profile"),
 
     path("accounts/account-details/", views.UpdateProfileView.as_view(), name="account_details"),
     path(
         "accounts/change-password/", views.ChangePasswordView.as_view(), name="change_password"
     ),
-    path("<username>/", views.profile, name = 'profile'),
+    # path("<username>/", views.profile, name = 'profile'),
 
 ]
 
