@@ -38,19 +38,31 @@
         </div>
 
 
-        <div id="content" class="column col-sm-10 col-xs-11 right px-0 overflow-auto " style="height: 100vh">
+        <div id="content" class="column col-sm-10 col-xs-11  px-0 overflow-auto " style="height: 100vh">
             {%include 'partials/navbar.html'%} 
             <div class="row px-2">
-                <h1>{{ club.name }}</h1>
-                <p>{{ club.theme }}
+                <div class="col-4">
+                    <h1>{{ club.name }}</h1>
+                    <p>{{ club.theme }}
+                </div>
+                <div class="col-8">
+                    {% if applied %}
+                        <a href="{% url 'cancel_request' club.id %}" class="btn btn-secondary ">Requested</a>
+                    {% else %}
+                        <a href="{% url 'join_request_club' club.id %}" class="btn btn-secondary ">Join this cloud!</a>
+                    {% endif %}
+                </div>
                 <div class="container mx-0 my-5">
                     <div>
+                        {% if is_member %}
                         <h3>New post</h3>
                         <form action="{% url 'show_club' club.id %}" method="post">
                                 {% csrf_token %}
                                 {% include 'partials/bootstrap_form.html' with form=form %}
                                 <button type="submit" class="btn btn-primary">Cluck</button>
                         </form> 
+                        {% endif %}
+                        
                     </div>
                     <div>       
                             {% include 'partials/posts_as_table.html' with posts=posts %} 

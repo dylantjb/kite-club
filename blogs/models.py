@@ -125,7 +125,7 @@ class Club(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
-    theme = models.CharField(max_length = 50, blank = True)
+    theme = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"))
 
 class Post(models.Model):
     """Posts by users in a given club."""

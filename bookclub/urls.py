@@ -28,6 +28,8 @@ urlpatterns = [
     #club paths
     path('create_club/', views.create_club, name = 'create_club'),
     path('club/<int:club_id>', views.club, name = 'show_club'),
+    path('join-request/<int:club_id>', views.join_request_club, name = 'join_request_club'),
+    path('cancel-request/<int:club_id>', views.cancel_request, name = 'cancel_request'),
     path('user/<int:user_id>', views.profile, name = 'profile'),
     path('clubs/', views.club_list, name='club_list'),
     #posts
