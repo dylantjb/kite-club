@@ -43,11 +43,15 @@
             <div class="row px-2">
                 <div class="col-4">
                     <h1>{{ club.name }}</h1>
-                    <p>{{ club.theme }}
+                    <p>{{ club.theme }}</p>
+                    <p>owned by {{ club.owner }}</p>
                 </div>
                 <div class="col-8">
+
                     {% if applied %}
                         <a href="{% url 'cancel_request' club.id %}" class="btn btn-secondary ">Requested</a>
+                    {% elif current_user == club.owner%}
+                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary ">Join requests</a>
                     {% else %}
                         <a href="{% url 'join_request_club' club.id %}" class="btn btn-secondary ">Join this cloud!</a>
                     {% endif %}

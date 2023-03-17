@@ -122,7 +122,7 @@ class Club(models.Model):
             message = 'Club name must consist of at least 3 alphanumericals.'
         )]
     )
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name = 'owned_clubs')
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
     theme = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"))

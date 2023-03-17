@@ -108,12 +108,12 @@ def create_club(request):
             messages.add_message(request, messages.SUCCESS, "Club created successfully.")
             club.admins.add(request.user)
             club.members.add(request.user)
-            return redirect('club_page') # should take you to the newly created club's page - not implemented yet
+            return redirect('show_club', club_id = club.id) # should take you to the newly created club's page - not implemented yet
         else:
             messages.add_message(request, messages.ERROR, "This club name is already taken, please choose another name.")
     else:
         form = CreateClubForm(initial = {'owner': request.user})
-        return render(request, 'create_club.html', {'form': form})
+    return render(request, 'create_club.html', {'form': form})
 
 @login_required
 def club_list(request):
@@ -143,27 +143,26 @@ def club(request, club_id):
         form = PostForm()
         applied = False
         is_member = False
-        if request.user in club.pending_members.all():
-            applied = True
         if request.user in club.members.all():
             is_member = True
-        return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied' : applied, 'is_member' : is_member})
+        if request.user in club.pending_members.all():
+            applied = True
+            return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied' : applied, 'is_member' : is_member})
+        return render(request, 'club_page.html', {'club': club, 
+                                                  'form': form, 
+                                                  'posts': posts, 
+                                                  'applied' : applied, 
+                                                  'is_member' : is_member,
+                                                  'current_user': request.user})
     
 @login_required
 def join_request_club(request, club_id):
     club = Club.objects.get(id=club_id)
     current_user = request.user
     club.pending_members.add(current_user)
+    messages.add_message(request, messages.SUCCESS, "Join request sent.")
     return redirect('show_club', club_id = club_id)
 
-@login_required
-def accept_member(request, club_id, user_id):
-    club = Club.objects.get(id=club_id)
-    current_user = request.user
-    pending_user = User.objects.get(id=user_id)
-    if pending_user in club.pending_members.all():
-        club.members.add(pending_user)
-        club.pending_members.remove(pending_user)
         
 @login_required
 def cancel_request(request, club_id):
@@ -171,3 +170,22 @@ def cancel_request(request, club_id):
     current_user = request.user
     club.pending_members.remove(current_user)
     return redirect('show_club', club_id = club_id)
+
+@login_required
+def admin_accept_request(request, club_id, user_id):
+    try:
+        club = Club.objects.get(id=club_id)
+        requesting_user = User.objects.get(id=user_id)
+        if request.user == club.owner and requesting_user in club.pending_members.all():
+            club.pending_members.remove(requesting_user)
+            club.members.add(requesting_user)
+    except ObjectDoesNotExist:
+        raise Http404
+    else:
+        return redirect('show_club', club_id = club_id)
+    
+@login_required
+def pending_requests(request, club_id):
+    club= Club.objects.get(id=club_id)
+    pending = club.pending_members.all()
+    return render(request, 'pending_requests.html', {'pending':pending, 'club': club}) 
