@@ -1,80 +1,174 @@
 {% extends 'base.html'%}
 {% block body_credits%}
+{%include 'partials/navbar.html'%} 
     <div class="row mx-0 row-height" >
-        <div id="sdb" class="column col-sm-2 col-xs-1 left overflow-auto my-0 mx-0 pt-0 shadow-lg p-3 bg-dark" style="height: 100vh">
-            <a href="/" class="d-flex align-items-lg-start mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                <span class="fs-4">Admins</span>
-            </a>
-            <hr>
-            <ul class="nav nav-pills flex-column mb-0">
-                {% for admin in club.admins.all %}
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{% url 'profile' admin.id %}" aria-current="page">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use> </svg>
-                                {{admin.username}}
-                            </a>
-                        </li>
-                        {% endfor %}
-            </ul>
-            <hr>
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                <span class="fs-4">Club Members</span>
-            </a>
-            <hr>
-            <ul class="nav nav-pills flex-column mb-0">
-                {% for member in club.members.all %}
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'profile' member.id %}" aria-current="page">
-                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use> </svg>
-                            {{member.username }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-            <hr>
-
-        </div>
-
-
-        <div id="content" class="column col-sm-10 col-xs-11  px-0 overflow-auto " style="height: 100vh">
-            {%include 'partials/navbar.html'%} 
-            <div class="row px-2">
-                <div class="col-4">
-                    <h1>{{ club.name }}</h1>
-                    <p>{{ club.theme }}</p>
-                    <p>owned by {{ club.owner }}</p>
-                </div>
-                <div class="col-8">
-
-                    {% if applied %}
-                        <a href="{% url 'cancel_request' club.id %}" class="btn btn-secondary ">Requested</a>
-                    {% elif current_user == club.owner%}
-                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary ">Join requests</a>
-                    {% else %}
-                        <a href="{% url 'join_request_club' club.id %}" class="btn btn-secondary ">Join this cloud!</a>
-                    {% endif %}
-                </div>
-                <div class="container mx-0 my-5">
-                    <div>
-                        {% if is_member %}
-                        <h3>New post</h3>
-                        <form action="{% url 'show_club' club.id %}" method="post">
-                                {% csrf_token %}
-                                {% include 'partials/bootstrap_form.html' with form=form %}
-                                <button type="submit" class="btn btn-primary">Cluck</button>
-                        </form> 
-                        {% endif %}
-                        
-                    </div>
-                    <div>       
-                            {% include 'partials/posts_as_table.html' with posts=posts %} 
+        <div id="sdb" class="column col-sm-2 col-xs-1 left overflow-auto my-0 mx-0 px-3 py-0 shadow-lg p-0 bg-dark " style="height: 100vh">
+            <div class=" mt-0 border-bottom mb-3"></div>
+            <div class="row">
+                <div class="column">
+                    <div class="card " >
+                        <div class="card-body collapse show" id="home-collapse">
+                            <div class="h7" ><strong>About :</strong>
+                                {{ club.bio }}
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="h6 text-muted">Members</div>
+                                <div class="h5">{{ club.members.count }}</div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="h6 text-muted">Posts</div>
+                                <div class="h5">{{ posts.count}}</div>
+                            </li>
+    
+                            
+                        </ul>
                     </div>
                 </div>
             </div>
+          
+            <hr>
+        
+              {% if current_user == club.owner and club.owner != None %}
+              <a href="{% url 'pending_requests' club.id %}" class="d-flex mb-3 btn btn-secondary ">
+                <svg class=" me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
+                <span class="fs-5 fw-semibold">Join Requests</span>
+              </a>{% endif %}
+              <div class="mt-3 border-bottom mb-3"></div>
+            <ul class="list-unstyled ps-0">
+                <li class="mb-1">
+                    <button class=" btn btn-toggle align-items-center rounded collapsed text-white bi-caret-right-fill" data-bs-toggle="collapse" data-bs-target="#admins-collapse" aria-expanded="false" style="width: 100%;">
+                        Admins
+                    </button>
+                    <div class="collapse" id="admins-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        {% for admin in club.admins.all %}
+                                <li class="nav-item">
+                                    <a class="nav-link text-white rounded" href="{% url 'profile' admin.id %}" aria-current="page" style="width: 100%;">
+                                        {{admin.username}}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed text-white bi-caret-right-fill " data-bs-toggle="collapse" data-bs-target="#members-collapse" aria-expanded="false" style="width: 100%;">
+                        Members
+                    </button>
+                    <div class="collapse" id="members-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            {% for member in club.members.all %}
+                            <li class="nav-item ">
+                                <a class="nav-link text-white border-dark rounded mx-2 " href="{% url 'profile' member.id %}" aria-current="page" style="width: 100%;">
+                                    {{member.username }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+                <hr>
+                
+                <hr>
+            
+            </ul>   
         </div>
 
         
+        <div id="content" class="column col-sm-8 col-xs-1  px-0 overflow-auto " style="height: 100vh">
+            
+   
+            <div class="row px-2">
+                <div class="card mt-0 mb-5">
+                    <div class="col-4">
+                        <h1>{{ club.name }}</h1>
+                        <p>{{ club.theme }}</p>
+                        <p>owned by {{ club.owner }}</p>
+                    </div>
+                    <div class="col-8">
+
+                        {% if applied %}
+                            <a href="{% url 'cancel_request' club.id %}" class="btn btn-secondary ">Requested</a>
+                        {% elif current_user == club.owner%}
+                            <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary ">Join requests</a>
+                        {% else %}
+                            <a href="{% url 'join_request_club' club.id %}" class="btn btn-secondary ">Join this cloud!</a>
+                        {% endif %}
+                    </div>
+                    <div class="container mx-0 my-5">
+                        <div>
+                            {% if is_member %}
+                            <h3>What flies on your mind...</h3>
+                            <form action="{% url 'show_club' club.id %}" method="post" class="comment-area-box mb-3">
+                                    {% csrf_token %}
+                                    {% include 'partials/bootstrap_form.html' with form=form %}
+                                    <div class="comment-area-btn pb-1">
+                                        <div class="mt-1">
+                                            <button type="submit" class="btn btn-lg btn-warning waves-effect waves-light">Post</button>
+                                        </div>
+                                        <div>
+                                        <br>
+                                        </div>
+                                    </div>
+                            </form> 
+                            {% endif %}
+                        </div>  
+                    </div>
+                </div>
+                <div>       
+                            {% include 'partials/posts_as_table.html' with posts=posts %} 
+                </div>
+                
+
+            </div>
+        </div>
+        <div id="sdb" class="column col-sm-2 col-xs-1 overflow-auto my-0 mx-0 pt-0 shadow-lg p-3 " style="height: 100vh">
+      
+            <div class="card " >
+                <div class="card-body collapse show" id="home-collapse">
+                    <div class="h7" ><strong>placeholder: </strong>
+                        events information
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="h6 text-muted">New Events</div>
+                        <div class="h5">{{ club.members.count }}</div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="h6 text-muted">Past events</div>
+                        <div class="h5">{{ posts.count}}</div>
+                    </li>
+
+                    
+                </ul>
+            </div>
+            <div class=" mt-3 border-bottom mb-3"></div>
+            <div class="card " >
+                <div class="card-body collapse show" id="home-collapse">
+                    <div class="h7" ><strong>placeholder: </strong>
+                        events information
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="h6 text-muted">New Events</div>
+                        <div class="h5">{{ club.members.count }}</div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="h6 text-muted">Past events</div>
+                        <div class="h5">{{ posts.count}}</div>
+                    </li>
+
+                    
+                </ul>
+            </div>
+        </div>
+
+
+
+        <script src="sidebars.js"></script> 
     </div> 
 {% endblock %}

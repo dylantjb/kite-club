@@ -133,7 +133,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=280)
     created_at = models.DateTimeField(auto_now_add=True)
-    in_club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    in_club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='club_posts')
 
     class Meta:
         """Model options."""
