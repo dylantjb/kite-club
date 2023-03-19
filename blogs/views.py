@@ -50,7 +50,9 @@ class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChange
 
 def home(request):
     if request.user.is_authenticated:
-        return render(request, 'feed.html', {'user': request.user})
+        current_user = request.user
+        clubs = Club.objects.all()
+        return render(request, 'feed.html', {'clubs': clubs})
     return render(request, 'home.html', {'form': LogInForm()})
 
 def about(request):

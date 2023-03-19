@@ -19,10 +19,17 @@
     <div class="col-12">
       <div class="card cover-card centered-card">
         <h1 class="cover-heading">Feed</h1>
+        {% for club in clubs %}
+    <div>       
+      {% include 'partials/posts_as_table.html' with posts=club.club_posts.all %} 
+    </div>
+
+{% endfor %}
       </div>
     </div>
   </div>
 </div>
+
 {%endblock%}
 
 
