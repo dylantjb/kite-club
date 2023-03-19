@@ -117,9 +117,10 @@ class Club(models.Model):
     pending_members = models.ManyToManyField(User, related_name='pending_member_of', blank=True)
     name = models.CharField(
         max_length = 50,
+        unique=True,
         validators = [RegexValidator(
-            regex = r'^\w{3,}$',
-            message = 'Club name must consist of at least 3 alphanumericals.'
+            regex = r'^[a-zA-Z]*$',
+            message = 'Club name cannot contain numbers and special characters in their name.'
         )]
     )
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name = 'owned_clubs')
