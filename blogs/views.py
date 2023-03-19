@@ -16,7 +16,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm
 from .models import Club, User, Post
-from .helpers import login_prohibited
+from .helpers import login_prohibited, active_count
 
 
 
@@ -145,6 +145,7 @@ def club(request, club_id):
         form = PostForm()
         applied = False
         is_member = False
+        active_users = active_count(club)
         if request.user in club.members.all():
             is_member = True
         if request.user in club.pending_members.all():
@@ -155,7 +156,8 @@ def club(request, club_id):
                                                   'posts': posts, 
                                                   'applied' : applied, 
                                                   'is_member' : is_member,
-                                                  'current_user': request.user})
+                                                  'current_user': request.user,
+                                                  'active_users': active_users})
     
 @login_required
 def join_request_club(request, club_id):
@@ -191,3 +193,4 @@ def pending_requests(request, club_id):
     club= Club.objects.get(id=club_id)
     pending = club.pending_members.all()
     return render(request, 'pending_requests.html', {'pending':pending, 'club': club}) 
+

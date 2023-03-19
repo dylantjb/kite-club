@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.shortcuts import redirect
 
+"""----------------------------HELPER FUNCTIONS----------------------------------"""
 
 def login_prohibited(view_function):
     def modified_view_function(request):
@@ -44,3 +45,10 @@ def get_genres():
 
 def get_themes():
     return get_genres()[1:]
+
+def active_count(club):
+    count = 0
+    for user in club.members.all():
+        if user.is_active:
+            count+=1
+    return count
