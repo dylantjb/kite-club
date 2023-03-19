@@ -123,6 +123,12 @@ def club_list(request):
     return render(request, 'club_list.html', {'clubs': clubs})
 
 @login_required
+def joined_club_list(request, user_id):
+    user = User.objects.get(id=user_id)
+    clubs = Club.objects.filter(member_of = user)
+    return render(request, 'club_list.html', {'clubs': clubs})
+
+@login_required
 def club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)
