@@ -117,15 +117,16 @@ class Club(models.Model):
     pending_members = models.ManyToManyField(User, related_name='pending_member_of', blank=True)
     name = models.CharField(
         max_length = 50,
+        unique=True,
         validators = [RegexValidator(
-            regex = r'^\w{3,}$',
-            message = 'Club name must consist of at least 3 alphanumericals.'
+            regex = r'^[a-zA-Z]*$',
+            message = 'Club name cannot contain numbers and special characters in their name.'
         )]
     )
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name = 'owned_clubs')
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
-    theme = models.CharField(max_length = 50, blank = True)
+    theme = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"))
 
 class Post(models.Model):
     """Posts by users in a given club."""
@@ -133,7 +134,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=280)
     created_at = models.DateTimeField(auto_now_add=True)
-    in_club = models.ForeignKey(Club, on_delete=models.CASCADE)
+    in_club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='club_posts')
 
     class Meta:
         """Model options."""
@@ -146,7 +147,7 @@ class books(models.Model):
     isbn = models.CharField(_("ISBN"),max_length=255)
     book_title = models.CharField(_("Book-Title"),max_length=255)
     book_author = models.CharField(_("Book-Author"),max_length=255)
-    year_of_publication = models.IntegerField(_("Year-Of-Publication"))
+    year_of_publication = models.CharField(_("Year-Of-Publication"),max_length=5)
     publisher = models.CharField(_("Publisher"),max_length=255)
     image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
     image_url_m = models.CharField(_("Image-URL-M"),max_length=255)

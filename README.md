@@ -45,6 +45,8 @@ sqlite3.exe db.sqlite3
 Seed the development database with:
   - clear data and seed with fresh data: 
   ```python manage.py seed --mode=refresh```
+  - books:
+  ```python manage.py populate_books```
   - clear data and sand don't seed the database: 
   ```python manage.py seed --mode=clear```
 
