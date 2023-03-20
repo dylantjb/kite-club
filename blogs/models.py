@@ -1,6 +1,11 @@
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.functions import Lower
+from django.utils.translation import gettext as _
+from libgravatar import Gravatar
+
+from .helpers import get_genres, get_themes
 
 class User(AbstractUser):
     def _init_(self):
@@ -87,6 +92,24 @@ class User(AbstractUser):
     last_name = models.CharField(max_length = 50, blank = False)
     email = models.EmailField(unique = True, blank = False)
     bio = models.CharField(max_length = 520, blank = True)
+    favourite_genre = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"))
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower("email"),
+                name="unique_lower_user_email",
+            )
+        ]
+
+    def gravatar(self, size=120):
+        return Gravatar(self.email).get_image(size=size, default='mp')
+    def mini_gravatar(self):
+        """Return a URL to a miniature version of the user's gravatar."""
+        return self.gravatar(size=60)
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
 
 class Club(models.Model):
     admins = models.ManyToManyField(User, related_name='admin_of', blank=False)
@@ -99,6 +122,32 @@ class Club(models.Model):
             message = 'Club name must consist of at least 3 alphanumericals.'
         )]
     )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
     theme = models.CharField(max_length = 50, blank = True)
+
+class Post(models.Model):
+    """Posts by users in a given club."""
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.CharField(max_length=280)
+    created_at = models.DateTimeField(auto_now_add=True)
+    in_club = models.ForeignKey(Club, on_delete=models.CASCADE)
+
+    class Meta:
+        """Model options."""
+
+        ordering = ['-created_at']
+
+
+
+class books(models.Model):
+    isbn = models.CharField(_("ISBN"),max_length=255)
+    book_title = models.CharField(_("Book-Title"),max_length=255)
+    book_author = models.CharField(_("Book-Author"),max_length=255)
+    year_of_publication = models.IntegerField(_("Year-Of-Publication"))
+    publisher = models.CharField(_("Publisher"),max_length=255)
+    image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
+    image_url_m = models.CharField(_("Image-URL-M"),max_length=255)
+    image_url_l = models.CharField(_("Image-URL-L"),max_length=255)

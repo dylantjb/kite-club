@@ -3,6 +3,7 @@
 {% extends 'base_content.html'%}
 {% load static %}
 {% block body%}
+  {%include 'partials/navbar_minimal.html'%}
  
 <header class="py-5"
 >
@@ -28,7 +29,7 @@
                             <h1 class="display-5 fw-bolder text-white mb-2">Indulge yourself into the reads. you. love.</h1>
                             <p class="lead fw-normal text-white-50 mb-4">Fly your kite between the <em>clouds</em>, where our diverse community of readers share their knowledge and opinions about man's best friend (hint: we are not talking about pets). Discover new reads that match your interests, get access to exclusive events and even create your own cloud that members can join, tailored to your exact taste.</p>
                             <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
+                                <a class="btn btn-outline-light btn-lg px-4" href="{% url 'about' %}">Learn More</a>
                             </div>
                         </div>
                     </div>
@@ -74,8 +75,29 @@
                         </div>
                         <div class="card cover-card mx-auto shadow-lg">
                             <p class="cover-text mx-auto lead">Already a member?</p>
-                            <div class="text-center">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                Log in
+                            </button>
+                            
+                            <!-- LOGIN Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                           
+                            </div>
+                            <div class="modal-body">
+                                {%include 'partials/login_body.html'%}
+                            </div>
+                            
+                        </div>
+                        </div>
+                        </div>
+                            {% comment %} <div class="text-center">
                                 <p><a href='{% url 'log_in' %}' class="btn w-50 mt-3 btn-secondary btn-round">Log in</a></p>
+                            </div> {% endcomment %}
                             </div>
                         </div>
                     </div>

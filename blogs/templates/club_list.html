@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+{% block body_credits%}
+
+{%include 'partials/navbar.html'%} 
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                
+                <h1>Clubs</h1>
+                <table class="table table-hover ">
+                    <thead class="thead-dark mb-0">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Reading Theme</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for cluby in clubs %}
+                            <tr class="table-active">
+                                <td><a href="{% url 'show_club' cluby.id %}" class="btn btn-secondary ">{{ cluby.name}}</a></td>
+                                <td>{{ cluby.theme }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> 
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

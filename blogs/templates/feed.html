@@ -1,22 +1,29 @@
+{% extends 'base.html'%}
+{% block body_credits%}
+{%include 'partials/navbar.html'%}
 <html>
 
 <div class="container">
+  {% for msg in messages %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div id="form_success">
+      <strong>Success:</strong> {{ msg }}
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+
   <div class="row">
     <div class="col-12">
       <div class="card cover-card centered-card">
         <h1 class="cover-heading">Feed</h1>
-        <!-- Button to logged-in user's profile -->
-        <p style="margin: 0px;">
-          <a href="{% url 'profile' %}" class="btn btn-lg btn-secondary">Profile</a>
-        </p></br>
-        <!-- Button to log out -->
-        <p style="margin: 0px;">
-          <a href="{% url 'log_out' %}" class="btn btn-lg btn-secondary">Log out</a>
-        </p>
       </div>
     </div>
   </div>
 </div>
+{%endblock%}
 
 
 </html>

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+from django.contrib.messages import constants as message_constants
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,10 +35,12 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.humanize',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blogs',
+    'recommenderSystem',
     'widget_tweaks',
 ]
 
@@ -127,3 +130,13 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'blogs.User'
+
+# Message level tags should use Bootstrap terms
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'dark',
+    message_constants.ERROR: 'danger',
+}
+
+REDIRECT_URL_WHEN_LOGGED_IN = 'home'
+LOGIN_REDIRECT_URL = 'log_in'
+LOGIN_URL = 'log_in'

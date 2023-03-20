@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import RegexValidator
-from .models import User, Club
+from .models import User, Club, Post
 
 class LogInForm(forms.Form):
     username = forms.CharField(label='Username')
@@ -9,7 +9,7 @@ class LogInForm(forms.Form):
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio']
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'favourite_genre']
         widgets = {'bio': forms.Textarea()}
 
     new_password = forms.CharField(
@@ -33,22 +33,49 @@ class SignUpForm(forms.ModelForm):
     def save(self):
         super().save(commit = False)
         user = User.objects.create_user(
-            username = self.cleaned_data.get('username'),
+            self.cleaned_data.get('username'),
             first_name = self.cleaned_data.get('first_name'),
             last_name = self.cleaned_data.get('last_name'),
             email = self.cleaned_data.get('email'),
             bio = self.cleaned_data.get('bio'),
+            favourite_genre = self.cleaned_data.get('favourite_genre'),
             password = self.cleaned_data.get('new_password')
         )
         return user
 
-class UpdateProfileForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'bio']
+        fields = ['first_name', 'last_name', 'username', 'email', 'bio', 'favourite_genre']
         widgets = {'bio': forms.Textarea()}
 
 class CreateClubForm(forms.ModelForm):
     class Meta:
         model = Club
-        fields = ['name','bio','rules']
+        fields = ['name', 'owner', 'bio', 'rules']
+        widgets = {
+            'owner': forms.HiddenInput(attrs = {'is_hidden': True}),
+            'bio': forms.Textarea()
+        }
+
+class PostForm(forms.ModelForm):
+    """Form to ask user for post text.
+
+    The post author must be by the post creator.
+    """
+
+    class Meta:
+        """Form options."""
+
+        model = Post
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea()
+        }
+    def save(self):
+        super().save(commit = False)
+
+        post = Post.objects.create(
+
+        )
+        return post
