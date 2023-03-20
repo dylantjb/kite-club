@@ -1,0 +1,204 @@
+{%load static%}
+{% comment %} 
+
+OPTION 1:
+
+<div class="container" id="product-section">
+    <div class="row">
+     <div class="col-md-6" >
+        <img class="d-block w-100" src='{% static 'images/book-placeholder.jpeg' %}' alt=" … [this is the product image]">
+     </div>
+     <div class="col-md-6">
+      …[this is the product information]
+      <div class="row">
+        <div class="col-md-12">
+         <h1>BOOK TITLE</h1>
+       </div>
+      </div><!-- end row-->
+      <div class="row">
+        <div class="col-md-12">
+         <span class="label label-primary">Vintage</span>
+         <span class="monospaced">No. 1960140180</span>
+        </div>
+       </div><!-- end row -->
+       <div class="row">
+        <div class="col-md-12">
+         <p class="description">
+          Classic film camera. Uses 620 roll film.
+          Has a 2&frac14; x 3&frac14; inch image size.
+         </p>
+        </div>
+       </div><!-- end row -->
+     </div>
+    </div><!-- end row -->
+</div><!-- end container --> {% endcomment %}
+
+{% comment %} 
+
+OPTION 2 {% endcomment %}
+<div class="carousel-item active">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-10">
+            <div class="card gradient-form" style="border-radius: 1rem; background-color: #eee;">
+              <div class="row g-0 ">
+                <div class="col-md-6 col-lg-6 d-none d-md-block ">
+                  <img class="d-block w-100" src={{random_books.0.image_url_l}} alt=" … [this is the product image]" style="border-radius: 1rem 0 0 1rem;"></img>
+                </div>
+                <div class="col-md-6 col-lg-6 d-flex align-items-center">
+                  <div class="card-body p-4 p-lg-5 text-black">
+                      <div class="row">
+                          <div class="col-md-12">
+                           <h1>{{random_books.0.book_title}}</h1>
+                         </div>
+                        </div><!-- end row-->
+                        <div class="row">
+                          <div class="col-md-12">
+                           <span class="fs-6 fw-semibold">{{random_books.0.book_author}}</span>
+                           <span class="monospaced float-right">{{random_books.0.year_of_publication}}</span>
+                          </div>
+                         </div><!-- end row -->
+                         <div class="row">
+                          <div class="col-md-12">
+                           <p class="description">
+                            Published by: {{random_books.0.publisher}}
+                           </p>
+                          </div>
+                         </div><!-- end row -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+    
+</div>
+<div class="carousel-item ">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-10">
+            <div class="card gradient-form" style="border-radius: 1rem; background-color: #eee;">
+              <div class="row g-0 ">
+                <div class="col-md-6 col-lg-6 d-none d-md-block ">
+                  <img class="d-block w-100" src={{random_books.1.image_url_l}} alt=" … [this is the product image]" style="border-radius: 1rem 0 0 1rem;"></img>
+                </div>
+                <div class="col-md-6 col-lg-6 d-flex align-items-center">
+                  <div class="card-body p-4 p-lg-5 text-black">
+                      <div class="row">
+                          <div class="col-md-12">
+                           <h1>{{random_books.1.book_title}}</h1>
+                         </div>
+                        </div><!-- end row-->
+                        <div class="row">
+                          <div class="col-md-12">
+                           <span class="fs-6 fw-semibold">{{random_books.1.book_author}}</span>
+                           <span class="monospaced float-right">{{random_books.1.year_of_publication}}</span>
+                          </div>
+                         </div><!-- end row -->
+                         <div class="row">
+                          <div class="col-md-12">
+                           <p class="description">
+                            Published by: {{random_books.1.publisher}}
+                           </p>
+                          </div>
+                         </div><!-- end row -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+    <div class="carousel-caption d-none d-md-block">
+      <h5>...</h5>
+      <p>...</p>
+    </div>
+</div>
+<div class="carousel-item ">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-10">
+            <div class="card gradient-form" style="border-radius: 1rem; background-color: #eee;">
+              <div class="row g-0 ">
+                <div class="col-md-6 col-lg-6 d-none d-md-block ">
+                  <img class="d-block w-100" src={{random_books.2.image_url_l}} alt=" … [this is the product image]" style="border-radius: 1rem 0 0 1rem;"></img>
+                </div>
+                <div class="col-md-6 col-lg-6 d-flex align-items-center">
+                  <div class="card-body p-4 p-lg-5 text-black">
+                      <div class="row">
+                          <div class="col-md-12">
+                           <h1>{{random_books.2.book_title}}</h1>
+                         </div>
+                        </div><!-- end row-->
+                        <div class="row">
+                          <div class="col-md-12">
+                           <span class="fs-6 fw-semibold">{{random_books.0.book_author}}</span>
+                           <span class="monospaced float-right">{{random_books.2.year_of_publication}}</span>
+                          </div>
+                         </div><!-- end row -->
+                         <div class="row">
+                          <div class="col-md-12">
+                           <p class="description">
+                            Published by: {{random_books.2.publisher}}
+                           </p>
+                          </div>
+                         </div><!-- end row -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% comment %} {% for book in random_books %}
+<div class="carousel-item ">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-10">
+            <div class="card gradient-form" style="border-radius: 1rem; background-color: #eee;">
+              <div class="row g-0 ">
+                <div class="col-md-6 col-lg-6 d-none d-md-block ">
+                  <img class="d-block w-100" src={{book.image_url_l}} alt=" … [this is the product image]" style="border-radius: 1rem 0 0 1rem;"></img>
+                </div>
+                <div class="col-md-6 col-lg-6 d-flex align-items-center">
+                  <div class="card-body p-4 p-lg-5 text-black">
+                      <div class="row">
+                          <div class="col-md-12">
+                           <h1>{{book.book_title}}</h1>
+                         </div>
+                        </div><!-- end row-->
+                        <div class="row">
+                          <div class="col-md-12">
+                           <span class="fs-6 fw-semibold">{{book.book_author}}</span>
+                           <span class="monospaced float-right">{{book.year_of_publication}}</span>
+                          </div>
+                         </div><!-- end row -->
+                         <div class="row">
+                          <div class="col-md-12">
+                           <p class="description">
+                            Published by: {{book.publisher}}
+                           </p>
+                          </div>
+                         </div><!-- end row -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    
+    <div class="carousel-caption d-none d-md-block">
+      <h5>...</h5>
+      <p>...</p>
+    </div>
+</div>
+            
+        {% endfor %} {% endcomment %}
+
+
+    

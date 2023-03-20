@@ -1,7 +1,8 @@
-<table class="table">
+{% comment %} <table class="table"> {% endcomment %}
   {% for post in posts %}
-  <div class="container rounded">
+      
+  <div class="card social-timeline-card mb-5">
     {% include 'partials/post_as_table_row.html' with post=post %}
   </div>
   {% endfor %}
-</table>
+{% comment %} </table> {% endcomment %}

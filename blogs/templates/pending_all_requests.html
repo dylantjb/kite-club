@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block body_credits %}
+    <h1> Pending requests - placeholder {{count}} {{counted}} </h1>
+    {% for club_item in pending.keys %}
+        <tr class="table-active">
+            <div> In club: {{club_item.name}} </div>
+            {% for member in pending.club_item %}
+
+                <td><a href="{% url 'profile' member.id%}">{{member.full_name}}
+                <td><a href="{% url 'admin_accept_request' club.id member.id%}" class="btn btn-primary ">Accept</a></td>
+            {% endfor %}
+            
+        </tr>
+    {% endfor %}
+{% endblock body_credits %}

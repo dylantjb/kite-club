@@ -33,7 +33,7 @@
 }
 
 .left{
-  background-color: red;
+  /* background-color: rgb(127, 126, 167); */
   height: 100%;
   overflow-y: scroll;
 }
@@ -175,7 +175,7 @@ box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0,
 }
 
 .post-author-user-details {
-  margin-left: 10px;
+  margin-left: 0;
   color: #777777;
 }
 
@@ -191,3 +191,24 @@ box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0,
 
 
 
+/*
+ * bell notification
+ */
+#bdn-nav{
+  float: right;
+  margin-right: 0px;
+  font-size: 20px;
+
+}
+.pendingg{
+  position: absolute;
+  border-radius: 50%;
+  font-size: 13px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  margin-top: -32px;
+  margin-left: 10px;
+  background-color: rgb(255, 0, 0);
+}
