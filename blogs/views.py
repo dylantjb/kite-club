@@ -15,18 +15,19 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm
-from .models import Club, User, Post
+from .models import Club, User, Post, books
 from .helpers import login_prohibited, active_count
+
+from random import randint
+
 
 """SETUP"""
 def pending_requests_count(user):
     pending =[]
-    count = 0
     clubs = Club.objects.filter(owner = user)
     for club in clubs:
         for p_member in club.pending_members.all():
             pending.append(p_member)
-        # count+=1
     return len(pending)
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
@@ -59,9 +60,12 @@ class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChange
 
 def home(request):
     if request.user.is_authenticated:
-        current_user = request.user
+        random_books = []
         clubs = Club.objects.all()
-        return render(request, 'feed.html', {'clubs': clubs, 'pending': pending_requests_count(request.user)})
+        count = books.objects.count()
+        for i in range(0,2):
+            random_books.append(books.objects.all()[randint(0, count - 1)])
+        return render(request, 'feed.html', {'clubs': clubs, 'pending': pending_requests_count(request.user), 'random_books': random_books})
     return render(request, 'home.html', {'form': LogInForm()})
 
 def about(request):
