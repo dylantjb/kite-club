@@ -7,22 +7,24 @@
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
             <div class="h6 text-muted">Location:</div>
-            <div class="h5">{{ event.location }}</div>
+            <div class="h7 fw-semibold">{{ event.location }}</div>
             {% if event.address|length > 0 %}
-                <div class="h7 text-muted">Meeting at: {{ event.address }}</div>
+                <div class="h6 text-muted">Meeting at:</div>
+                <div class="h7 fw-semibold">{{ event.address }}</div>
             {% endif %}
             {% if event.eventLink|length > 0 %}
                 <div class="h6 text-muted">Online meeting link:</div>
-                <div class="h7">{{ event.eventLink}}</div>
+                <div class="h7 fw-semibold">{{ event.eventLink}}</div>
             
         {% endif %}
         </li>
-
+       
+        <div class="  border-bottom "></div>
         <li class="list-group-item">
             <div class="h6 text-muted">Date: </div>
-            <div class="h5">{{ event.date }}</div>
+            <div class="h7 fw-semibold">{{ event.date }}</div>
             <div class="h6 text-muted">Time: </div>
-            <div class="h5">Between {{ event.startTime }} and {{event.endTime}}.</div>
+            <div class="h7 fw-semibold">Between {{ event.startTime }} and {{event.endTime}}.</div>
         </li>
         {% if current_user != club.owner %}
         <li class="list-group-item">
@@ -33,10 +35,14 @@
                 <span class="fs-5 fw-semibold">Attend</span>
                 {% comment %} <span class="pending">{{club.pending_members.count}} </span>  {% endcomment %}
             </a>
-            
-            
         </li>
         {% endif %}
+        <div class="  border-bottom "></div>
+        <li class="list-group-item">
+            <div class="h6 text-muted">Attending </div>
+            <div class="h5">{{ event.attendees.count }}</div>
+            
+        </li>
         
         
     </ul>

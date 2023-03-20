@@ -1,8 +1,8 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block body_credits%}
-<main>
-{%include 'partials/navbar.html' with pending=pending%} 
+<main class="club-bkg overflow-hidden">
+    {%include 'partials/navbar.html' with pending=pending%} 
     <div class="row mx-0 row-height d-flex" >
         <div id="sdb" class="column col-sm-12 col-xs-1 col-md-3 col-lg-2 left overflow-auto my-0 mx-0 px-3 py-0 shadow-lg p-0 bg-dark " style="height: 100vh">
             <div class=" mt-0 border-bottom mb-3"></div>
@@ -187,7 +187,9 @@
        <!--EVENTS SIDEBAR-->
         <div id="sdb" class="column col-sm-4 col-xs-1 col-md-3 col-lg-2 overflow-auto my-0 mx-0 pt-0 shadow-lg p-3 " style="height: 100vh">
             {% if current_user == club.owner %}
+            <div class="shadow">
                 <a href="{% url 'create_event' club.id %}" class="btn btn-secondary d-flex justify-content-center mb-3">Create an event</a>
+            </div>
             {% endif %}
             {% if events.count > 0 %}
                 {% for event in events %}
