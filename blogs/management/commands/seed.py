@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from faker import Faker
 from faker.providers import internet, person
 from blogs.models import User, Club
+from blogs.helpers import get_genres, get_themes
 import random
 import logging
 """ Clear all data and creates addresses """
@@ -10,37 +11,13 @@ MODE_REFRESH = 'refresh'
 """ Clear all data and do not create any object """
 MODE_CLEAR = 'clear'
 
+"""setup"""
 fake = Faker()
 fake.add_provider(internet)
 fake.add_provider(person)
 user_list= []
-themes = [ # Taken from Google Books
-            ("E", "Ebooks"),
-            ("A", "Arts"),
-            ("BM", "Biographies & Memoirs"),
-            ("BI", "Business & Investing"),
-            ("C", "Comics"),
-            ("CT", "Computers & Technology"),
-            ("CF", "Cookery, Food & Wine"),
-            ("F", "Fantasy"),
-            ("FL", "Fiction & Literature"),
-            ("G", "Gardening"),
-            ("HF", "Health & Fitness"),
-            ("HM", "Health, Mind & Body"),
-            ("H", "History"),
-            ("M", "Mystery & Thrillers"),
-            ("N", "Nature"),
-            ("P", "Poetry"),
-            ("PC", "Politics & Current Affairs"),
-            ("R", "Reference"),
-            ("RO", "Romance"),
-            ("RS", "Religion & Spirituality"),
-            ("S", "Science"),
-            ("SF", "Science Fiction"),
-            ("SP", "Sports"),
-            ("T", "Travel"),
-            ("Y", "Young Adult"),
-        ]
+themes = get_themes()
+
 class Command(BaseCommand):
     help = "seed database for testing and development."
 
@@ -81,13 +58,14 @@ def create_user():
 def create_club():
     """Creates an user object using faker"""
     logging.info("Creating a club with exactly two admins and 10 members")
-    
-
+    club_owner = create_user()
     club = Club(
+        owner = club_owner  ,
         name = fake.text(max_nb_chars=20),
         bio = fake.paragraph(nb_sentences=2),
         rules = fake.paragraph(nb_sentences=4),
         theme = (random.choice(themes))[1]
+        
     )
     club.save()
     club.admins.add(create_user())

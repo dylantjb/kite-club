@@ -33,6 +33,7 @@ urlpatterns = [
     path('user/<int:user_id>', views.profile, name = 'profile'),
     path('clubs/', views.club_list, name='club_list'),
     path('pending-users/<int:club_id>', views.pending_requests, name = 'pending_requests'),
+    path('pending-users', views.all_pending_requests, name = 'all_pending_requests'),
     path('accept-request/<int:club_id>/<int:user_id>', views.admin_accept_request, name = 'admin_accept_request'),
     #posts
     # path('new_post/', views.new_post, name='new_post'),

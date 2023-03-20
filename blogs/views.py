@@ -18,7 +18,16 @@ from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm
 from .models import Club, User, Post
 from .helpers import login_prohibited, active_count
 
-
+"""SETUP"""
+def pending_requests_count(user):
+    pending =[]
+    count = 0
+    clubs = Club.objects.filter(owner = user)
+    for club in clubs:
+        for p_member in club.pending_members.all():
+            pending.append(p_member)
+        # count+=1
+    return len(pending)
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
     model = form_class = UserForm
@@ -52,7 +61,7 @@ def home(request):
     if request.user.is_authenticated:
         current_user = request.user
         clubs = Club.objects.all()
-        return render(request, 'feed.html', {'clubs': clubs})
+        return render(request, 'feed.html', {'clubs': clubs, 'pending': pending_requests_count(request.user)})
     return render(request, 'home.html', {'form': LogInForm()})
 
 def about(request):
@@ -64,7 +73,7 @@ def profile(request, user_id):
         user = User.objects.get(id=user_id)
     except ObjectDoesNotExist:
         raise Http404
-    return render(request, 'profile.html', {'user': user})
+    return render(request, 'profile.html', {'user': user, 'pending': pending_requests_count(request.user)})
 
 @login_prohibited
 def sign_up(request):
@@ -115,12 +124,12 @@ def create_club(request):
             messages.add_message(request, messages.ERROR, "This club name is already taken, please choose another name.")
     else:
         form = CreateClubForm(initial = {'owner': request.user})
-    return render(request, 'create_club.html', {'form': form})
+    return render(request, 'create_club.html', {'form': form, 'pending': pending_requests_count(request.user)})
 
 @login_required
 def club_list(request):
     clubs = Club.objects.all()
-    return render(request, 'club_list.html', {'clubs': clubs})
+    return render(request, 'club_list.html', {'clubs': clubs, 'pending': pending_requests_count(request.user)})
 
 @login_required
 def joined_club_list(request, user_id):
@@ -156,14 +165,15 @@ def club(request, club_id):
             is_member = True
         if request.user in club.pending_members.all():
             applied = True
-            return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied' : applied, 'is_member' : is_member})
+            return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied' : applied, 'is_member' : is_member, 'pending': pending_requests_count(request.user)})
         return render(request, 'club_page.html', {'club': club, 
                                                   'form': form, 
                                                   'posts': posts, 
                                                   'applied' : applied, 
                                                   'is_member' : is_member,
                                                   'current_user': request.user,
-                                                  'active_users': active_users})
+                                                  'active_users': active_users,
+                                                  'pending': pending_requests_count(request.user)})
     
 @login_required
 def join_request_club(request, club_id):
@@ -199,4 +209,17 @@ def pending_requests(request, club_id):
     club= Club.objects.get(id=club_id)
     pending = club.pending_members.all()
     return render(request, 'pending_requests.html', {'pending':pending, 'club': club}) 
+
+    
+@login_required
+def all_pending_requests(request):
+    pending ={}
+    counted = 0
+    current_user = request.user
+    clubs = Club.objects.filter(owner = current_user)
+    for club in clubs:
+        pending[club] = list(club.pending_members.all())
+        # pending.append(club.pending_members.all())
+
+    return render(request, 'pending_all_requests.html', {'pending':pending, 'count': pending_requests_count(current_user), 'counted': counted}) 
 

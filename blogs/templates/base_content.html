@@ -2,7 +2,7 @@
 {% block body_credits%}
 
     {% block body %}
-        {%include 'partials/navbar.html'%}
+        {%include 'partials/navbar.html' with pending=pending%} 
             {% block content %}
 
             {% endblock  %}

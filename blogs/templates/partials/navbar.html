@@ -35,8 +35,16 @@
               </span>
             </a>
             
-          </li>
-          <li class="nav-item dropdown">
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'all_pending_requests' %}" class="nav-link navbar-brand text-light" >
+            <i class="fas fa-bell"></i>
+            {% comment %} <svg class=" me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg> {% endcomment %}
+            <span class="pendingg"> {{pending}} </span>
+            {% comment %} <span class="pending">{{club.pending_members.count}} </span>  {% endcomment %}
+          </a>
+        </li>
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="bi bi-person-square">
 
@@ -50,7 +58,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{% url 'log_out'%}">Log out</a>
           </div>
-          </li>
+        </li>
          
       </ul>
     </div>
