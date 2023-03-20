@@ -152,3 +152,26 @@ class books(models.Model):
     image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
     image_url_m = models.CharField(_("Image-URL-M"),max_length=255)
     image_url_l = models.CharField(_("Image-URL-L"),max_length=255)
+
+class Event(models.Model):
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='upcoming_events')
+    title = models.CharField(max_length=50, blank=False, unique=True)
+    description = models.TextField(max_length=1024, blank=False)
+    date = models.DateField(blank=False)
+    startTime = models.TimeField(blank=False)
+    endTime = models.TimeField()
+    eventLink = models.CharField(max_length=200, blank=False)
+    selectedBook = models.ForeignKey(books, on_delete=models.CASCADE, related_name="club_events", blank=True, null=True)
+    attendees = models.ManyToManyField (
+        User,
+        through='AttendEvent',
+        through_fields=('event', 'user'),
+        related_name='upcoming_events'
+    )
+    
+class AttendEvent(models.Model):
+    class Meta:
+        unique_together = ('event', 'user')
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='attend_event')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='attend_event')
