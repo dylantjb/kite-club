@@ -2,84 +2,13 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.functions import Lower
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext as _
 from libgravatar import Gravatar
 
 from .helpers import get_genres, get_themes
 
 class User(AbstractUser):
-    def _init_(self):
-        self.members = []
-        self.admins = []
-        self.genres = []
-        self.themes = []
-        self.visibility = "private"
-
-    def invite_member(self, member):
-        if member in self.members:
-            print(f"Error: {member} is already a member of the club.")
-        else:
-            self.members.append(member)
-            print(f"{member} has been invited to the club.")
-
-    def remove_member(self, member):
-        if member in self.members:
-            self.members.remove(member)
-            print(f"{member} has been removed from the club.")
-        else:
-            print(f"Error: {member} is not a member of the club.")
-
-    def set_admin(self, member):
-        if member in self.members:
-            self.admins.append(member)
-            print(f"{member} has been set as an admin of the club.")
-        else:
-            print(f"Error: {member} is not a member of the club.")
-
-    def remove_admin(self, member):
-        if member in self.admins:
-            self.admins.remove(member)
-            print(f"{member} has been removed as an admin of the club.")
-        else:
-            print(f"Error: {member} is not an admin of the club.")
-
-    def add_genre(self, genre):
-        self.genres.append(genre)
-        print(f"{genre} has been added as a genre of the club.")
-
-    def remove_genre(self, genre):
-        if genre in self.genres:
-            self.genres.remove(genre)
-            print(f"{genre} has been removed as a genre of the club.")
-        else:
-            print(f"Error: {genre} is not a genre of the club.")
-
-    def add_theme(self, theme):
-        self.themes.append(theme)
-        print(f"{theme} has been added as a theme of the club.")
-
-    def remove_theme(self, theme):
-        if theme in self.themes:
-            self.themes.remove(theme)
-            print(f"{theme} has been removed as a theme of the club.")
-        else:
-            print(f"Error: {theme} is not a theme of the club.")
-
-    def set_visibility(self, visibility):
-        if visibility in ["private", "public"]:
-            self.visibility = visibility
-            print(f"The club visibility has been set to {visibility}.")
-        else:
-            print("Error: Visibility can only be set to 'private' or 'public'.")
-
-    def close_club(self):
-        self.members = []
-        self.admins = []
-        self.genres = []
-        self.themes = []
-        self.visibility = "private"
-        print("The club has been closed.")
-
     username = models.CharField(
         max_length=30,
         unique=True,
@@ -117,7 +46,6 @@ class Club(models.Model):
     pending_members = models.ManyToManyField(User, related_name='pending_member_of', blank=True)
     name = models.CharField(
         max_length = 50,
-        unique=True,
         validators = [RegexValidator(
             regex = r'^[a-zA-Z]*$',
             message = 'Club name cannot contain numbers and special characters in their name.'
@@ -126,7 +54,103 @@ class Club(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name = 'owned_clubs')
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
-    theme = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"))
+    theme = models.CharField(max_length = 50, blank = True)
+    
+    def invite_user(self, username: str) -> None:
+        if self.owner == username or username in self.admins:
+            self.members.append(username)
+
+    def remove_user(self, username: str) -> None:
+        if self.owner == username or username in self.admins:
+            if username in self.members:
+                self.members.remove(username)
+                self.admins.remove(username)
+                try:
+                    user = User.objects.get(username=username)
+                    club = Club.objects.get(name=self.name)
+                    club.members.remove(user)
+                    club.admins.remove(user)
+                except ObjectDoesNotExist:
+                    pass
+
+    def make_admin(self, username: str) -> None:
+        if self.owner == username or self.owner in self.admins:
+            if username in self.members and username not in self.admins:
+                self.admins.append(username)
+                try:
+                    user = User.objects.get(username=username)
+                    club = Club.objects.get(name=self.name)
+                    club.admins.add(user)
+                except ObjectDoesNotExist:
+                    pass
+
+    def remove_admin(self, username: str) -> None:
+        if self.owner == username or self.owner in self.admins:
+            if username in self.admins and len(self.admins) > 1:
+                self.admins.remove(username)
+                try:
+                    user = User.objects.get(username=username)
+                    club = Club.objects.get(name=self.name)
+                    club.admins.remove(user)
+                except ObjectDoesNotExist:
+                    pass
+
+    def set_visibility(self, visibility: str) -> None:
+        if self.owner in self.admins:
+            if visibility in ['public', 'private']:
+                self.visibility = visibility
+                try:
+                    club = Club.objects.get(name=self.name)
+                    club.visibility = visibility
+                    club.save()
+                except ObjectDoesNotExist:
+                    pass
+
+    def add_post(self, author: str, content: str) -> None:
+        if self.owner == author or author in self.admins:
+            self.posts += ({'author': author, 'content': content, 'likes': []},)
+            try:
+                club = Club.objects.get(name=self.name)
+                club.post_set.create(author=author, content=content)
+            except ObjectDoesNotExist:
+                pass
+
+    def like_post(self, index: int, username: str) -> None:
+        if username in self.members and index < len(self.posts):
+            post = self.posts[index]
+            if username not in post['likes']:
+                post['likes'].append(username)
+                try:
+                    club = Club.objects.get(name=self.name)
+                    post = club.post_set.get(id=index+1)
+                    user = User.objects.get(username=username)
+                    post.likes.add(user)
+                except ObjectDoesNotExist:
+                    pass
+
+    def unlike_post(self, index: int, username: str) -> None:
+        if username in self.members and index < len(self.posts):
+            post = self.posts[index]
+            if username in post['likes']:
+                post['likes'].remove(username)
+                try:
+                    club = Club.objects.get(name=self.name)
+                    post = club.post_set.get(id=index+1)
+                    user = User.objects.get(username=username)
+                    post.likes.remove(user)
+                except ObjectDoesNotExist:
+                    pass
+
+    def add_reminder(self, author: str, content: str) -> None:
+        if author == self.owner:
+            self.reminders += [{'author': author, 'content': content}]
+            try:
+                club = Club.objects.get(name=self.name)
+                club.reminder_set.create(author=author, content=content)
+            except ObjectDoesNotExist:
+                pass
+        else:
+            print("Only the club owner can create meeting reminders.")
 
 class Post(models.Model):
     """Posts by users in a given club."""
