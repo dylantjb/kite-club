@@ -117,6 +117,7 @@
                                     {% elif current_user == club.owner%}
                                         <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary bi bi-cloud-sun-fill mb-1"> Edit your club - placeholder</a>
                                         <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary ">Book of the month</a>
+                                        <a href="{% url 'create_event' club.id %}" class="btn btn-secondary ">Create an event</a>
                                     {% elif current_user in club.members.all%} 
                                         <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary mb-1">Edit your cloud - placeholder</a>
                                         <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary ">Book of the month</a>
@@ -161,7 +162,7 @@
        <!--EVENTS SIDEBAR-->
         <div id="sdb" class="column col-sm-2 col-xs-1 overflow-auto my-0 mx-0 pt-0 shadow-lg p-3 " style="height: 100vh">
             {% for event in events %}
-                {%include 'partials/event_card.html' with event = event%} 
+                {%include 'partials/event_card.html' with event=event%} 
             {% endfor %}
             
             {% comment %} <div class="card " >

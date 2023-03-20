@@ -35,6 +35,7 @@ urlpatterns = [
     path('pending-users/<int:club_id>', views.pending_requests, name = 'pending_requests'),
     path('pending-users', views.all_pending_requests, name = 'all_pending_requests'),
     path('accept-request/<int:club_id>/<int:user_id>', views.admin_accept_request, name = 'admin_accept_request'),
+    path('create_event/<int:club_id>', views.create_event, name='create_event'),
     #posts
     # path('new_post/', views.new_post, name='new_post'),
     #user profile

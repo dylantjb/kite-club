@@ -132,22 +132,25 @@ def create_club(request):
 
 @login_required
 def create_event(request, club_id):
-    if request.method == 'POST':
-        form = EventForm(request.POST)
-        club = Club.objects.get(id=club_id)
-        if form.is_valid():
-            event = form.save(club)
-            messages.add_message(request, messages.SUCCESS, "Event created successfully.")
-            # Make user officer of club
-            return redirect('show_club', club_id)
+    club = Club.objects.get(id=club_id)
+    if request.user == club.owner:
+        if request.method == 'POST':
+            form = EventForm(request.POST)
+            if form.is_valid():
+                event = form.save(club)
+                messages.add_message(request, messages.SUCCESS, "Event created successfully.")
+                return redirect('show_club', club_id = event.club.id)
+        else:
+            form = EventForm()
+        return render(request, 'create_event.html', {
+            'form': form,
+            'club': club,
+            'pending': pending_requests_count(request.user)
+        })
     else:
-        form = EventForm()
-    return render(request, 'create_event.html', {
-        'form': form,
-        'title': 'Create an Event',
-        'submit': 'Create',
-        'pending': pending_requests_count(request.user)
-    })
+        return redirect('show_club', club_id)
+        
+    
 @login_required  
 def attend_event(request, event_id):
     # club = Club.objects.get(id=club_id)
@@ -159,8 +162,7 @@ def attend_event(request, event_id):
         return redirect('show_club', club_id = club.id)
     return redirect('club_list')
         
-        
-    
+
 @login_required
 def club_list(request):
     clubs = Club.objects.all()
@@ -202,7 +204,8 @@ def club(request, club_id):
         if request.user in club.pending_members.all():
             applied = True
             return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied' : applied, 'is_member' : is_member, 'pending': pending_requests_count(request.user)})
-        return render(request, 'club_page.html', {'club': club, 
+        return render(request, 'club_page.html', {'club': club,
+                                                  'events': events, 
                                                   'form': form, 
                                                   'posts': posts, 
                                                   'applied' : applied, 

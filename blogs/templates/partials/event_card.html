@@ -9,17 +9,15 @@
             <div class="h6 text-muted">Location:</div>
             <div class="h5">{{ event.location }}</div>
             {% if event.address|length > 0 %}
-                <div class="h3 text-muted">Meeting at: {{ event.address }}</div>
+                <div class="h7 text-muted">Meeting at: {{ event.address }}</div>
             {% endif %}
+            {% if event.eventLink|length > 0 %}
+                <div class="h6 text-muted">Online meeting link:</div>
+                <div class="h7">{{ event.eventLink}}</div>
+            
+        {% endif %}
         </li>
 
-        {% if event.link|length > 0 %}
-            <li class="list-group-item">
-                <div class="h6 text-muted">Online meeting link:</div>
-                <div class="h5">{{ event.link}}</div>
-            </li>
-        {% endif %}
-        
         <li class="list-group-item">
             <div class="h6 text-muted">Date: </div>
             <div class="h5">{{ event.date }}</div>

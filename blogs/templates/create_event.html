@@ -1,0 +1,21 @@
+{% extends 'base_content.html' %}
+{% block body_credits %}
+{%include 'partials/navbar.html' with pending=pending%} 
+<div class="blur">
+
+  <div class="card my-5 mx-5 pb-5 pt-3 rounded shadow-lg float " style="width: 30%; height:100vh;">
+    <div class="row">
+      <div class="col-12">
+        <h1>Create your event in club: {{club.name}}</h1>
+
+        <form action="{% url 'create_event' club.id %}" method="post">
+          {% csrf_token %}
+          {% include 'partials/bootstrap_form.html' %}
+          <input class="btn btn-dark btn-lg btn-block" type="submit" value = "Create Event">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'partials/footer.html' %}
+{% endblock %}

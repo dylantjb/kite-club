@@ -2,7 +2,7 @@ from django import forms
 from django.core.validators import RegexValidator
 from .models import User, Club, Post, Event
 
-from django.forms.widgets import DateInput
+from django.forms.widgets import DateInput, TimeInput
 
 class LogInForm(forms.Form):
     username = forms.CharField(label='Username')
@@ -89,14 +89,14 @@ class PostForm(forms.ModelForm):
 
 class EventForm(forms.ModelForm):
     """Form to create or update an event"""
-    address = forms.CharField(label='Address', widget=forms.TextInput(attrs={'placeholder': 'Optional'}))
-    eventLink = forms.CharField(label='Event Link', widget=forms.TextInput(attrs={'placeholder': 'Optional'}))
+    # address = forms.CharField(label='Address', widget=forms.TextInput(attrs={'placeholder': 'Optional'}))
+    # eventLink = forms.CharField(label='Event Link', widget=forms.TextInput(attrs={'placeholder': 'Optional'}))
 
     class Meta:
         """Form options."""
 
         model = Event
-        fields = ['title', 'description', 'date', 'location', 'startTime', 'endTime']
+        fields = ['title', 'description', 'date', 'location', 'startTime', 'endTime', 'address', 'eventLink']
         widgets = {
             'date': DateInput(attrs={'type': 'date'}),
             'startTime': forms.TimeInput(attrs={'type': 'time'}),
@@ -104,15 +104,19 @@ class EventForm(forms.ModelForm):
         }
         
     def clean(self):
-        cleaned_data = super(EventForm, self).clean()
+        cleaned_data = super().clean()
 
         address = cleaned_data.get("address")
         event_link = cleaned_data.get("eventLink")
 
         if address and event_link: # both were entered
-            raise forms.ValidationError("Your meeting should be online or in person, but cannot be both")
+            self.add_error('address', 'Your meeting should be online or in person, but cannot be both.')
+            self.add_error('eventLink', 'Your meeting should be online or in person, but cannot be both.')
+            # raise forms.ValidationError("Your meeting should be online or in person, but cannot be both")
         elif not address and not event_link: # neither were entered
-            raise forms.ValidationError("Your meeting should be online or in person, but cannot be both")
+            self.add_error('address', 'Your meeting should be online or in person, but cannot be both.')
+            self.add_error('eventLink', 'Your meeting should be online or in person, but cannot be both.')
+            # raise forms.ValidationError("Your meeting should be online or in person, but cannot be both")
 
 
     def save(self, club):
