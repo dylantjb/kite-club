@@ -157,6 +157,8 @@ class Event(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='upcoming_events')
     title = models.CharField(max_length=50, blank=False, unique=True)
     description = models.TextField(max_length=1024, blank=False)
+    location = models.CharField(max_length=50, blank=True)
+    address = models.CharField(max_length=50, blank=True)
     date = models.DateField(blank=False)
     startTime = models.TimeField(blank=False)
     endTime = models.TimeField()

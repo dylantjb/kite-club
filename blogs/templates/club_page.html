@@ -157,9 +157,14 @@
                 </div>
 
         </div>
+
+       <!--EVENTS SIDEBAR-->
         <div id="sdb" class="column col-sm-2 col-xs-1 overflow-auto my-0 mx-0 pt-0 shadow-lg p-3 " style="height: 100vh">
-      
-            <div class="card " >
+            {% for event in events %}
+                {%include 'partials/event_card.html' with event = event%} 
+            {% endfor %}
+            
+            {% comment %} <div class="card " >
                 <div class="card-body collapse show" id="home-collapse">
                     <div class="h7" ><strong>placeholder: </strong>
                         events information
@@ -177,27 +182,7 @@
 
                     
                 </ul>
-            </div>
-            <div class=" mt-3 border-bottom mb-3"></div>
-            <div class="card " >
-                <div class="card-body collapse show" id="home-collapse">
-                    <div class="h7" ><strong>placeholder: </strong>
-                        events information
-                    </div>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="h6 text-muted">New Events</div>
-                        <div class="h5">{{ club.members.count }}</div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="h6 text-muted">Past events</div>
-                        <div class="h5">{{ posts.count}}</div>
-                    </li>
-
-                    
-                </ul>
-            </div>
+            </div> {% endcomment %}
         </div>
 
 
