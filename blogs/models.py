@@ -162,7 +162,7 @@ class Event(models.Model):
     date = models.DateField(blank=False)
     startTime = models.TimeField(blank=False)
     endTime = models.TimeField()
-    eventLink = models.CharField(max_length=200, blank=False)
+    eventLink = models.CharField(max_length=200, blank=True)
     selectedBook = models.ForeignKey(books, on_delete=models.CASCADE, related_name="club_events", blank=True, null=True)
     attendees = models.ManyToManyField (
         User,

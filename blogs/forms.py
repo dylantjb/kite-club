@@ -89,17 +89,31 @@ class PostForm(forms.ModelForm):
 
 class EventForm(forms.ModelForm):
     """Form to create or update an event"""
+    address = forms.CharField(label='Address', widget=forms.TextInput(attrs={'placeholder': 'Optional'}))
+    eventLink = forms.CharField(label='Event Link', widget=forms.TextInput(attrs={'placeholder': 'Optional'}))
 
     class Meta:
         """Form options."""
 
         model = Event
-        fields = ['title', 'description', 'date', 'location', 'address', 'startTime', 'endTime', 'eventLink']
+        fields = ['title', 'description', 'date', 'location', 'startTime', 'endTime']
         widgets = {
             'date': DateInput(attrs={'type': 'date'}),
             'startTime': forms.TimeInput(attrs={'type': 'time'}),
             'endTime': forms.TimeInput(attrs={'type': 'time'})
         }
+        
+    def clean(self):
+        cleaned_data = super(EventForm, self).clean()
+
+        address = cleaned_data.get("address")
+        event_link = cleaned_data.get("eventLink")
+
+        if address and event_link: # both were entered
+            raise forms.ValidationError("Your meeting should be online or in person, but cannot be both")
+        elif not address and not event_link: # neither were entered
+            raise forms.ValidationError("Your meeting should be online or in person, but cannot be both")
+
 
     def save(self, club):
         """Create a new user."""
