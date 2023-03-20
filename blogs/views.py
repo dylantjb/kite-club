@@ -159,8 +159,7 @@ def attend_event(request, event_id):
     # club = Club.objects.get(id=event.club.id)
     if request.user in (club.members.all(), club.admins.all()):
         event.attendees.add(request.user)
-        return redirect('show_club', club_id = club.id)
-    return redirect('club_list')
+    return redirect('show_club', club_id = club.id)
         
 
 @login_required

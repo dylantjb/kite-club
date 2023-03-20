@@ -212,3 +212,26 @@ box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0,
   margin-left: 10px;
   background-color: rgb(255, 0, 0);
 }
+
+.bottom-left {
+  position: static;
+  bottom: 8px;
+  left: 16px;
+  text-align: left; 
+  padding-left: 20px; 
+  padding-bottom: 5px;
+}
+
+.adjust-font{
+  font-size: 12rem;
+}
+
+h1 {
+  font-size: 5.9vw;
+}
+h2 {
+  font-size: 3.0vh;
+}
+p {
+  font-size: 2vmin;
+}
