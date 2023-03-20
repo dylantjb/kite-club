@@ -147,7 +147,7 @@ class books(models.Model):
     isbn = models.CharField(_("ISBN"),max_length=255)
     book_title = models.CharField(_("Book-Title"),max_length=255)
     book_author = models.CharField(_("Book-Author"),max_length=255)
-    year_of_publication = models.IntegerField(_("Year-Of-Publication"))
+    year_of_publication = models.CharField(_("Year-Of-Publication"),max_length=5)
     publisher = models.CharField(_("Publisher"),max_length=255)
     image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
     image_url_m = models.CharField(_("Image-URL-M"),max_length=255)

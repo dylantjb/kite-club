@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from faker import Faker
 from faker.providers import internet, person
-from blogs.models import User, Club
+from blogs.models import User, Club, Post, books
 from blogs.helpers import get_genres, get_themes
 import random
 import logging
@@ -85,6 +85,8 @@ def run_seed(self, mode):
     clear_data()
     if mode == MODE_CLEAR:
         Club.objects.all().delete()
+        Post.objects.all().delete()
+        books.objects.all().delete()
         return
 
     # Creating 25 clubs
