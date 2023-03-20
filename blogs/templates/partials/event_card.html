@@ -6,25 +6,25 @@
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
-            <div class="h6 text-muted">Location:</div>
-            <div class="h7 fw-semibold">{{ event.location }}</div>
+            <div class="h6 text-muted mb-0">Location:</div>
+            <div class="h7 fw-semibold mb-2">{{ event.location }}</div>
             {% if event.address|length > 0 %}
-                <div class="h6 text-muted">Meeting at:</div>
-                <div class="h7 fw-semibold">{{ event.address }}</div>
+                <div class="h6 text-muted mb-0">Meeting at:</div>
+                <div class="h7 fw-semibold mb-2">{{ event.address }}</div>
             {% endif %}
             {% if event.eventLink|length > 0 %}
-                <div class="h6 text-muted">Online meeting link:</div>
-                <div class="h7 fw-semibold">{{ event.eventLink}}</div>
+                <div class="h6 text-muted mb-0">Online meeting link:</div>
+                <div class="h7 fw-semibold mb-2">{{ event.eventLink}}</div>
             
         {% endif %}
         </li>
        
         <div class="  border-bottom "></div>
         <li class="list-group-item">
-            <div class="h6 text-muted">Date: </div>
-            <div class="h7 fw-semibold">{{ event.date }}</div>
-            <div class="h6 text-muted">Time: </div>
-            <div class="h7 fw-semibold">Between {{ event.startTime }} and {{event.endTime}}.</div>
+            <div class="h6 text-muted mb-0">Date: </div>
+            <div class="h7 fw-semibold mb-2">{{ event.date }}</div>
+            <div class="h6 text-muted mb-0">Time: </div>
+            <div class="h7 fw-semibold mb-2">Between {{ event.startTime }} and {{event.endTime}}.</div>
         </li>
         {% if current_user != club.owner %}
         <li class="list-group-item">
