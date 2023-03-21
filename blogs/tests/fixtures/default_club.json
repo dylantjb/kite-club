@@ -4,9 +4,11 @@
       "pk": 1,
       "fields": {
         "name": "Testing Club",
+        "owner": 1
+        "theme": "Comedy"
         "bio": "The default club used for testing.",
         "rules": "No swearing. Only speak of the theme",
-        "theme": "Comedy"
+
       }
     }
   ]

@@ -8,19 +8,22 @@ from blogs.models import User, Club
 class ClubFormTestCase(TestCase):
     """Unit tests of the club form."""
 
-    def setUp(self):
-        self.user = User.objects.create_user(
-            first_name='Test',
-            last_name='Smith',
-            username='@testsmith',
-            email='testsmith@example.org' ,
-            bio='hello',
-            password='12345')
-        self.client = Client()
-        self.logged_in_user = self.client.login(username='@testsmith',password='12345')
+    fixtures = [
+        "blogs/tests/fixtures/default_user.json"
+    ]
 
-        self.form = CreateClubForm(data = {'name' : 'testclub'})
-        self.club = self.form.save()
+    def setUp(self):
+        self.user = User.objects.get(username = '@johnsmith')
+        self.client = Client()
+        self.logged_in_user = self.client.login(username='@johnsmith',password='pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=')
+
+        self.form_input = {
+            "name": "Club 1",
+            "owner": self.user.pk,
+            "theme": "Horror",
+            "bio": "The club where all can talk about horror books",
+            "rules": "Be Nice"
+        }
 
         # this part is what is done by the create_club method in views.py
         self.club.admins.add(self.user)
@@ -32,3 +35,24 @@ class ClubFormTestCase(TestCase):
     def test_logged_in_user_is_admin_of_created_club(self):
         self.assertTrue(self.club in self.user.admin_of.all())
         self.assertTrue(self.user in self.club.admins.all())
+
+    def test_valid_club_form(self):
+        form = CreateClubForm(data = self.form_input)
+        self.assertTrue(form.is_valid())
+
+    def test_create_club_form_has_necessary_fields(self):
+        form = CreateClubForm()
+        self.assertIn('name', form.fields)
+
+        club_field = form.fields['name']
+        self.assertTrue(isinstance(club_field, forms.CharField))
+
+    def test_form_has_model_validation(self):
+        self.form_input['name'] = None
+        form = CreateClubForm(data = self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_cannot_create_two_clubs_with_the_same_name(self):
+        self.form_input['name'] = "Book Club"
+        form = CreateClubForm(data = self.form_input)
+        self.assertFalse(form.is_valid())
