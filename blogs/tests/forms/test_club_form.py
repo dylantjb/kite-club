@@ -1,4 +1,5 @@
 """Unit tests for the Club form"""
+from django import forms
 from django.core.exceptions import ValidationError
 from django.test import TestCase, Client
 from blogs.forms import CreateClubForm
@@ -14,12 +15,19 @@ class ClubFormTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(username = '@johnsmith')
+        self.club = Club.objects.create(
+            name = "Club XL",
+            owner = self.user,
+            theme = "Literature",
+            bio = "Literature fans wanted",
+            rules = "Do not flame!"
+        )
         self.client = Client()
         self.logged_in_user = self.client.login(username='@johnsmith',password='pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=')
 
         self.form_input = {
-            "name": "Club 1",
-            "owner": self.user.pk,
+            "name": "Club XL",
+            "owner": self.user,
             "theme": "Horror",
             "bio": "The club where all can talk about horror books",
             "rules": "Be Nice"
