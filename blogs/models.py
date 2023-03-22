@@ -21,7 +21,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length = 50, blank = False)
     email = models.EmailField(unique = True, blank = False)
     bio = models.CharField(max_length = 520, blank = True)
-    favourite_genre = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"))
+    favourite_genre = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"), blank = True)
 
     class Meta:
         constraints = [
@@ -194,7 +194,7 @@ class Event(models.Model):
         through_fields=('event', 'user'),
         related_name='upcoming_events'
     )
-    
+
 class AttendEvent(models.Model):
     class Meta:
         unique_together = ('event', 'user')
