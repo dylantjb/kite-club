@@ -40,6 +40,16 @@ class User(AbstractUser):
         return f'{self.first_name} {self.last_name}'
 
 
+class books(models.Model):
+    isbn = models.CharField(_("ISBN"),max_length=255)
+    book_title = models.CharField(_("Book-Title"),max_length=255)
+    book_author = models.CharField(_("Book-Author"),max_length=255)
+    year_of_publication = models.CharField(_("Year-Of-Publication"),max_length=4)
+    publisher = models.CharField(_("Publisher"),max_length=255)
+    image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
+    image_url_m = models.CharField(_("Image-URL-M"),max_length=255)
+    image_url_l = models.CharField(_("Image-URL-L"),max_length=255)
+    
 class Club(models.Model):
     admins = models.ManyToManyField(User, related_name='admin_of', blank=False)
     members = models.ManyToManyField(User, related_name='member_of', blank=False)
@@ -55,6 +65,7 @@ class Club(models.Model):
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
     theme = models.CharField(max_length = 50, blank = True)
+    book = models.ForeignKey(books, on_delete=models.CASCADE,  blank=True)
 
     def invite_user(self, username: str) -> None:
         if self.owner == username or username in self.admins:
@@ -165,17 +176,6 @@ class Post(models.Model):
 
         ordering = ['-created_at']
 
-
-
-class books(models.Model):
-    isbn = models.CharField(_("ISBN"),max_length=255)
-    book_title = models.CharField(_("Book-Title"),max_length=255)
-    book_author = models.CharField(_("Book-Author"),max_length=255)
-    year_of_publication = models.CharField(_("Year-Of-Publication"),max_length=4)
-    publisher = models.CharField(_("Publisher"),max_length=255)
-    image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
-    image_url_m = models.CharField(_("Image-URL-M"),max_length=255)
-    image_url_l = models.CharField(_("Image-URL-L"),max_length=255)
 
 class Event(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='upcoming_events')
