@@ -77,6 +77,7 @@ def create_club():
         club.members.add(current_user)
     logging.info("{} user created.".format(club))
     return club
+
 def run_seed(self, mode):
     """ Seed database based on mode
 

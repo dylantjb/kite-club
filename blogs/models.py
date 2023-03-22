@@ -40,7 +40,7 @@ class User(AbstractUser):
         return f'{self.first_name} {self.last_name}'
 
 
-class books(models.Model):
+class Book(models.Model):
     isbn = models.CharField(_("ISBN"),max_length=255)
     book_title = models.CharField(_("Book-Title"),max_length=255)
     book_author = models.CharField(_("Book-Author"),max_length=255)
@@ -65,7 +65,7 @@ class Club(models.Model):
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
     theme = models.CharField(max_length = 50, blank = True)
-    book = models.ForeignKey(books, on_delete=models.CASCADE,  blank=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True, blank=True)
 
     def invite_user(self, username: str) -> None:
         if self.owner == username or username in self.admins:
@@ -187,7 +187,7 @@ class Event(models.Model):
     startTime = models.TimeField(blank=False)
     endTime = models.TimeField()
     eventLink = models.CharField(max_length=200, blank=True)
-    selectedBook = models.ForeignKey(books, on_delete=models.CASCADE, related_name="club_events", blank=True, null=True)
+    selectedBook = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="club_events", blank=True, null=True)
     attendees = models.ManyToManyField (
         User,
         through='AttendEvent',

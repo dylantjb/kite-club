@@ -1,0 +1,44 @@
+{% extends 'base.html'%}
+{% block body_credits%}
+
+{%include 'partials/navbar.html' with pending=pending%} 
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                
+                <h1>All clubs</h1>
+
+                <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+                <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+
+                <table class="table table-hover " id="club_table">
+                    <thead class="thead-dark mb-0">
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                       
+                            <tr class="table-active">
+                                <td>{{ book.name }}</td>
+                                <td>{{ book.author }}</td>
+                                <td href="{% url 'book_choice' club.id book.id %}" class="btn btn-rounded btn-primary"> Choose </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <script type="text/javascript">
+                    $(document).ready(() => {
+                      new simpleDatatables.DataTable('#club_table', {
+                        "columns": [{select: 2, sortable: false}]
+                      });
+                    });
+                  </script> 
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

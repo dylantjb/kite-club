@@ -15,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm
-from .models import Club, User, Post, books, Event
+from .models import Club, User, Post, Book, Event
 from .helpers import login_prohibited, active_count
 
 from random import randint
@@ -62,9 +62,9 @@ def home(request):
     if request.user.is_authenticated:
         random_books = []
         clubs = Club.objects.all()
-        count = books.objects.count()
+        count = Book.objects.count()
         for i in range(0,2):
-            random_books.append(books.objects.all()[randint(0, count - 1)])
+            random_books.append(Book.objects.all()[randint(0, count - 1)])
         return render(request, 'feed.html', {'clubs': clubs, 'pending': pending_requests_count(request.user), 'random_books': random_books})
     return render(request, 'home.html', {'form': LogInForm()})
 
@@ -221,6 +221,7 @@ def club(request, club_id):
                                                   'applied' : applied, 
                                                   'is_member' : is_member,
                                                   'current_user': request.user,
+                                                  'current_book': club.book,
                                                   'active_users': active_users,
                                                   'pending': pending_requests_count(request.user)})
     
@@ -272,3 +273,26 @@ def all_pending_requests(request):
 
     return render(request, 'pending_all_requests.html', {'pending':pending, 'count': pending_requests_count(current_user), 'counted': counted}) 
 
+#books
+
+@login_required
+def book_list(request, club_id):
+    try:
+        club = Club.objects.get(id = club_id)
+        books = Book.objects.all()
+    except ObjectDoesNotExist:
+        return redirect('show_club', club_id = club_id)
+    else:
+        return render(request, 'book_list.html', {'books':books, 'club':club})
+    
+@login_required
+def book_choice(request, club_id, book_id):
+    try:
+        club = Club.objects.get(id = club_id)
+        requested_book = Book.objects.get(id = book_id)
+        club.book = requested_book
+        club.save()
+    except ObjectDoesNotExist:
+        return redirect('book_list')
+    else:
+        return redirect('show_club', club_id = club_id)

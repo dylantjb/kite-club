@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from blogs.models import books
+from blogs.models import Book
 import csv
 import logging
 
@@ -35,12 +35,12 @@ class Command(BaseCommand):
 def clear_data():
     """Deletes all the table data"""
     logging.info("Delete all users, clubs and posts.")
-    books.objects.all().delete()
+    Book.objects.all().delete()
 
 def add_books():
     book_list = process_book_data()
     for book in book_list:
-        new_book = books(
+        new_book = Book(
                 isbn = book[0],
                 book_title = book[1],
                 book_author = book[2],

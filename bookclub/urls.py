@@ -49,6 +49,8 @@ urlpatterns = [
         "accounts/change-password/", views.ChangePasswordView.as_view(), name="change_password"
     ),
     # path("<username>/", views.profile, name = 'profile'),
-
+    #BOOKS
+    path("book_list/<int:club_id>", views.book_list, name="book_list"),
+    path("book_choice/<int:club_id>/<int:book_id>", views.book_choice, name="book_choice")
 ]
 
