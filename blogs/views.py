@@ -282,18 +282,16 @@ def all_pending_requests(request):
 #books
 
 
-
-
-
-
 @login_required
 def featured_book(request, club_id):
     club = Club.objects.get(id=club_id)
     if request.method == 'POST':
         form = BookForm(request.POST)
         if form.is_valid():
-            featured_book = form.save()
+            
+            featured_book = form.save(request.user)
             club.book = featured_book
+            
             club.save()
             messages.add_message(request, messages.SUCCESS, "Added featured book.")
             return redirect('show_club', club_id=club_id)
@@ -305,18 +303,3 @@ def featured_book(request, club_id):
             'pending': pending_requests_count(request.user)
         })
             
-#     # blist = Book.objects.all()
-#     # for i in range(0,100):
-#     #     blist.append(Book.objects.all()[randint(0, count - 1)])
-        
-#         # books = paginator.page(page)
-#     return render(request, 'book_list.html', {'blist':blist, 'club':club})
-    
-# @login_required
-# def book_choice(request, club_id, book_id):
-#         club = Club.objects.get(id = club_id)
-#         requested_book = Book.objects.get(id = book_id)
-#         club.book = requested_book
-#         club.save()
-
-#         return render(request, '404.html')

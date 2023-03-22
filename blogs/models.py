@@ -53,6 +53,7 @@ class Book(models.Model):
 class FeaturedBook(models.Model):
     book_title = models.CharField(max_length=255, blank=False)
     book_author = models.CharField(max_length=255, blank=False)
+    curator = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
 
     
 class Club(models.Model):

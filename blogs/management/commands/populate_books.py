@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from blogs.models import Book
+from blogs.models import Book, FeaturedBook
 import csv
 import logging
 
@@ -36,6 +36,7 @@ def clear_data():
     """Deletes all the table data"""
     logging.info("Delete all users, clubs and posts.")
     Book.objects.all().delete()
+    FeaturedBook.objects.all().delete()
 
 def add_books():
     book_list = process_book_data()
@@ -62,7 +63,6 @@ def run_seed(self, mode):
     # Clear data from books table
     clear_data()
     if mode == MODE_CLEAR:
-        clear_data()
         return
 
     # Creating book objects

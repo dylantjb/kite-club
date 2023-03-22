@@ -147,11 +147,12 @@ class BookForm(forms.ModelForm):
         model = FeaturedBook
         fields = ['book_title', 'book_author']
         
-    def save(self):
+    def save(self, user):
         super().save(commit = False)
         featured_book = FeaturedBook.objects.create(
             book_title = self.cleaned_data.get('book_title'),
             book_author = self.cleaned_data.get('book_author'),
+            curator = user
         )
         return featured_book
         
