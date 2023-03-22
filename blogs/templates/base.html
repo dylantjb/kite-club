@@ -48,38 +48,36 @@
       function applyMemberFilter() {
         var table = $('#clubList').DataTable();
         var isChecked = document.getElementById('member-filter').checked;
-        table.rows().every(function () {
-            var row = $(this.node())
-            var clubName = row.find('td:first-child').text().trim();
-            {% for club in clubs %}
-              if (clubName === '{{ club.name }}') {
-                var isJoined = false;
+        if (!isChecked) {
+          table.clear();
+          table.rows.add(originalData);
+          table.draw();
+          return;
+        }
+        {% for club in clubs %}
+          var isJoined = false;
 
-                {% for member in club.members.all %}
-                  if ({{ member.id }} === {{ request.user.id }}) {
-                    isJoined = true;
-                  }
-                {% endfor %}
+          {% for member in club.members.all %}
+            if ({{ member.id }} === {{ request.user.id }}) {
+              isJoined = true;
+            }
+          {% endfor %}
 
-                {% for admin in club.admins.all %}
-                  if ({{ admin.id }} === {{ request.user.id }}) {
-                    isJoined = true;
-                  }
-                {% endfor %}
+          {% for admin in club.admins.all %}
+            if ({{ admin.id }} === {{ request.user.id }}) {
+              isJoined = true;
+            }
+          {% endfor %}
 
-                if ({{ club.owner.id }} === {{ request.user.id }}) {
-                  isJoined = true;
-                }
+          if ({{ club.owner.id }} === {{ request.user.id }}) {
+            isJoined = true;
+          }
 
-                if (isChecked && !isJoined) {
-                  row.hide()
-                } else {
-                  row.show()
-                }
-              }
-            {% endfor %}
-        });
-        table.page.len(-1).draw();
+          if (isChecked && !isJoined) {
+            table.row(':contains("{{ club.name }}")').remove();
+          }
+        {% endfor %}
+        table.draw();
       }
     </script>
 

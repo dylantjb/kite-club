@@ -1,9 +1,11 @@
 {% extends 'base_content.html' %}
 {% block content %}
     <script>
+      var originalData;
       $(document).ready(function () {
         $('#clubList').DataTable();
         $('.dataTables_length').addClass('bs-select');
+        originalData = $('#clubList').DataTable().rows().data().toArray();
       });
     </script>
     <div style="margin:30px; margin-bottom: 150px;">
