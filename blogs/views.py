@@ -158,9 +158,20 @@ def attend_event(request, event_id):
     club = event.club
     # club = Club.objects.get(id=event.club.id)
     if request.user in (club.members.all(), club.admins.all()):
-        event.attendees.add(request.user)
+        if request.user not in event.attendees.all():
+            event.attendees.add(request.user)
+        else:
+            event.attendees.remove(request.user)
     return redirect('show_club', club_id = club.id)
-        
+
+# @login_required      
+# def unattend_event(request, event_id):
+#     event = Event.objects.get(id=event_id)
+#     club = event.club
+#     if request.user in event.attendees.all():
+#         event.attendees.remove(request.user)
+#     return redirect('show_club', club_id = club.id)
+     
 
 @login_required
 def club_list(request):
