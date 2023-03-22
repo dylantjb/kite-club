@@ -1,6 +1,8 @@
 from django import forms
 from django.core.validators import RegexValidator
-from .models import User, Club, Post
+from .models import User, Club, Post, Event
+
+from django.forms.widgets import DateInput, TimeInput
 
 class LogInForm(forms.Form):
     username = forms.CharField(label='Username')
@@ -84,3 +86,55 @@ class PostForm(forms.ModelForm):
 
         )
         return post
+
+class EventForm(forms.ModelForm):
+    """Form to create or update an event"""
+    # address = forms.CharField(label='Address', widget=forms.TextInput(attrs={'placeholder': 'Optional'}))
+    # eventLink = forms.CharField(label='Event Link', widget=forms.TextInput(attrs={'placeholder': 'Optional'}))
+
+    class Meta:
+        """Form options."""
+
+        model = Event
+        fields = ['title', 'description', 'date', 'location', 'startTime', 'endTime', 'address', 'eventLink']
+        widgets = {
+            'date': DateInput(attrs={'type': 'date'}),
+            'startTime': forms.TimeInput(attrs={'type': 'time'}),
+            'endTime': forms.TimeInput(attrs={'type': 'time'})
+        }
+        
+    def clean(self):
+        cleaned_data = super().clean()
+
+        address = cleaned_data.get("address")
+        event_link = cleaned_data.get("eventLink")
+
+        if address and event_link: # both were entered
+            self.add_error('address', 'Your meeting should be online or in person, but cannot be both.')
+            self.add_error('eventLink', 'Your meeting should be online or in person, but cannot be both.')
+            # raise forms.ValidationError("Your meeting should be online or in person, but cannot be both")
+        elif not address and not event_link: # neither were entered
+            self.add_error('address', 'Your meeting should be online or in person, but cannot be both.')
+            self.add_error('eventLink', 'Your meeting should be online or in person, but cannot be both.')
+            # raise forms.ValidationError("Your meeting should be online or in person, but cannot be both")
+
+
+    def save(self, club):
+        """Create a new user."""
+
+        super().save(commit=False)
+        event = Event.objects.create(
+            club = club,
+            title=self.cleaned_data.get('title'),
+            description=self.cleaned_data.get('description'),
+            #Change admin to current user
+            date = self.cleaned_data.get('date'),
+            location = self.cleaned_data.get('location'),
+            address = self.cleaned_data.get('address'),
+            selectedBook = None,
+            #selectedBook = self.cleaned_data.get('selectedBook'),
+            startTime = self.cleaned_data.get('startTime'),
+            endTime = self.cleaned_data.get('endTime'),
+            eventLink = self.cleaned_data.get('eventLink'),
+        )
+        return event

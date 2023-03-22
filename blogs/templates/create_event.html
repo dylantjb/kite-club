@@ -1,0 +1,26 @@
+{% extends 'base_content.html' %}
+{% block body_credits %}
+{%include 'partials/navbar.html' with pending=pending%} 
+<div class="blur" style="height:100vh">
+
+
+    <div class="container pb-5 pt-3">
+      
+        <div class="row">
+          <div class="col-12">
+            <h1 class="d-flex text-center">Create your event in club: {{club.name}}</h1>
+    
+            <form action="{% url 'create_event' club.id %}" method="post">
+              {% csrf_token %}
+              {% include 'partials/bootstrap_form.html' %}
+              <input class="btn btn-dark btn-lg btn-block" type="submit" value = "Create Event">
+            </form>
+          </div>
+        </div>
+
+      
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,9 +1,10 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block body_credits%}
-{%include 'partials/navbar.html' with pending=pending%} 
-    <div class="row mx-0 row-height" >
-        <div id="sdb" class="column col-sm-2 col-xs-1 left overflow-auto my-0 mx-0 px-3 py-0 shadow-lg p-0 bg-dark " style="height: 100vh">
+<main class="club-bkg overflow-hidden">
+    {%include 'partials/navbar.html' with pending=pending%} 
+    <div class="row mx-0 row-height d-flex" >
+        <div id="sdb" class="column col-sm-12 col-xs-1 col-md-3 col-lg-2 left overflow-auto my-0 mx-0 px-3 py-0 shadow-lg p-0 bg-dark " style="height: 100vh">
             <div class=" mt-0 border-bottom mb-3"></div>
             <div class="row">
                 <div class="column">
@@ -32,10 +33,10 @@
             <hr>
         
               {% if current_user == club.owner and club.owner != None %}
-                <a href="{% url 'pending_requests' club.id %}" class="d-flex mb-3 btn btn-secondary" >
-                    <svg class=" me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-                    <span class="fs-5 fw-semibold">Join Requests: {{club.pending_members.count}}</span>
-                    {% comment %} <span class="pending">{{club.pending_members.count}} </span>  {% endcomment %}
+                <a href="{% url 'pending_requests' club.id %}" class="d-flex justify-content-center mb-3 btn btn-secondary" >
+                    
+                    <span class="fw-semibold">Join Requests: {{club.pending_members.count}}</span>
+    
                 </a>
               {% endif %}
 
@@ -81,11 +82,11 @@
         </div>
 
         
-        <div id="content" class="column col-sm-8 col-xs-1  px-0 overflow-auto " style="height: 100vh; overflow: hidden;">
+        <div id="content" class="column col-sm-8 col-xs-1 col-md-6 col-lg-8 px-0 overflow-auto " style="height: 100vh; overflow: hidden;">
             <div class="card mt-0 mb-5 p-3">
                 <div class="row">
                     <div class="col-8">
-                        <div class="card " >
+                        <div class="card shadow " >
                             <div class="card-body bg-light">
                                 <div class="h1" ><strong>{{ club.name }} </strong>
                                 </div>
@@ -108,18 +109,16 @@
                         <p>owned by {{ club.owner }}</p> {% endcomment %}
                         {% comment %} <div class=" bi bi-person-fill-check"> {{ active_users }}</div> {% endcomment %}
                         <div class = " row mt-3 ">
-                            <div class = "col-sm-4 col-xs-3 h5 bi bi-person-fill-check text-muted">
+                            <div class = "col-sm-12 col-xs-3 col-lg-6 h5 bi bi-person-fill-check text-muted">
                                 Active members: {{ active_users }} 
                             </div>
-                            <div class = "col-sm-8 col-xs-9 float-right">
+                            <div class = "col-sm-12 col-xs-9 col-lg-6 justify-content-right">
                                     {% if applied %}
                                         <a href="{% url 'cancel_request' club.id %}" class="btn btn-secondary ">Requested</a>
                                     {% elif current_user == club.owner%}
-                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary bi bi-cloud-sun-fill mb-1"> Edit your club - placeholder</a>
-                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary ">Book of the month</a>
+                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary bi bi-cloud-sun-fill mb-1 d-flex justify-content-right"> Edit your club - placeholder</a>
                                     {% elif current_user in club.members.all%} 
-                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary mb-1">Edit your cloud - placeholder</a>
-                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary ">Book of the month</a>
+                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary mb-1 d-flex justify-content-right">Edit your cloud - placeholder</a>
                                     {% else %}
                                         <a href="{% url 'join_request_club' club.id %}" class="btn btn-secondary ">Join this cloud!</a>
                                     {% endif %}
@@ -127,12 +126,39 @@
                         </div>
                     </div>
                     <div class="col-4 ">
+                        <div class="card shadow">
+                            <div class="p-3">
+                                <img class="card-img-top img-thumbnail " src='{% static 'images/book-placeholder.jpeg' %}' alt="Card image cap">
+                            </div>  
+                                
+                            <div class="card-body text-center">
+               
+                                    <h5 class="card-title">Card title</h5> 
+                                    {% if current_user == club.owner %}
+                                        <a href="#" class="btn btn-primary d-flex justify-content-center p-1">Choose</a>                                    
+                                    {% endif %}   
+                                    
+                               
+                            </div>
+                            
+                       </div>
+                        {% comment %} <div class="card shadow p-2" style="height:100%">
+                            <img class="img-fluid card-img-top img-thumbnail " src='{% static 'images/book-placeholder.jpeg' %}' alt="Card image cap">
+                            <div class="card-body">
+                              <h5 class="card-title">Card title</h5>
+  
+                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div> {% endcomment %}
+                        {% comment %} </div> {% endcomment %}
+                        {% comment %} <div class="card shadow p-2" style="height:100%">
 
                         <img src='{% static 'images/book-placeholder.jpeg' %}' class="img-fluid rounded img-thumbnail float-right" width="50%"alt="">
+                        </div> {% endcomment %}
                     </div>
                     <div class=" mt-3 border-bottom mb-0"></div>
                     <div class="container mx-0 my-5">
-                        <div>
+                        <div class="card p-2 shadow">
                             {% if is_member %}
                             <h3>What flies on your mind...</h3>
                             <form action="{% url 'show_club' club.id %}" method="post" class="comment-area-box mb-3">
@@ -157,9 +183,24 @@
                 </div>
 
         </div>
-        <div id="sdb" class="column col-sm-2 col-xs-1 overflow-auto my-0 mx-0 pt-0 shadow-lg p-3 " style="height: 100vh">
-      
-            <div class="card " >
+        
+       <!--EVENTS SIDEBAR-->
+        <div id="sdb" class="column col-sm-4 col-xs-1 col-md-3 col-lg-2 overflow-auto my-0 mx-0 pt-0 shadow-lg p-3 " style="height: 100vh">
+            {% if current_user == club.owner %}
+            <div class="shadow">
+                <a href="{% url 'create_event' club.id %}" class="btn btn-secondary d-flex justify-content-center mb-3">Create an event</a>
+            </div>
+            {% endif %}
+            {% if events.count > 0 %}
+                {% for event in events %}
+                    {%include 'partials/event_card.html' with event=event club=club current_user=current_user%} 
+                {% endfor %}
+            {% else %}
+                <div class="card rounded">
+                    <h3 class="d-flex justify-content-center text-muted"> No events yet </h3>
+                </div>
+            {% endif %}
+            {% comment %} <div class="card " >
                 <div class="card-body collapse show" id="home-collapse">
                     <div class="h7" ><strong>placeholder: </strong>
                         events information
@@ -177,31 +218,12 @@
 
                     
                 </ul>
-            </div>
-            <div class=" mt-3 border-bottom mb-3"></div>
-            <div class="card " >
-                <div class="card-body collapse show" id="home-collapse">
-                    <div class="h7" ><strong>placeholder: </strong>
-                        events information
-                    </div>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <div class="h6 text-muted">New Events</div>
-                        <div class="h5">{{ club.members.count }}</div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="h6 text-muted">Past events</div>
-                        <div class="h5">{{ posts.count}}</div>
-                    </li>
-
-                    
-                </ul>
-            </div>
+            </div> {% endcomment %}
         </div>
 
 
 
         <script src="{% static 'JavaScript/sidebars.js' %}"></script>
     </div> 
+<main>
 {% endblock %}

@@ -14,8 +14,8 @@ from django.urls import reverse_lazy
 from django.core.exceptions import ObjectDoesNotExist
 
 
-from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm
-from .models import Club, User, Post, books
+from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm
+from .models import Club, User, Post, books, Event
 from .helpers import login_prohibited, active_count
 
 from random import randint
@@ -131,6 +131,49 @@ def create_club(request):
     return render(request, 'create_club.html', {'form': form, 'pending': pending_requests_count(request.user)})
 
 @login_required
+def create_event(request, club_id):
+    club = Club.objects.get(id=club_id)
+    if request.user == club.owner:
+        if request.method == 'POST':
+            form = EventForm(request.POST)
+            if form.is_valid():
+                event = form.save(club)
+                messages.add_message(request, messages.SUCCESS, "Event created successfully.")
+                return redirect('show_club', club_id = event.club.id)
+        else:
+            form = EventForm()
+        return render(request, 'create_event.html', {
+            'form': form,
+            'club': club,
+            'pending': pending_requests_count(request.user)
+        })
+    else:
+        return redirect('show_club', club_id)
+        
+    
+@login_required  
+def attend_event(request, event_id):
+    # club = Club.objects.get(id=club_id)
+    event = Event.objects.get(id=event_id)
+    club = event.club
+    # club = Club.objects.get(id=event.club.id)
+    if request.user in (club.members.all(), club.admins.all()):
+        if request.user not in event.attendees.all():
+            event.attendees.add(request.user)
+        else:
+            event.attendees.remove(request.user)
+    return redirect('show_club', club_id = club.id)
+
+# @login_required      
+# def unattend_event(request, event_id):
+#     event = Event.objects.get(id=event_id)
+#     club = event.club
+#     if request.user in event.attendees.all():
+#         event.attendees.remove(request.user)
+#     return redirect('show_club', club_id = club.id)
+     
+
+@login_required
 def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs, 'pending': pending_requests_count(request.user)})
@@ -146,6 +189,7 @@ def club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)
         posts = Post.objects.filter(in_club = club)
+        events = Event.objects.filter(club = club)
     except ObjectDoesNotExist:
         return redirect('club_list')
     else:
@@ -170,7 +214,8 @@ def club(request, club_id):
         if request.user in club.pending_members.all():
             applied = True
             return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied' : applied, 'is_member' : is_member, 'pending': pending_requests_count(request.user)})
-        return render(request, 'club_page.html', {'club': club, 
+        return render(request, 'club_page.html', {'club': club,
+                                                  'events': events, 
                                                   'form': form, 
                                                   'posts': posts, 
                                                   'applied' : applied, 
