@@ -12,6 +12,7 @@ class SignUpFormTestCase(TestCase):
             'username': '@janedoe',
             'email': 'janedoe@example.org',
             'bio': "My bio",
+            'favourite_genre': "HF",
             'new_password': 'Password123',
             'password_confirmation': 'Password123'
         }
