@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap_pagination',
+    'bootstrap_modal_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,3 +142,5 @@ MESSAGE_TAGS = {
 REDIRECT_URL_WHEN_LOGGED_IN = 'home'
 LOGIN_REDIRECT_URL = 'log_in'
 LOGIN_URL = 'log_in'
+
+BOOKS_PER_PAGE = 20

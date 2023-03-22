@@ -8,15 +8,20 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import redirect, render
+
 from django.urls import reverse_lazy
 
+from django.conf import settings
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage
 
-
-from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm
+from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm, BookForm
 from .models import Club, User, Post, Book, Event
 from .helpers import login_prohibited, active_count
+
+from bootstrap_modal_forms.generic import BSModalCreateView
+
 
 from random import randint
 
@@ -223,7 +228,8 @@ def club(request, club_id):
                                                   'current_user': request.user,
                                                   'current_book': club.book,
                                                   'active_users': active_users,
-                                                  'pending': pending_requests_count(request.user)})
+                                                  'pending': pending_requests_count(request.user),
+                                                    })
     
 @login_required
 def join_request_club(request, club_id):
@@ -275,24 +281,42 @@ def all_pending_requests(request):
 
 #books
 
+
+
+
+
+
 @login_required
-def book_list(request, club_id):
-    try:
-        club = Club.objects.get(id = club_id)
-        books = Book.objects.all()
-    except ObjectDoesNotExist:
-        return redirect('show_club', club_id = club_id)
+def featured_book(request, club_id):
+    club = Club.objects.get(id=club_id)
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            featured_book = form.save()
+            club.book = featured_book
+            club.save()
+            messages.add_message(request, messages.SUCCESS, "Added featured book.")
+            return redirect('show_club', club_id=club_id)
     else:
-        return render(request, 'book_list.html', {'books':books, 'club':club})
+        form = BookForm()
+        return render(request, 'create_featured_book.html', {
+            'form': form,
+            'club': club,
+            'pending': pending_requests_count(request.user)
+        })
+            
+#     # blist = Book.objects.all()
+#     # for i in range(0,100):
+#     #     blist.append(Book.objects.all()[randint(0, count - 1)])
+        
+#         # books = paginator.page(page)
+#     return render(request, 'book_list.html', {'blist':blist, 'club':club})
     
-@login_required
-def book_choice(request, club_id, book_id):
-    try:
-        club = Club.objects.get(id = club_id)
-        requested_book = Book.objects.get(id = book_id)
-        club.book = requested_book
-        club.save()
-    except ObjectDoesNotExist:
-        return redirect('book_list')
-    else:
-        return redirect('show_club', club_id = club_id)
+# @login_required
+# def book_choice(request, club_id, book_id):
+#         club = Club.objects.get(id = club_id)
+#         requested_book = Book.objects.get(id = book_id)
+#         club.book = requested_book
+#         club.save()
+
+#         return render(request, '404.html')
