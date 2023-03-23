@@ -90,9 +90,18 @@ class Post(models.Model):
         ordering = ['-created_at']
 
 class Comments(models.Model):
+    class Meta:
+        unique_together = ('author', 'created_at')
+        ordering = ['-created_at']
+    # The post under which the comment was made
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField(max_length = 280)
+    # The club to which the post is published
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='user_comments')
+    
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='published_comments')
+    commented_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_comments')
+    
+    text = models.CharField(max_length = 280)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

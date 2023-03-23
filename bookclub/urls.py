@@ -48,6 +48,8 @@ urlpatterns = [
     path('attend_event/<int:event_id>', views.attend_event, name='attend_events'),
     # path('unattend_event/<int:event_id>', views.unattend_event, name='unattend_events'),
     #posts
+    #comments
+    path('comment/<int:post_id>', views.add_comment, name='add_comment'),
     # path('new_post/', views.new_post, name='new_post'),
     #user profile
     # path("profile/", views.profile, name="profile"),
