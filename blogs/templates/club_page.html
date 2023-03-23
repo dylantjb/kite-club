@@ -1,4 +1,7 @@
 {% extends 'base.html'%}
+{% block title %}
+  {{ club.name }}
+{% endblock %}
 {% load static %}
 {% block body_credits%}
 <main class="club-bkg overflow-auto">
@@ -49,12 +52,15 @@
                     <div class="collapse" id="admins-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         {% for admin in club.admins.all %}
-                                <li class="nav-item">
-                                    <a class="nav-link text-white rounded" href="{% url 'profile' admin.id %}" aria-current="page" style="width: 100%;">
-                                        {{admin.username}}
-                                    </a>
-                                </li>
-                                {% endfor %}
+                            <li class="nav-item ">
+                                <a class="nav-link text-white border-dark rounded mx-2 d-flex align-items-center" href="{% url 'profile' admin.id %}" aria-current="page" style="width: 100%;">
+                                  <img src="{{ admin.mini_gravatar }}"
+                                       alt="gravatar"
+                                       class="rounded-circle img-fluid mr-2">
+                                  <span>{{ admin.username }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
                         </ul>
                     </div>
                 </li>
@@ -66,8 +72,11 @@
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             {% for member in club.members.all %}
                             <li class="nav-item ">
-                                <a class="nav-link text-white border-dark rounded mx-2 " href="{% url 'profile' member.id %}" aria-current="page" style="width: 100%;">
-                                    {{member.username }}
+                                <a class="nav-link text-white border-dark rounded mx-2 d-flex align-items-center" href="{% url 'profile' member.id %}" aria-current="page" style="width: 100%;">
+                                  <img src="{{ member.mini_gravatar }}"
+                                       alt="gravatar"
+                                       class="rounded-circle img-fluid mr-2">
+                                  <span>{{ member.username }}</span>
                                 </a>
                             </li>
                         {% endfor %}
@@ -115,10 +124,8 @@
                             <div class = "col-sm-12 col-xs-9 col-lg-6 justify-content-right">
                                     {% if applied %}
                                         <a href="{% url 'cancel_request' club.id %}" class="btn btn-secondary ">Requested</a>
-                                    {% elif current_user == club.owner%}
-                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary bi bi-cloud-sun-fill mb-1 d-flex justify-content-right"> Edit your club - placeholder</a>
-                                    {% elif current_user in club.members.all%} 
-                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary mb-1 d-flex justify-content-right">Edit your cloud - placeholder</a>
+                                    {% elif current_user == club.owner or current_user in club.admins.all %}
+                                        <a href="{% url 'club_settings' club.id %}" class="btn btn-secondary bi bi-cloud-sun-fill mb-1 d-flex justify-content-right"> Edit your club</a>
                                     {% else %}
                                         <a href="{% url 'join_request_club' club.id %}" class="btn btn-secondary ">Join this cloud!</a>
                                     {% endif %}

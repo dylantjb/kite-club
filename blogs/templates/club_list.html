@@ -1,4 +1,7 @@
 {% extends 'base_content.html' %}
+{% block title %}
+  Club List
+{% endblock %}
 {% block content %}
     <script>
       var originalData;
@@ -10,6 +13,9 @@
     </script>
     <div style="margin:30px; margin-bottom: 150px;">
         <div class="container" style="background-color: #f2f2f2; padding: 20px;">
+            <center>
+                <h3>Club List</h3>
+            </center>
             Admin = <i class="fas fa-shield-alt"></i>
             <br>
             <input type="checkbox" id="member-filter" onchange="applyMemberFilter()">
@@ -35,9 +41,7 @@
                                 <a href="{% url 'show_club' club.id %}" class=>{{ club.name }}</a>
                                 {% if request.user.id == club.owner.id %}<i class="fas fa-shield-alt"></i>{% endif %}
                                 {% for admin in club.admin.all %}
-                                    {% if request.user.id == admin.id %}
-                                        <i class="fas fa-shield-alt"></i>
-                                    {% endif %}
+                                    {% if request.user.id == admin.id %}<i class="fas fa-shield-alt"></i>{% endif %}
                                 {% endfor %}
                             </td>
                             <td>{{ club.theme }}</td>

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from faker import Faker
 from faker.providers import internet, person
-from blogs.models import User, Club, Post, books
+from blogs.models import User, Club, Post
 from blogs.helpers import get_genres, get_themes
 import random
 import logging
