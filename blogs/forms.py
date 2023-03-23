@@ -58,16 +58,19 @@ class UserForm(forms.ModelForm):
 class CreateClubForm(forms.ModelForm):
     class Meta:
         model = Club
-        fields = ['name','owner', 'theme', 'bio', 'rules']
-        widgets = {
-            'owner': forms.HiddenInput(attrs = {'is_hidden': True}),
-            'bio': forms.Textarea()
-        }
-        def save(self):
-            super().save(commit = False)
+        fields = ['name', 'theme', 'bio', 'rules']
+        widgets = {'bio': forms.Textarea()}
 
-            club = Club.objects.create()
-            return club
+    def save(self, **kwargs):
+        owner = kwargs.pop('owner', None)
+
+        if not owner:
+            raise ValueError('A user must be specified.')
+
+        club = super().save(commit=False)
+        club.owner = owner
+        club.save()
+        return club
 
 class PostForm(forms.ModelForm):
     """Form to ask user for post text.

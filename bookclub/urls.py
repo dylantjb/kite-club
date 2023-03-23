@@ -26,15 +26,23 @@ urlpatterns = [
     path('log_in/', views.log_in, name = 'log_in'),
     path('log_out/', views.log_out, name = 'log_out'),
     #club paths
-    path('create_club/', views.create_club, name = 'create_club'),
     path('club/<int:club_id>', views.club, name = 'show_club'),
+    path('club/<int:club_id>/settings', views.UpdateClubView.as_view(), name='club_settings'),
+    path('clubs/', views.club_list, name='club_list'),
+    path('create_club/', views.create_club, name = 'create_club'),
     path('join-request/<int:club_id>', views.join_request_club, name = 'join_request_club'),
     path('cancel-request/<int:club_id>', views.cancel_request, name = 'cancel_request'),
     path('user/<int:user_id>', views.profile, name = 'profile'),
-    path('clubs/', views.club_list, name='club_list'),
     path('pending-users/<int:club_id>', views.pending_requests, name = 'pending_requests'),
     path('pending-users', views.all_pending_requests, name = 'all_pending_requests'),
     path('accept-request/<int:club_id>/<int:user_id>', views.admin_accept_request, name = 'admin_accept_request'),
+    # club actions
+    path('club/<int:club_id>/promote_admin/<int:user_id>/', views.promote_admin, name='promote_admin'),
+    path('club/<int:club_id>/promote_user/<int:user_id>/', views.promote_user, name='promote_user'),
+    path('club/<int:club_id>/demote_admin/<int:user_id>/', views.demote_admin, name='demote_admin'),
+    path('club/<int:club_id>/kick_user/<int:user_id>/', views.kick_user, name='kick_user'),
+    path('club/<int:club_id>/delete_club', views.delete_club, name='delete_club'),
+
     #events
     path('create_event/<int:club_id>', views.create_event, name='create_event'),
     path('attend_event/<int:event_id>', views.attend_event, name='attend_events'),

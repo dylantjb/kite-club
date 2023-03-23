@@ -115,8 +115,8 @@
                             <div class = "col-sm-12 col-xs-9 col-lg-6 justify-content-right">
                                     {% if applied %}
                                         <a href="{% url 'cancel_request' club.id %}" class="btn btn-secondary ">Requested</a>
-                                    {% elif current_user == club.owner%}
-                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary bi bi-cloud-sun-fill mb-1 d-flex justify-content-right"> Edit your club - placeholder</a>
+                                    {% elif current_user == club.owner or current_user in club.admins.all %}
+                                        <a href="{% url 'club_settings' club.id %}" class="btn btn-secondary bi bi-cloud-sun-fill mb-1 d-flex justify-content-right"> Edit your club</a>
                                     {% elif current_user in club.members.all%} 
                                         <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary mb-1 d-flex justify-content-right">Edit your cloud - placeholder</a>
                                     {% else %}

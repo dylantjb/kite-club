@@ -7,8 +7,7 @@ from django.views.generic.edit import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponseForbidden
-from django.shortcuts import redirect, render
-
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 
 from django.conf import settings
@@ -34,8 +33,28 @@ def pending_requests_count(user):
             pending.append(p_member)
     return len(pending)
 
+class UpdateClubView(LoginRequiredMixin, UpdateView):
+    model = Club
+    form = CreateClubForm
+    template_name = "club_settings.html"
+
+    def get(self, request, club_id, *args, **kwargs):
+        club = get_object_or_404(Club, id=club_id)
+        form = CreateClubForm(instance=club)
+        return self.render_to_response(
+            {"request": request, "club": club, "form": form}, *args, **kwargs
+        )
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request, messages.SUCCESS, "Your club has been updated successfully!"
+        )
+        return redirect("club_list") # club may be deleted
+
+
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
-    model = form_class = UserForm
+    model = User
+    form_class = UserForm
     template_name = "account_details.html"
     extra_context = {"nbar": "account"}
 
@@ -47,7 +66,6 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
             self.request, messages.SUCCESS, "Your profile updated successfully!"
         )
         return reverse_lazy("home")
-
 
 
 class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
@@ -123,7 +141,7 @@ def create_club(request):
     if request.method == 'POST':
         form = CreateClubForm(request.POST)
         if form.is_valid():
-            club = form.save()
+            club = form.save(owner=request.user)
             messages.add_message(request, messages.SUCCESS, "Club created successfully.")
             club.admins.add(request.user)
             club.members.add(request.user)
@@ -300,6 +318,68 @@ def featured_book(request, club_id):
             'pending': pending_requests_count(request.user)
         })
             
+
+@login_required
+def promote_admin(request, club_id, user_id):
+    club = get_object_or_404(Club, id=club_id)
+    user = get_object_or_404(club.admins, id=user_id)
+    if request.user != club.owner:
+        return redirect("home")
+    if request.method == "POST":
+        club.admins.add(request.user)
+        club.admins.remove(user)
+        print(club.owner)
+        club.owner = user
+        club.save()
+        messages.success(request, f'{user.first_name} {user.last_name} has been promoted to owner.')
+    return redirect("club_settings", club.id)
+
+@login_required
+def demote_admin(request, club_id, user_id):
+    club = get_object_or_404(Club, id=club_id)
+    user = get_object_or_404(club.admins, id=user_id)
+    if request.user != club.owner:
+        return redirect("home")
+    if request.method == "POST":
+        club.admins.remove(user)
+        club.members.add(user)
+        club.save()
+        messages.success(request, f'{user.first_name} {user.last_name} has been demoted to member.')
+    return redirect("club_settings", club.id)
+
+@login_required
+def promote_user(request, club_id, user_id):
+    club = get_object_or_404(Club, id=club_id)
+    user = get_object_or_404(club.members, id=user_id)
+    if request.user not in (club.admins.all(), club.owner):
+        return redirect("home")
+    if request.method == "POST":
+        club.admins.add(user)
+        club.members.remove(user)
+        club.save()
+        messages.success(request, f'{user.first_name} {user.last_name} has been promoted to admin.')
+    return redirect("club_settings", club.id)
+
+@login_required
+def kick_user(request, club_id, user_id):
+    club = get_object_or_404(Club, id=club_id)
+    user = get_object_or_404(club.members, id=user_id)
+    if request.user not in (club.admins.all(), club.owner):
+        return redirect("home")
+    if request.method == "POST":
+        club.members.remove(user)
+        club.save()
+        messages.success(request, f'{user.first_name} {user.last_name} has been kicked from the club.')
+    return redirect("club_settings", club.id)
+
+@login_required
+def delete_club(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
+    if request.user != club.owner:
+        return redirect("home")
+    if request.method == "POST":
+        club.delete()
+    return redirect("club_list")
 
 @login_required
 def add_comment(request, post_id):

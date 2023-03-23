@@ -1,0 +1,81 @@
+{% extends 'base_content.html' %}
+{% block title %}Club settings{% endblock %}
+{% block content %}
+    <div style="margin:30px; margin-bottom: 50px;">
+        <div class="container" style="background-color: #f2f2f2; padding: 20px;">
+            <center>
+                <h3>Club Settings</h3>
+            </center>
+            <form method="post" action="{{ request.path }}">
+                {% csrf_token %}
+                {% include 'partials/bootstrap_form.html' %}
+                <button type="submit" class="btn btn-dark">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    <div style="margin:30px; margin-bottom: 50px;">
+        <div class="container" style="background-color: #f2f2f2; padding: 20px;">
+            <center>
+                <h3>User actions</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if request.user == club.owner %}
+                            {% for user in club.admins.all %}
+                                <tr>
+                                    <td>{{ user.username }}</td>
+                                    <td>Admin</td>
+                                    <td>
+                                        <form action="{% url 'promote_admin' club.id user.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button class="btn btn-secondary" type="submit">Promote</button>
+                                        </form>
+                                        <form action="{% url 'demote_admin' club.id user.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button class="btn btn-secondary" type="submit">Demote</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        {% for user in club.members.all %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>Member</td>
+                                <td>
+                                    <form action="{% url 'promote_user' club.id user.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button class="btn btn-secondary" type="submit">Promote</button>
+                                    </form>
+                                    <form action="{% url 'kick_user' club.id user.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button class="btn btn-secondary" type="submit">Kick</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </center>
+        </div>
+    </div>
+    {% if request.user == club.owner %}
+        <div style="margin:30px; margin-bottom: 150px;">
+            <div class="container" style="background-color: #f20000; padding: 20px;">
+                <center>
+                    <h3>Danger</h3>
+                    <form action="{% url 'delete_club' club.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-dark">Delete club</button>
+                    </form>
+                </center>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

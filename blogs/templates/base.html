@@ -66,21 +66,9 @@
         {% for club in clubs %}
           var isJoined = false;
 
-          {% for member in club.members.all %}
-            if ({{ member.id }} === {{ request.user.id }}) {
-              isJoined = true;
-            }
-          {% endfor %}
-
-          {% for admin in club.admins.all %}
-            if ({{ admin.id }} === {{ request.user.id }}) {
-              isJoined = true;
-            }
-          {% endfor %}
-
-          if ({{ club.owner.id }} === {{ request.user.id }}) {
+          {% if request.user in club.members.all or request.user in club.admins.all or request.user == club.owner %}
             isJoined = true;
-          }
+          {% endif %}
 
 
           if (isChecked && !isJoined) {
