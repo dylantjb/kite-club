@@ -1,8 +1,54 @@
-{% comment %} <table class="table"> {% endcomment %}
+  {% load humanize %}
+  {% load static %}
+
   {% for post in posts %}
-      
-  <div class="card social-timeline-card mb-5">
-    {% include 'partials/post_as_table_row.html' with post=post %}
-  </div>
-  {% endfor %}
-{% comment %} </table> {% endcomment %}
+    <div class="card social-timeline-card mb-5">
+      {% include 'partials/post_as_table_row.html' with post=post %}
+      <div class="card social-timeline-card mb-0 border-0">
+
+        <!--Comment form-->
+        <div class="card-header border-0 pb-0">
+          <form action="{% url 'add_comment' post.id %}" method="post" class="comment-area-box mb-2">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-9">
+                {% include 'partials/comment_post_form.html' with form=comment_form %}
+              </div>
+              <div class="col-3">
+                  <div>
+                      <button type="submit" class="btn btn-outline-dark btn-block">Add </button>
+                  </div>
+              </div>
+              
+            </div>
+          </form> 
+        </div>
+
+        <!--Comments-->
+        {% if post.comments.all  %}
+        <div class="card-body ">
+          {% for comment in post.comments.all %}
+            <div>
+              
+                {% comment %} <p class="text-muted"> {% endcomment %}
+                  <a class="btn comment-author-user-details" href="{% url 'profile' comment.author.id %}">
+                    {{ comment.author.username }}
+                      &nbsp;&middot;&nbsp;
+                      {{ comment.created_at|naturaltime }} 
+              
+                  </a>
+                {% comment %} </p> {% endcomment %}
+                <p >
+                  <span class="comment-text">
+                    {{ comment.text}}
+                  </span>
+                </p>
+             
+              </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+{% endfor %}
+

@@ -28,7 +28,7 @@
   margin:0;
 }
 .club-bkg{
-  background-color: rgb(206, 239, 255);
+  background-color: rgb(219, 243, 255);
   background-position: center;
   background-size: cover;
   height: 100vh;
@@ -37,7 +37,7 @@
 }
 
 .book-bkg{
-  background-color: rgb(220, 207, 247);
+  background-color: rgb(236, 228, 253);
 }
 
 .row-height{
@@ -179,6 +179,7 @@ box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0,
  */
  .post-author {
   margin-bottom: 0px;
+  padding-left: 0%;
 
 }
 
@@ -200,7 +201,48 @@ box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0,
   color: black;
 }
 
+.post-text{
+    font-size: larger;
+}
+.post-date{
+  color: #777777;
+  padding-left: 0%;
+  font-size: small;
 
+}
+/*
+ * Comments
+ */
+ .comment-author {
+  margin-bottom: 0px;
+
+}
+
+.comment-author-text {
+  font-weight: bold;
+}
+
+.comment-author-user-details {
+  /* font-weight: lighter; */
+  margin-left: 0;
+  margin-bottom: 0;
+  color: #777777;
+  padding-left: 0%;
+  font-size: small;
+}
+
+.comment-author a {
+  text-decoration: none;
+  color: black;
+}
+.comment-author a:hover {
+  text-decoration: underline;
+  color: black;
+}
+
+.comment-text{
+  font-size: medium;
+}
 
 
 /*

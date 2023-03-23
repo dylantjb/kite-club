@@ -17,7 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage
 
 
-from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm, BookForm
+from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm, BookForm, CommentForm
 from .models import Club, User, Post, Book, Event, Comments
 
 from .helpers import login_prohibited, active_count
@@ -176,6 +176,23 @@ def attend_event(request, event_id):
 #         event.attendees.remove(request.user)
 #     return redirect('show_club', club_id = club.id)
 
+@login_required
+def add_comment(request, post_id):
+    post = Post.objects.get(id=post_id)
+    current_user = request.user
+    post_user = post.author
+    club = post.in_club
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data.get('text')
+            comment = Comments.objects.create(post=post, club=club, author=current_user, commented_user = post_user, text=text)
+        return redirect('show_club', club_id = club.id)
+    else:
+        form = CommentForm()
+    return redirect('show_club', club_id = club.id)
+    
+
 
 @login_required
 def club_list(request):
@@ -194,6 +211,7 @@ def club(request, club_id):
         club = Club.objects.get(id=club_id)
         posts = Post.objects.filter(in_club=club).prefetch_related('comments')
         events = Event.objects.filter(club=club)
+        comments = Comments.objects.filter(club=club)
     except ObjectDoesNotExist:
         return redirect('club_list')
     else:
@@ -210,6 +228,7 @@ def club(request, club_id):
             else:
                 return redirect('log_in')
         form = PostForm()
+        comment_form = CommentForm()
         applied = False
         is_member = False
         active_users = active_count(club)
@@ -221,6 +240,7 @@ def club(request, club_id):
         return render(request, 'club_page.html', {'club': club,
                                                   'events': events,
                                                   'form': form,
+                                                  'comment_form': comment_form,
                                                   'posts': posts,
                                                   'applied': applied,
                                                   'is_member': is_member,
@@ -301,13 +321,4 @@ def featured_book(request, club_id):
         })
             
 
-@login_required
-def add_comment(request, post_id):
-    post = Post.objects.get(id=post_id)
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            current_user = request.user
-            form = CommentForm(request.POST)
-            if form.is_valid():
-                text = form.cleaned_data.get('
 
