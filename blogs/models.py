@@ -21,7 +21,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length = 50, blank = False)
     email = models.EmailField(unique = True, blank = False)
     bio = models.CharField(max_length = 520, blank = True)
-    favourite_genre = models.CharField(max_length = 2, choices = get_genres(), default="NO")
+    favourite_genre = models.CharField(max_length = 2, choices = get_genres(), default="NO", blank=True)
 
     class Meta:
         constraints = [
@@ -49,13 +49,13 @@ class Book(models.Model):
     image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
     image_url_m = models.CharField(_("Image-URL-M"),max_length=255)
     image_url_l = models.CharField(_("Image-URL-L"),max_length=255)
-    
+
 class FeaturedBook(models.Model):
     book_title = models.CharField(max_length=255, blank=False)
     book_author = models.CharField(max_length=255, blank=False)
     curator = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
 
-    
+
 class Club(models.Model):
     admins = models.ManyToManyField(User, related_name='admin_of', blank=False)
     members = models.ManyToManyField(User, related_name='member_of', blank=False)
@@ -73,7 +73,7 @@ class Club(models.Model):
     theme = models.CharField(max_length = 50, blank = True)
     book = models.ForeignKey(FeaturedBook, on_delete=models.CASCADE, null=True, blank=True)
 
-    
+
 class Post(models.Model):
     """Posts by users in a given club."""
 
