@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block body_credits%}
-<main class="club-bkg overflow-hidden">
+<main class="club-bkg overflow-auto">
     {%include 'partials/navbar.html' with pending=pending%} 
     <div class="row mx-0 row-height d-flex" >
         <div id="sdb" class="column col-sm-12 col-xs-1 col-md-3 col-lg-2 left overflow-auto my-0 mx-0 px-3 py-0 shadow-lg p-0 bg-dark " style="height: 100vh">
@@ -125,23 +125,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4 ">
-                        <div class="card shadow">
+                    <div class="col-4 " >
+                        
+                        <div class="card shadow book-bkg" >
                             <div class="p-3">
-                                <img class="card-img-top img-thumbnail " src='{% static 'images/book-placeholder.jpeg' %}' alt="Card image cap">
+                                <h3 class="card-title text-center">{{current_book.book_title}}</h3> 
+                                <h5 class="card-title text-center font-italic font-weight-light">by {{current_book.book_author}}</h5> 
                             </div>  
                                 
-                            <div class="card-body text-center">
+                            <div class="card-body text-center align-items-baseline">
                
-                                    <h5 class="card-title">Card title</h5> 
-                                    {% if current_user == club.owner %}
-                                        <a href="#" class="btn btn-primary d-flex justify-content-center p-1">Choose</a>                                    
-                                    {% endif %}   
+                                <h5 class="card-title">Curated by:</h5> 
+                                <h5 class="card-title text-muted">{{current_book.curator}}</h5>                            
+                                <a href="{% url 'featured_book' club.id %}" class="btn btn-primary d-flex justify-content-center p-1">Choose book</a>                                    
                                     
                                
                             </div>
                             
-                       </div>
+                        </div> 
                         {% comment %} <div class="card shadow p-2" style="height:100%">
                             <img class="img-fluid card-img-top img-thumbnail " src='{% static 'images/book-placeholder.jpeg' %}' alt="Card image cap">
                             <div class="card-body">
@@ -224,6 +225,7 @@
 
 
         <script src="{% static 'JavaScript/sidebars.js' %}"></script>
+        
     </div> 
 <main>
 {% endblock %}

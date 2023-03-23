@@ -1,0 +1,50 @@
+{% extends 'base.html'%}
+{% comment %} {%load bootstrap_pagination%} {% endcomment %}
+{% block body_credits%}
+
+{%include 'partials/navbar.html' with pending=pending%} 
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                
+                <h1>All clubs huh {{ book.book_title }}</h1>
+
+                {% comment %} <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+                <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css"> {% endcomment %}
+                {% comment %} {% bootstrap_paginate page_obj range=6 previous_label="Previous" next_label="Next" show_first_last="true" %} {% endcomment %}
+                <table class="table table-hover " id="club_table">
+                    <thead class="thead-dark mb-0">
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for book in blist %}
+                        {% comment %} {% for book in books %} {% endcomment %}
+                       
+                        <tr class="table-active">
+                            <td>{{ book.book_title }}</td>
+                            <td>{{ book.book_author }}</td>
+                                {% comment %} <td href="{% url 'book_choice' club.id book.1.id %}" class="btn btn-rounded btn-primary"> Choose </td> {% endcomment %}
+                            </tr>
+                        {% comment %} {% endfor %} {% endcomment %}
+                        {% endfor %}
+                    </tbody>
+                    
+                </table>
+                {% comment %} {% bootstrap_paginate page_obj range=6 previous_label="Previous" next_label="Next" show_first_last="true" %} {% endcomment %}
+                {% comment %} <script type="text/javascript">
+                    $(document).ready(() => {
+                      new simpleDatatables.DataTable('#club_table', {
+                        "columns": [{select: 2, sortable: false}]
+                      });
+                    });
+                  </script>  {% endcomment %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -35,8 +35,10 @@ class Command(BaseCommand):
 
 def clear_data():
     """Deletes all the table data"""
-    logging.info("Delete Address instances")
+    logging.info("Delete all users, clubs and posts.")
     User.objects.all().delete()
+    Club.objects.all().delete()
+    Post.objects.all().delete()
 
 
 def create_user():
@@ -75,6 +77,7 @@ def create_club():
         club.members.add(current_user)
     logging.info("{} user created.".format(club))
     return club
+
 def run_seed(self, mode):
     """ Seed database based on mode
 
@@ -84,9 +87,7 @@ def run_seed(self, mode):
     # Clear data from tables
     clear_data()
     if mode == MODE_CLEAR:
-        Club.objects.all().delete()
-        Post.objects.all().delete()
-        books.objects.all().delete()
+        clear_data()
         return
 
     # Creating 25 clubs

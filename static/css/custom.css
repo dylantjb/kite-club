@@ -28,12 +28,16 @@
   margin:0;
 }
 .club-bkg{
-  background-color: rgb(242, 234, 215);
+  background-color: rgb(206, 239, 255);
   background-position: center;
   background-size: cover;
   height: 100vh;
   width: 100%;
   margin:0;
+}
+
+.book-bkg{
+  background-color: rgb(220, 207, 247);
 }
 
 .row-height{
