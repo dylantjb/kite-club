@@ -65,7 +65,7 @@ class Club(models.Model):
     name = models.CharField(
         max_length = 50,
         validators = [RegexValidator(
-            regex = r'^[a-zA-Z]*$',
+            regex = r'^[a-zA-Z0-9_ ]*$',
             message = 'Club name cannot contain numbers and special characters in their name.'
         )]
     )

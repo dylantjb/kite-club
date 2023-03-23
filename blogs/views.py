@@ -243,7 +243,6 @@ def club(request, club_id):
             is_member = True
         if request.user in club.pending_members.all():
             applied = True
-            return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied': applied, 'is_member': is_member, 'pending': pending_requests_count(request.user)})
         return render(request, 'club_page.html', {'club': club,
                                                   'events': events,
                                                   'form': form,

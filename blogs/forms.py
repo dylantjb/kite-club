@@ -57,11 +57,14 @@ class CreateClubForm(forms.ModelForm):
         fields = ['name', 'theme', 'bio', 'rules']
         widgets = {'bio': forms.Textarea()}
 
-    def save(self):
-            super().save(commit = False)
-
-            club = Club.objects.create()
-            return club
+    def save(self, **kwargs):
+        owner = kwargs.pop('owner', None)
+        if not owner:
+            raise ValueError('A club cannot exist without an owner')
+        club = super().save(commit = False)
+        club.owner = owner
+        club.save()
+        return club
 
 class PostForm(forms.ModelForm):
     """Form to ask user for post text.
