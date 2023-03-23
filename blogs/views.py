@@ -396,3 +396,17 @@ def delete_user(request):
 #             if form.is_valid():
 #                 text = form.cleaned_data.get('
 
+def searchbar(request, search_string):
+    club_name = search_string[6:]
+        
+    try:
+        print(club_name)
+        club = Club.objects.filter(name = club_name).first()
+        print(club)
+        club_id = club.id
+        print(club_id)
+        return redirect('club_dashboard', club.id)
+    except:
+        messages.error(request, "Sorry we cant find this club. ")  
+
+    return redirect('user_dashboard', club.id)
