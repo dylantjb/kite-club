@@ -142,8 +142,6 @@ def create_club(request):
         if form.is_valid():
             club = form.save(owner=request.user)
             messages.add_message(request, messages.SUCCESS, "Club created successfully.")
-            club.admins.add(request.user)
-            club.members.add(request.user)
             return redirect('show_club', club_id = club.id) # should take you to the newly created club's page - not implemented yet
         else:
             messages.add_message(request, messages.ERROR, "This club name is already taken, please choose another name.")

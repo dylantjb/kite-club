@@ -81,7 +81,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">Created at: {{ post.created_at }}, Club: {{ post.in_club }}</div>
+                            <div class="card-footer">Club: {{ post.in_club.name }}, Created at: {{ post.created_at }}</div>
                             <br>
                         {% endfor %}
                     {% else %}

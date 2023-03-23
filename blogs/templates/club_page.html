@@ -1,4 +1,7 @@
 {% extends 'base.html'%}
+{% block title %}
+  {{ club.name }}
+{% endblock %}
 {% load static %}
 {% block body_credits%}
 <main class="club-bkg overflow-auto">
@@ -123,8 +126,6 @@
                                         <a href="{% url 'cancel_request' club.id %}" class="btn btn-secondary ">Requested</a>
                                     {% elif current_user == club.owner or current_user in club.admins.all %}
                                         <a href="{% url 'club_settings' club.id %}" class="btn btn-secondary bi bi-cloud-sun-fill mb-1 d-flex justify-content-right"> Edit your club</a>
-                                    {% elif current_user in club.members.all%} 
-                                        <a href="{% url 'pending_requests' club.id %}" class="btn btn-secondary mb-1 d-flex justify-content-right">Edit your cloud - placeholder</a>
                                     {% else %}
                                         <a href="{% url 'join_request_club' club.id %}" class="btn btn-secondary ">Join this cloud!</a>
                                     {% endif %}
