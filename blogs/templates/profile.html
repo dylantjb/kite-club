@@ -71,6 +71,16 @@
                 </div>
             </div>
             <div class="col-lg-8">
+                <center>
+                    <div style="display: inline-block;
+                                background-color: #f2f2f2;
+                                padding: 5px;
+                                padding-right:30px;
+                                padding-left:30px">
+                        <h3>Posts</h3>
+                    </div>
+                </center>
+                <br>
                 {% if posts %}
                     {% for post in posts %}
                         <div class="card mb-4 mb-lg-0">
@@ -82,21 +92,21 @@
                                 </div>
                             </div>
                             <div class="card-footer">Club: {{ post.in_club.name }}, Created at: {{ post.created_at }}</div>
-                            <br>
-                        {% endfor %}
-                    {% else %}
-                        <div class="card mb-4 mb-lg-0">
-                            <div class="mb-4">
-                                <div class="p-4">
-                                    <div class="card-body p-0">
-                                        <p>No posts yet...</p>
-                                    </div>
+                        </div>
+                        <br>
+                    {% endfor %}
+                {% else %}
+                    <div class="card mb-4 mb-lg-0">
+                        <div class="mb-4">
+                            <div class="p-4">
+                                <div class="card-body p-0">
+                                    <p>No posts yet...</p>
                                 </div>
                             </div>
-                            <br>
                         </div>
-                    {% endif %}
-                </div>
+                        <br>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
