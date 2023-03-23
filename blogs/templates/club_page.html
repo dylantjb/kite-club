@@ -49,12 +49,15 @@
                     <div class="collapse" id="admins-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                         {% for admin in club.admins.all %}
-                                <li class="nav-item">
-                                    <a class="nav-link text-white rounded" href="{% url 'profile' admin.id %}" aria-current="page" style="width: 100%;">
-                                        {{admin.username}}
-                                    </a>
-                                </li>
-                                {% endfor %}
+                            <li class="nav-item ">
+                                <a class="nav-link text-white border-dark rounded mx-2 d-flex align-items-center" href="{% url 'profile' admin.id %}" aria-current="page" style="width: 100%;">
+                                  <img src="{{ admin.mini_gravatar }}"
+                                       alt="gravatar"
+                                       class="rounded-circle img-fluid mr-2">
+                                  <span>{{ admin.username }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
                         </ul>
                     </div>
                 </li>
@@ -66,8 +69,11 @@
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             {% for member in club.members.all %}
                             <li class="nav-item ">
-                                <a class="nav-link text-white border-dark rounded mx-2 " href="{% url 'profile' member.id %}" aria-current="page" style="width: 100%;">
-                                    {{member.username }}
+                                <a class="nav-link text-white border-dark rounded mx-2 d-flex align-items-center" href="{% url 'profile' member.id %}" aria-current="page" style="width: 100%;">
+                                  <img src="{{ member.mini_gravatar }}"
+                                       alt="gravatar"
+                                       class="rounded-circle img-fluid mr-2">
+                                  <span>{{ member.username }}</span>
                                 </a>
                             </li>
                         {% endfor %}

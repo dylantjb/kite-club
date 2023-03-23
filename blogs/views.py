@@ -99,7 +99,8 @@ def profile(request, user_id):
         user = User.objects.get(id=user_id)
     except ObjectDoesNotExist:
         raise Http404
-    return render(request, 'profile.html', {'user': user, 'pending': pending_requests_count(request.user)})
+    user_posts = [post for post in Post.objects.all() if request.user == post.author]
+    return render(request, 'profile.html', {'user': user, 'posts': user_posts, 'pending': pending_requests_count(request.user)})
 
 @login_prohibited
 def sign_up(request):
@@ -128,8 +129,6 @@ def log_in(request):
                 return redirect('home')
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     return render(request, 'log_in.html', {'form': LogInForm()})
-
-
 
 @login_required
 def log_out(request):
@@ -199,12 +198,6 @@ def attend_event(request, event_id):
 def club_list(request):
     clubs = Club.objects.all()
     return render(request, 'club_list.html', {'clubs': clubs, 'pending': pending_requests_count(request.user)})
-
-@login_required
-def joined_club_list(request, user_id):
-    user = User.objects.get(id=user_id)
-    clubs = Club.objects.filter(member_of = user)
-    return render(request, 'club_list.html', {'clubs': clubs})
 
 @login_required
 def club(request, club_id):
@@ -380,6 +373,20 @@ def delete_club(request, club_id):
     if request.method == "POST":
         club.delete()
     return redirect("club_list")
+
+@login_required
+def delete_user(request):
+    if request.method == "POST":
+        password = request.POST.get('deleteAccountPassword')
+        user = authenticate(username=request.user.username, password=password)
+        if user:
+            request.user.delete()
+            messages.success(request, 'Your account has been deleted.')
+            return log_out(request)
+        else:
+            messages.error(request, "Invalid password.")
+            return redirect("account_details")
+    return redirect("home")
 
 # @login_required
 # def add_comment(request, post_id):

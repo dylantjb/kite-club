@@ -56,6 +56,7 @@ urlpatterns = [
     path(
         "accounts/change-password/", views.ChangePasswordView.as_view(), name="change_password"
     ),
+    path("accounts/account-details/delete", views.delete_user, name="delete_user"),
     # path("<username>/", views.profile, name = 'profile'),
     #BOOKS
     path("featured_book/<int:club_id>", views.featured_book, name="featured_book"),

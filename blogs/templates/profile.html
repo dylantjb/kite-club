@@ -71,23 +71,31 @@
                 </div>
             </div>
             <div class="col-lg-8">
-                <div class="card mb-4 mb-lg-0">
-                    <div class="mb-4">
-                        <div class="p-4">
-                            <div class="card-body p-0">
-                                <h4 class="font-italic mb-2">Posts</h4>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                                    ex
-                                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                    deserunt
-                                    mollit anim id est laborum.
-                                </p>
+                {% if posts %}
+                    {% for post in posts %}
+                        <div class="card mb-4 mb-lg-0">
+                            <div class="mb-4">
+                                <div class="p-4">
+                                    <div class="card-body p-0">
+                                        <p>{{ post.text }}</p>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="card-footer">Created at: {{ post.created_at }}, Club: {{ post.in_club }}</div>
+                            <br>
+                        {% endfor %}
+                    {% else %}
+                        <div class="card mb-4 mb-lg-0">
+                            <div class="mb-4">
+                                <div class="p-4">
+                                    <div class="card-body p-0">
+                                        <p>No posts yet...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
