@@ -73,7 +73,7 @@ class Club(models.Model):
     theme = models.CharField(max_length = 50, blank = True)
     book = models.ForeignKey(FeaturedBook, on_delete=models.CASCADE, null=True, blank=True)
 
-
+    
 class Post(models.Model):
     """Posts by users in a given club."""
 

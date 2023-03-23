@@ -13,8 +13,6 @@ from django.urls import reverse_lazy
 from django.conf import settings
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator, EmptyPage
-
 
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm, BookForm
 from .models import Club, User, Post, Book, Event, Comments
@@ -294,10 +292,10 @@ def featured_book(request, club_id):
     if request.method == 'POST':
         form = BookForm(request.POST)
         if form.is_valid():
-            
+
             featured_book = form.save(request.user)
             club.book = featured_book
-            
+
             club.save()
             messages.add_message(request, messages.SUCCESS, "Added featured book.")
             return redirect('show_club', club_id=club_id)
@@ -308,7 +306,7 @@ def featured_book(request, club_id):
             'club': club,
             'pending': pending_requests_count(request.user)
         })
-            
+
 
 @login_required
 def promote_admin(request, club_id, user_id):
@@ -396,3 +394,17 @@ def delete_user(request):
 #             if form.is_valid():
 #                 text = form.cleaned_data.get('
 
+def searchbar(request, search_string):
+    club_name = search_string[6:]
+
+    try:
+        print(club_name)
+        club = Club.objects.filter(name = club_name).first()
+        print(club)
+        club_id = club.id
+        print(club_id)
+        return redirect('club_dashboard', club.id)
+    except:
+        messages.error(request, "Sorry we cant find this club. ")
+
+    return redirect('user_dashboard', club.id)

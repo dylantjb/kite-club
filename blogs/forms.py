@@ -2,11 +2,7 @@ from django import forms
 from django.core.validators import RegexValidator
 
 from .models import User, Club, Post, Event, Comments, FeaturedBook
-
-
 from django.forms.widgets import DateInput, TimeInput
-from bootstrap_modal_forms.forms import BSModalModelForm
-
 
 class LogInForm(forms.Form):
     username = forms.CharField(label='Username')
@@ -155,13 +151,13 @@ class EventForm(forms.ModelForm):
         )
         return event
 
-    
+
 class BookForm(forms.ModelForm):
     class Meta:
         """Form options."""
         model = FeaturedBook
         fields = ['book_title', 'book_author']
-        
+
     def save(self, user):
         super().save(commit = False)
         featured_book = FeaturedBook.objects.create(
@@ -170,4 +166,3 @@ class BookForm(forms.ModelForm):
             curator = user
         )
         return featured_book
-        
