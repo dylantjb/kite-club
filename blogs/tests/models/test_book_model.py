@@ -1,13 +1,13 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from blogs.models import books
+from blogs.models import Book
 
 class BookModelTestCase(TestCase):
     """Unit tests of the book model"""
 
     def setUp(self):
-        self.books = books.objects.create(
+        self.books = Book.objects.create(
             isbn = "978-0547928202",
             book_title = "The Hobbit",
             book_author = "J.R.R Tolkien",
