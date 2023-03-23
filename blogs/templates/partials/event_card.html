@@ -16,7 +16,7 @@
                 <div class="h6 text-muted mb-0">Online meeting link:</div>
                 <div class="h7 fw-semibold mb-2">{{ event.eventLink}}</div>
             
-        {% endif %}
+            {% endif %}
         </li>
        
         <div class="  border-bottom "></div>
@@ -27,15 +27,18 @@
             <div class="h7 fw-semibold mb-2">Between {{ event.startTime }} and {{event.endTime}}.</div>
         </li>
         {% if current_user != club.owner %}
-        <li class="list-group-item">
-            <div class=" mt-3 border-bottom mb-3"></div>
-            
-            <a href="{% url 'attend_events' event.id %}" class="d-flex mb-3 btn btn-secondary" >
-                <svg class=" me-2" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
-                <span class="fs-5 fw-semibold">Attend</span>
-                {% comment %} <span class="pending">{{club.pending_members.count}} </span>  {% endcomment %}
-            </a>
-        </li>
+            <li class="list-group-item">
+                <div class=" mt-3 border-bottom mb-3"></div>
+        
+                <a href="{% url 'attend_events' event.id %}" class="d-flex mb-3 btn btn-secondary d-flex justify-content-center" >
+                    {% if current_user in event.attendees.all %}
+                    <span class="fs-5 fw-semibold text-white ">Cancel</span>
+                    {% else %}
+                    <span class="fs-5 fw-semibold text-white ">Attend</span>
+                    {% endif %}
+                    
+                </a>
+            </li>
         {% endif %}
         <div class="  border-bottom "></div>
         <li class="list-group-item">

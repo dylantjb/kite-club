@@ -174,20 +174,12 @@ def attend_event(request, event_id):
     event = Event.objects.get(id=event_id)
     club = event.club
     # club = Club.objects.get(id=event.club.id)
-    if request.user in (club.members.all(), club.admins.all()):
+    if request.user in club.members.all() or request.user in club.admins.all():
         if request.user not in event.attendees.all():
             event.attendees.add(request.user)
         else:
             event.attendees.remove(request.user)
     return redirect('show_club', club_id = club.id)
-
-# @login_required
-# def unattend_event(request, event_id):
-#     event = Event.objects.get(id=event_id)
-#     club = event.club
-#     if request.user in event.attendees.all():
-#         event.attendees.remove(request.user)
-#     return redirect('show_club', club_id = club.id)
 
 @login_required
 def add_comment(request, post_id):
@@ -403,16 +395,6 @@ def delete_user(request):
             messages.error(request, "Invalid password.")
             return redirect("account_details")
     return redirect("home")
-
-# @login_required
-# def add_comment(request, post_id):
-#     post = Post.objects.get(id=post_id)
-#     if request.method == 'POST':
-#         if request.user.is_authenticated:
-#             current_user = request.user
-#             form = CommentForm(request.POST)
-#             if form.is_valid():
-#                 text = form.cleaned_data.get('
 
 def searchbar(request, search_string):
     club_name = search_string[6:]

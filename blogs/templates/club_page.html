@@ -223,8 +223,8 @@
                     {%include 'partials/event_card.html' with event=event club=club current_user=current_user%} 
                 {% endfor %}
             {% else %}
-                <div class="card rounded">
-                    <h3 class="d-flex justify-content-center text-muted"> No events yet </h3>
+                <div class="card rounded p-2">
+                    <h3 class="d-flex justify-content-center text-muted"> No events yet. Owner will create one to discuss the featured book</h3>
                 </div>
             {% endif %}
             {% comment %} <div class="card " >
