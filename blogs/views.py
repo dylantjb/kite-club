@@ -381,13 +381,13 @@ def delete_club(request, club_id):
         club.delete()
     return redirect("club_list")
 
-@login_required
-def add_comment(request, post_id):
-    post = Post.objects.get(id=post_id)
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            current_user = request.user
-            form = CommentForm(request.POST)
-            if form.is_valid():
-                text = form.cleaned_data.get('
+# @login_required
+# def add_comment(request, post_id):
+#     post = Post.objects.get(id=post_id)
+#     if request.method == 'POST':
+#         if request.user.is_authenticated:
+#             current_user = request.user
+#             form = CommentForm(request.POST)
+#             if form.is_valid():
+#                 text = form.cleaned_data.get('
 
