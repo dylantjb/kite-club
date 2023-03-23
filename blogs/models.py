@@ -21,7 +21,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length = 50, blank = False)
     email = models.EmailField(unique = True, blank = False)
     bio = models.CharField(max_length = 520, blank = True)
-    favourite_genre = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"))
+    favourite_genre = models.CharField(max_length = 2, choices = get_genres(), default=("NO", "None"), blank = True)
 
     class Meta:
         constraints = [
@@ -182,6 +182,12 @@ class Post(models.Model):
 
         ordering = ['-created_at']
 
+class Comments(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField(max_length = 280)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
 class Event(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='upcoming_events')
@@ -200,7 +206,7 @@ class Event(models.Model):
         through_fields=('event', 'user'),
         related_name='upcoming_events'
     )
-    
+
 class AttendEvent(models.Model):
     class Meta:
         unique_together = ('event', 'user')

@@ -1,6 +1,8 @@
 from django import forms
 from django.core.validators import RegexValidator
-from .models import User, Club, Post, Event, FeaturedBook
+
+from .models import User, Club, Post, Event, Comments, FeaturedBook
+
 
 from django.forms.widgets import DateInput, TimeInput
 from bootstrap_modal_forms.forms import BSModalModelForm
@@ -89,6 +91,15 @@ class PostForm(forms.ModelForm):
         )
         return post
 
+class CommentForm(forms.ModelForm):
+    text = forms.CharField(
+        widget = forms.CharField(widget = forms.Textarea(attrs = {'placeholder': 'Add a comment'}), label = '')
+    )
+
+    class Meta:
+        model = Comments
+        fields = ['text']
+
 class EventForm(forms.ModelForm):
     """Form to create or update an event"""
     # address = forms.CharField(label='Address', widget=forms.TextInput(attrs={'placeholder': 'Optional'}))
@@ -104,7 +115,7 @@ class EventForm(forms.ModelForm):
             'startTime': forms.TimeInput(attrs={'type': 'time'}),
             'endTime': forms.TimeInput(attrs={'type': 'time'})
         }
-        
+
     def clean(self):
         cleaned_data = super().clean()
 
@@ -140,6 +151,7 @@ class EventForm(forms.ModelForm):
             eventLink = self.cleaned_data.get('eventLink'),
         )
         return event
+
     
 class BookForm(forms.ModelForm):
     class Meta:

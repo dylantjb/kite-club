@@ -1,43 +1,52 @@
-{% extends 'base.html'%}
-{% block body_credits%}
-
-{%include 'partials/navbar.html' with pending=pending%} 
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                
-                <h1>All clubs</h1>
-
-                <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
-                <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
-
-                <table class="table table-hover " id="club_table">
-                    <thead class="thead-dark mb-0">
+{% extends 'base_content.html' %}
+{% block content %}
+    <script>
+      var originalData;
+      $(document).ready(function () {
+        $('#clubList').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+        originalData = $('#clubList').DataTable().rows().data().toArray();
+      });
+    </script>
+    <div style="margin:30px; margin-bottom: 150px;">
+        <div class="container" style="background-color: #f2f2f2; padding: 20px;">
+            Admin = <i class="fas fa-shield-alt"></i>
+            <br>
+            <input type="checkbox" id="member-filter" onchange="applyMemberFilter()">
+            Show my clubs only
+            <br>
+            <br>
+            <table id="clubList"
+                   class="table table-striped table-bordered table-sm"
+                   cellspacing="0"
+                   width="100%">
+                <thead>
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Reading Theme</th>
+                        <th class="th-sm">Name</th>
+                        <th class="th-sm">Reading Theme</th>
+                        <th class="th-sm">Members Count</th>
+                        <th class="th-sm">Club Owner</th>
                     </tr>
-                    </thead>
-                    <tbody>
-                        {% for cluby in clubs %}
-                       
-                            <tr class="table-active">
-                                <td><a href="{% url 'show_club' cluby.id %}" class="btn btn-success btn-outline-warning ">{{ cluby.name}}</a></td>
-                                <td>{{ cluby.theme }}</td>
-                                <td>{{ cluby.members.count }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <script type="text/javascript">
-                    $(document).ready(() => {
-                      new simpleDatatables.DataTable('#club_table', {
-                        "columns": [{select: 2, sortable: false}]
-                      });
-                    });
-                  </script> 
-            </div>
+                </thead>
+                <tbody>
+                    {% for club in clubs %}
+                        <tr class="table-active">
+                            <td>
+                                <a href="{% url 'show_club' club.id %}" class=>{{ club.name }}</a>
+                                {% if request.user.id == club.owner.id %}<i class="fas fa-shield-alt"></i>{% endif %}
+                                {% for admin in club.admin.all %}
+                                    {% if request.user.id == admin.id %}
+                                        <i class="fas fa-shield-alt"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ club.theme }}</td>
+                            <td>{{ club.members.count }}</td>
+                            <td>{{ club.owner }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-
 {% endblock %}

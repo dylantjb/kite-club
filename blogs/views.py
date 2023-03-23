@@ -16,12 +16,11 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage
 
+
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm, BookForm
-from .models import Club, User, Post, Book, Event
+from .models import Club, User, Post, Book, Event, Comments
+
 from .helpers import login_prohibited, active_count
-
-from bootstrap_modal_forms.generic import BSModalCreateView
-
 
 from random import randint
 
@@ -154,9 +153,9 @@ def create_event(request, club_id):
         })
     else:
         return redirect('show_club', club_id)
-        
-    
-@login_required  
+
+
+@login_required
 def attend_event(request, event_id):
     # club = Club.objects.get(id=club_id)
     event = Event.objects.get(id=event_id)
@@ -169,14 +168,14 @@ def attend_event(request, event_id):
             event.attendees.remove(request.user)
     return redirect('show_club', club_id = club.id)
 
-# @login_required      
+# @login_required
 # def unattend_event(request, event_id):
 #     event = Event.objects.get(id=event_id)
 #     club = event.club
 #     if request.user in event.attendees.all():
 #         event.attendees.remove(request.user)
 #     return redirect('show_club', club_id = club.id)
-     
+
 
 @login_required
 def club_list(request):
@@ -193,8 +192,8 @@ def joined_club_list(request, user_id):
 def club(request, club_id):
     try:
         club = Club.objects.get(id=club_id)
-        posts = Post.objects.filter(in_club = club)
-        events = Event.objects.filter(club = club)
+        posts = Post.objects.filter(in_club=club).prefetch_related('comments')
+        events = Event.objects.filter(club=club)
     except ObjectDoesNotExist:
         return redirect('club_list')
     else:
@@ -207,7 +206,7 @@ def club(request, club_id):
                     post = Post.objects.create(author=current_user, text=text, in_club=club)
                     return redirect('show_club', club_id)
                 else:
-                    return render(request, 'club_page.html', {'club': club, 'form': form, 'post': post})
+                    return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts})
             else:
                 return redirect('log_in')
         form = PostForm()
@@ -218,19 +217,19 @@ def club(request, club_id):
             is_member = True
         if request.user in club.pending_members.all():
             applied = True
-            return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied' : applied, 'is_member' : is_member, 'pending': pending_requests_count(request.user)})
+            return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied': applied, 'is_member': is_member, 'pending': pending_requests_count(request.user)})
         return render(request, 'club_page.html', {'club': club,
-                                                  'events': events, 
-                                                  'form': form, 
-                                                  'posts': posts, 
-                                                  'applied' : applied, 
-                                                  'is_member' : is_member,
+                                                  'events': events,
+                                                  'form': form,
+                                                  'posts': posts,
+                                                  'applied': applied,
+                                                  'is_member': is_member,
                                                   'current_user': request.user,
                                                   'current_book': club.book,
                                                   'active_users': active_users,
-                                                  'pending': pending_requests_count(request.user),
-                                                    })
-    
+                                                  'pending': pending_requests_count(request.user)})
+
+
 @login_required
 def join_request_club(request, club_id):
     club = Club.objects.get(id=club_id)
@@ -239,7 +238,7 @@ def join_request_club(request, club_id):
     messages.add_message(request, messages.SUCCESS, "Join request sent.")
     return redirect('show_club', club_id = club_id)
 
-        
+
 @login_required
 def cancel_request(request, club_id):
     club = Club.objects.get(id=club_id)
@@ -259,14 +258,14 @@ def admin_accept_request(request, club_id, user_id):
         raise Http404
     else:
         return redirect('show_club', club_id = club_id)
-    
+
 @login_required
 def pending_requests(request, club_id):
     club= Club.objects.get(id=club_id)
     pending = club.pending_members.all()
-    return render(request, 'pending_requests.html', {'pending':pending, 'club': club}) 
+    return render(request, 'pending_requests.html', {'pending':pending, 'club': club})
 
-    
+
 @login_required
 def all_pending_requests(request):
     pending ={}
@@ -277,9 +276,7 @@ def all_pending_requests(request):
         pending[club] = list(club.pending_members.all())
         # pending.append(club.pending_members.all())
 
-    return render(request, 'pending_all_requests.html', {'pending':pending, 'count': pending_requests_count(current_user), 'counted': counted}) 
-
-#books
+    return render(request, 'pending_all_requests.html', {'pending':pending, 'count': pending_requests_count(current_user), 'counted': counted})
 
 
 @login_required
@@ -303,3 +300,14 @@ def featured_book(request, club_id):
             'pending': pending_requests_count(request.user)
         })
             
+
+@login_required
+def add_comment(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            current_user = request.user
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                text = form.cleaned_data.get('
+

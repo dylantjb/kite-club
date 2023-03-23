@@ -18,6 +18,7 @@ class UpdateProfileFormTestCase(TestCase):
             'username': '@janedoe',
             'email': 'janedoe@example.org',
             'bio': 'My bio',
+            'favourite_genre': 'T'
         }
 
     def test_form_has_necessary_fields(self):
