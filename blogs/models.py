@@ -33,9 +33,11 @@ class User(AbstractUser):
 
     def gravatar(self, size=120):
         return Gravatar(self.email).get_image(size=size, default='mp')
+
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
         return self.gravatar(size=60)
+
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
 
@@ -70,7 +72,7 @@ class Club(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name = 'owned_clubs')
     bio = models.CharField(max_length = 500, blank = True)
     rules = models.CharField(max_length = 1000, blank = True)
-    theme = models.CharField(max_length = 50, blank = True)
+    theme = models.CharField(max_length = 2, choices = get_themes(), blank=False, default="")
     book = models.ForeignKey(FeaturedBook, on_delete=models.CASCADE, null=True, blank=True)
 
     
