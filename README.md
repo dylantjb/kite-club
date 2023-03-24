@@ -2,11 +2,11 @@
 
 ### Team members
 - Alexandru Godoroja (K20010163)
-- Tanish Kejriwal
+- Tanish Kejriwal (K20062669)
 - Timi Disu (K20041416)
 - Dylan Barker (K20001430)
 - Joshua Bebbington
-- Muhammad Jawad
+- Muhammad Jawad (K20080050)
 - Saurav Miah (K20038361)
 - Tejveer Nag
 
@@ -14,7 +14,7 @@
 The project is called `bookclub` (The Kite Club). It currently consists of a single app `clubs` where all functionality resides.
 
 ### Deployed version of the application
-The deployed version of the application can be found at *<[enter URL here](URL)>*.
+The deployed version of the application can be found at [here](https://kite-bookclub.herokuapp.com/).
 
 ### Installation instructions
 To install the software and use it in your local development environment, you must first set up and activate a local development environment.  From the root of the project:
