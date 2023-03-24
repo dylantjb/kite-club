@@ -17,25 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm, BookForm, CommentForm
 from .models import Club, User, Post, Book, Event, Comments
 
-from .helpers import login_prohibited, active_count
-
-from random import randint
-
-
-"""SETUP"""
-def pending_requests_count(user):
-    pending = []
-    for club in Club.objects.all():
-        if user in (club.owner, club.admins.all()):
-            pending.extend(club.pending_members.all())
-    return len(pending)
-
-def get_top_picks(feed_books=[]):
-    if Book.objects.all():
-        count = Book.objects.count()
-        for i in range(0,2):
-            feed_books.append(Book.objects.all()[randint(0, count - 1)])
-    return feed_books
+from .helpers import login_prohibited, active_count, pending_requests_count, get_top_picks
 
 
 
@@ -87,6 +69,7 @@ class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChange
         return reverse_lazy("home")
 
 
+
 """
 Definition of the home controller. 
 If user is authenticated, the feed view serves as the home page for the logged in user
@@ -96,9 +79,10 @@ def home(request):
         return redirect('feed')
     return render(request, 'home.html', {'form': LogInForm()})
 
+
 """
 Definition of the feed controller. 
-If user is authenticated, the feed view serves as the home page for the logged in user
+If user is authenticated, the feed view serves as the home page for the logged-in user
 """
 @login_required
 def feed(request):
@@ -113,9 +97,17 @@ def feed(request):
               }
     return render(request, 'feed.html', context)
 
+"""
+'About' view that renders a template with placeholder text relevant to the client
+"""
 def about(request):
     return render(request, 'about.html')
 
+"""
+User profile controller
+    Raises:
+        Http404: Invalid query
+"""
 @login_required
 def profile(request, user_id):
     try:
@@ -134,6 +126,10 @@ def user_profile(request):
     user_posts = [post for post in Post.objects.all() if request.user == post.author]
     return render(request, 'profile.html', {'user': user, 'posts': user_posts, 'pending': pending_requests_count(request.user)})
 
+"""
+Authentication controllers
+Sign up, Log in - handle POST requests
+"""
 @login_prohibited
 def sign_up(request):
     if request.method == 'POST':
@@ -167,6 +163,7 @@ def log_out(request):
     logout(request)
     return redirect('home')
 
+
 @login_required
 def create_club(request):
     if request.method == 'POST':
@@ -174,13 +171,17 @@ def create_club(request):
         if form.is_valid():
             club = form.save(owner=request.user)
             messages.add_message(request, messages.SUCCESS, "Club created successfully.")
-            return redirect('show_club', club_id = club.id) # should take you to the newly created club's page - not implemented yet
+            # should take you to the newly created club's page 
+            return redirect('show_club', club_id = club.id) 
         else:
             messages.add_message(request, messages.ERROR, "This club name is already taken, please choose another name.")
     else:
         form = CreateClubForm(initial = {'owner': request.user})
     return render(request, 'create_club.html', {'form': form, 'pending': pending_requests_count(request.user)})
 
+
+"""Controllers that handle POST requests
+    """
 @login_required
 def create_event(request, club_id):
     club = Club.objects.get(id=club_id)
@@ -200,21 +201,7 @@ def create_event(request, club_id):
         })
     else:
         return redirect('show_club', club_id)
-
-
-@login_required
-def attend_event(request, event_id):
-    # club = Club.objects.get(id=club_id)
-    event = Event.objects.get(id=event_id)
-    club = event.club
-    # club = Club.objects.get(id=event.club.id)
-    if request.user in club.members.all() or request.user in club.admins.all():
-        if request.user not in event.attendees.all():
-            event.attendees.add(request.user)
-        else:
-            event.attendees.remove(request.user)
-    return redirect('show_club', club_id = club.id)
-
+    
 @login_required
 def add_comment(request, post_id):
     post = Post.objects.get(id=post_id)
@@ -230,7 +217,21 @@ def add_comment(request, post_id):
     else:
         form = CommentForm()
     return redirect('show_club', club_id = club.id)
-    
+
+
+@login_required
+def attend_event(request, event_id):
+    # club = Club.objects.get(id=club_id)
+    event = Event.objects.get(id=event_id)
+    club = event.club
+    # club = Club.objects.get(id=event.club.id)
+    if request.user in club.members.all() or request.user in club.admins.all():
+        if request.user not in event.attendees.all():
+            event.attendees.add(request.user)
+        else:
+            event.attendees.remove(request.user)
+    return redirect('show_club', club_id = club.id)
+
 
 
 @login_required
@@ -282,60 +283,7 @@ def club(request, club_id):
                                                   'pending': pending_requests_count(request.user)})
 
 
-@login_required
-def join_request_club(request, club_id):
-    club = Club.objects.get(id=club_id)
-    current_user = request.user
-    club.pending_members.add(current_user)
-    messages.add_message(request, messages.SUCCESS, "Join request sent.")
-    return redirect('show_club', club_id = club_id)
 
-
-@login_required
-def cancel_request(request, club_id):
-    club = Club.objects.get(id=club_id)
-    current_user = request.user
-    club.pending_members.remove(current_user)
-    return redirect('show_club', club_id = club_id)
-
-@login_required
-def admin_accept_request(request, club_id, user_id):
-    try:
-        club = Club.objects.get(id=club_id)
-        requesting_user = User.objects.get(id=user_id)
-    except ObjectDoesNotExist as exc:
-        raise Http404 from exc
-
-    if request.user in (club.owner, club.admins.all()) and requesting_user in club.pending_members.all():
-        club.pending_members.remove(requesting_user)
-        club.members.add(requesting_user)
-    return redirect(request.META.get('HTTP_REFERER', '/'))
-
-@login_required
-def admin_decline_request(request, club_id, user_id):
-    try:
-        club = Club.objects.get(id=club_id)
-        requesting_user = User.objects.get(id=user_id)
-    except ObjectDoesNotExist as exc:
-        raise Http404 from exc
-
-    if request.user in (club.owner, club.admins.all()):
-        club.pending_members.remove(requesting_user)
-    return redirect(request.META.get('HTTP_REFERER', '/'))
-
-@login_required
-def pending_requests(request, club_id):
-    club = Club.objects.get(id=club_id)
-    pending = club.pending_members.all()
-    return render(request, 'pending_requests.html', {'pending_items':pending, 'club': club, })
-
-@login_required
-def all_pending_requests(request):
-    pending = {}
-    for club in Club.objects.all():
-        if request.user in (club.owner, club.admins.all()):
-            pending.update({club: club.pending_members})
-    return render(request, 'pending_all_requests.html', {'pending_members': pending, 'pending': pending_requests_count(request.user)})
 
 
 @login_required
@@ -359,7 +307,13 @@ def featured_book(request, club_id):
             'pending': pending_requests_count(request.user)
         })
 
-
+"""
+Club management controllers:
+    - Enable owner promotes/demotes/kicks out club admins and members;
+    - Members can leave a club. Allow owners to delete their own clubs;
+    - Owners can accept/decline join requests
+    - Members create/cancel join requests  
+"""
 @login_required
 def promote_admin(request, club_id, user_id):
     club = get_object_or_404(Club, id=club_id)
@@ -444,6 +398,61 @@ def leave_club(request, club_id):
     elif request.user in club.admins.all():
         club.admins.remove(request.user)
     return redirect("club_page", club_id)
+
+@login_required
+def join_request_club(request, club_id):
+    club = Club.objects.get(id=club_id)
+    current_user = request.user
+    club.pending_members.add(current_user)
+    messages.add_message(request, messages.SUCCESS, "Join request sent.")
+    return redirect('show_club', club_id = club_id)
+
+
+@login_required
+def cancel_request(request, club_id):
+    club = Club.objects.get(id=club_id)
+    current_user = request.user
+    club.pending_members.remove(current_user)
+    return redirect('show_club', club_id = club_id)
+
+@login_required
+def admin_accept_request(request, club_id, user_id):
+    try:
+        club = Club.objects.get(id=club_id)
+        requesting_user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist as exc:
+        raise Http404 from exc
+
+    if request.user in (club.owner, club.admins.all()) and requesting_user in club.pending_members.all():
+        club.pending_members.remove(requesting_user)
+        club.members.add(requesting_user)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+@login_required
+def admin_decline_request(request, club_id, user_id):
+    try:
+        club = Club.objects.get(id=club_id)
+        requesting_user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist as exc:
+        raise Http404 from exc
+
+    if request.user in (club.owner, club.admins.all()):
+        club.pending_members.remove(requesting_user)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+@login_required
+def pending_requests(request, club_id):
+    club = Club.objects.get(id=club_id)
+    pending = club.pending_members.all()
+    return render(request, 'pending_requests.html', {'pending_items':pending, 'club': club, })
+
+@login_required
+def all_pending_requests(request):
+    pending = {}
+    for club in Club.objects.all():
+        if request.user in (club.owner, club.admins.all()):
+            pending.update({club: club.pending_members})
+    return render(request, 'pending_all_requests.html', {'pending_members': pending, 'pending': pending_requests_count(request.user)})
 
 
 """
