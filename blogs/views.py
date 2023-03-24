@@ -279,33 +279,39 @@ def admin_accept_request(request, club_id, user_id):
     try:
         club = Club.objects.get(id=club_id)
         requesting_user = User.objects.get(id=user_id)
-        if request.user == club.owner and requesting_user in club.pending_members.all():
-            club.pending_members.remove(requesting_user)
-            club.members.add(requesting_user)
-    except ObjectDoesNotExist:
-        raise Http404
-    else:
-        return redirect('show_club', club_id = club_id)
+    except ObjectDoesNotExist as exc:
+        raise Http404 from exc
+
+    if request.user in (club.owner, club.admins.all()) and requesting_user in club.pending_members.all():
+        club.pending_members.remove(requesting_user)
+        club.members.add(requesting_user)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+@login_required
+def admin_decline_request(request, club_id, user_id):
+    try:
+        club = Club.objects.get(id=club_id)
+        requesting_user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist as exc:
+        raise Http404 from exc
+
+    if request.user in (club.owner, club.admins.all()):
+        club.pending_members.remove(requesting_user)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 @login_required
 def pending_requests(request, club_id):
-    club= Club.objects.get(id=club_id)
+    club = Club.objects.get(id=club_id)
     pending = club.pending_members.all()
     return render(request, 'pending_requests.html', {'pending':pending, 'club': club})
 
-
 @login_required
 def all_pending_requests(request):
-    pending ={}
-    counted = 0
-    current_user = request.user
-    clubs = Club.objects.filter(owner = current_user)
-    for club in clubs:
-        pending[club] = list(club.pending_members.all())
-        # pending.append(club.pending_members.all())
-
-    return render(request, 'pending_all_requests.html', {'pending':pending, 'count': pending_requests_count(current_user), 'counted': counted})
-
+    pending = {}
+    for club in Club.objects.all():
+        if request.user in (club.owner, club.admins.all()):
+            pending.update({club: club.pending_members})
+    return render(request, 'pending_all_requests.html', {'pending': pending})
 
 @login_required
 def featured_book(request, club_id):

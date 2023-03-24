@@ -37,6 +37,7 @@ urlpatterns = [
     path('pending-users/<int:club_id>', views.pending_requests, name = 'pending_requests'),
     path('pending-users', views.all_pending_requests, name = 'all_pending_requests'),
     path('accept-request/<int:club_id>/<int:user_id>', views.admin_accept_request, name = 'admin_accept_request'),
+    path('decline-request/<int:club_id>/<int:user_id>', views.admin_decline_request, name = 'admin_decline_request'),
     # club actions
     path('club/<int:club_id>/promote_admin/<int:user_id>/', views.promote_admin, name='promote_admin'),
     path('club/<int:club_id>/promote_user/<int:user_id>/', views.promote_user, name='promote_user'),

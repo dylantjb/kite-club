@@ -1,15 +1,42 @@
 {% extends 'base.html' %}
 {% block body_credits %}
-    <h1> Pending requests - placeholder {{count}} {{counted}} </h1>
-    {% for club_item in pending.keys %}
-        <tr class="table-active">
-            <div> In club: {{club_item.name}} </div>
-            {% for member in pending.club_item %}
-
-                <td><a href="{% url 'profile' member.id%}">{{member.full_name}}
-                <td><a href="{% url 'admin_accept_request' club.id member.id%}" class="btn btn-primary ">Accept</a></td>
-            {% endfor %}
-            
-        </tr>
+    {% include 'partials/navbar.html' %}
+    {% for club, users in pending.items %}
+        <div style="margin-top: 10px;">
+            <div class="container" style="background-color: #f2f2f2; padding: 20px;">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-4">
+                        <h5>Club Name</h5>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <h5>Username</h5>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <h5>Actions</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for user in users.all %}
+            <div>
+                <div class="container" style="background-color: #f2f2f2; padding: 20px;">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-md-4">
+                            <p class="mb-0">{{ club.name }}</p>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <a href="{% url 'profile' user.id %}">{{ user.get_username }}</a>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <a href="{% url 'admin_accept_request' club.id user.id %}"
+                               class="btn btn-primary">Accept</a>
+                            <a href="{% url 'admin_decline_request' club.id user.id %}"
+                               class="btn btn-primary">Decline</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     {% endfor %}
+    {% include 'partials/footer.html' %}
 {% endblock body_credits %}
