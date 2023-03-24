@@ -45,30 +45,24 @@ urlpatterns = [
     path('club/<int:club_id>/demote_admin/<int:user_id>/', views.demote_admin, name='demote_admin'),
     path('club/<int:club_id>/kick_user/<int:user_id>/', views.kick_user, name='kick_user'),
     path('club/<int:club_id>/delete_club', views.delete_club, name='delete_club'),
+    path('leave_club/<int:club_id>', views.leave_club, name = 'leave_club'),
 
     #events
     path('create_event/<int:club_id>', views.create_event, name='create_event'),
     path('attend_event/<int:event_id>', views.attend_event, name='attend_events'),
-    # path('unattend_event/<int:event_id>', views.unattend_event, name='unattend_events'),
-    #posts
+
     #comments
     path('comment/<int:post_id>', views.add_comment, name='add_comment'),
-    # path('new_post/', views.new_post, name='new_post'),
-    #user profile
-    # path("profile/", views.profile, name="profile"),
 
     path("accounts/account-details/", views.UpdateProfileView.as_view(), name="account_details"),
     path(
         "accounts/change-password/", views.ChangePasswordView.as_view(), name="change_password"
     ),
     path("accounts/account-details/delete", views.delete_user, name="delete_user"),
-    # path("<username>/", views.profile, name = 'profile'),
+
     #BOOKS
     path("featured_book/<int:club_id>", views.featured_book, name="featured_book"),
-    # path("book_list/<int:club_id>", views.book_list, name="book_list"),
-   
-    # path("book_choice/<int:club_id>/<int:book_id>", views.book_choice, name="book_choice")
-    
+
     #search results
     path('search_results', views.search, name='search')
 ]

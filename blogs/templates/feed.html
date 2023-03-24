@@ -27,13 +27,14 @@
       <div class="card cover-card centered-card p-4 shadow">
         <h1 class="cover-heading text-center">Feed</h1>
         {% for club in clubs %}
-    <div> 
-      <h1 class="cover-heading text-white stroke">In {{club.name}}:</h1>
-      
-      {% include 'partials/posts_as_table.html' with posts=club.club_posts.all form=form%} 
-    </div>
-
-{% endfor %}
+          {% if current_user in club.admins.all or current_user in club.members.all or current_user == club.owner%}
+            <div> 
+              <h1 class="cover-heading text-white stroke">In {{club.name}}:</h1>
+          
+              {% include 'partials/posts_as_table.html' with posts=club.club_posts.all form=form%} 
+            </div>
+          {% endif %}
+        {% endfor %}
 
       </div>
     </div>

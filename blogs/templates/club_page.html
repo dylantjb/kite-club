@@ -146,6 +146,7 @@
                         </div>
                         <div class="col-4 ">
                             <div class="card shadow book-bkg">
+                                {% if current_book %}
                                 <div class="p-3">
                                     <h3 class="card-title text-center">{{ current_book.book_title }}</h3>
                                     <h5 class="card-title text-center font-italic font-weight-light">
@@ -159,9 +160,22 @@
                                     <h5 class="card-title text-muted">
                                         {{ current_book.curator }}
                                     </h5>
-                                    <a href="{% url 'featured_book' club.id %}"
-                                       class="btn btn-primary d-flex justify-content-center p-1">Choose book</a>
+                                
                                 </div>
+                                {% else %}
+                                <div class="card-body text-center align-items-baseline">
+                                    <h5 class="card-title">
+                                        No featured book chosen yet
+                                    </h5>
+                                
+                                </div>
+
+                                {% endif %}
+                                    {% if current_user in club.admins.all or current_user in club.members.all or current_user == club.owner%}
+                                        <a href="{% url 'featured_book' club.id %}"
+                                            class="btn btn-primary d-flex justify-content-center p-1 m-2">Choose book</a>
+                                    {% endif %}
+                
                             </div>
                             
                         </div>
@@ -195,7 +209,9 @@
                     </div>
                 </div>
                 <div class="mx-5">
-                    {% include 'partials/posts_as_table.html' with posts=posts %}
+                    {% if current_user in club.admins.all or current_user in club.members.all or current_user == club.owner%}
+                        {% include 'partials/posts_as_table.html' with posts=posts %}
+                    {% endif %}
                 </div>
             </div>
 <!--============================================================EVENTS SIDEBAR===========================================================================-->
@@ -205,14 +221,16 @@
                 <a href="{% url 'create_event' club.id %}" class="btn btn-secondary d-flex justify-content-center mb-3">Create an event</a>
             </div>
             {% endif %}
-            {% if events.count > 0 %}
-                {% for event in events %}
-                    {%include 'partials/event_card.html' with event=event club=club current_user=current_user%} 
-                {% endfor %}
-            {% else %}
-                <div class="card rounded p-2">
-                    <h3 class="d-flex justify-content-center text-muted"> No events yet. Owner will create one to discuss the featured book</h3>
-                </div>
+            {% if current_user in club.admins.all or current_user in club.members.all or current_user == club.owner%}
+                {% if events.count > 0 %}
+                    {% for event in events %}
+                        {%include 'partials/event_card.html' with event=event club=club current_user=current_user%} 
+                    {% endfor %}
+                {% else %}
+                    <div class="card rounded p-2">
+                        <h3 class="d-flex justify-content-center text-muted"> No events yet. Owner will create one to discuss the featured book</h3>
+                    </div>
+                {% endif %}
             {% endif %}
         
             </div>

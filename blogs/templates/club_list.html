@@ -42,7 +42,7 @@
                                     {% if request.user.id == admin.id %}<i class="fas fa-shield-alt"></i>{% endif %}
                                 {% endfor %}
                             </td>
-                            <td>{{ club }}</td>
+                            <td>{{ club.get_theme_display }}</td>
                             <td>{{ club.members.count }}</td>
                             <td>{{ club.owner }}</td>
                         </tr>
