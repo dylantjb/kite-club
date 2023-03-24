@@ -24,11 +24,10 @@ from random import randint
 
 """SETUP"""
 def pending_requests_count(user):
-    pending =[]
-    clubs = Club.objects.filter(owner = user)
-    for club in clubs:
-        for p_member in club.pending_members.all():
-            pending.append(p_member)
+    pending = []
+    for club in Club.objects.all():
+        if user in (club.owner, club.admins.all()):
+            pending.extend(club.pending_members.all())
     return len(pending)
 
 class UpdateClubView(LoginRequiredMixin, UpdateView):
@@ -344,7 +343,6 @@ def promote_admin(request, club_id, user_id):
     if request.method == "POST":
         club.admins.add(request.user)
         club.admins.remove(user)
-        print(club.owner)
         club.owner = user
         club.save()
         messages.success(request, f'{user.first_name} {user.last_name} has been promoted to owner.')
