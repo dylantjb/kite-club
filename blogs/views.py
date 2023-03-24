@@ -302,7 +302,7 @@ def admin_decline_request(request, club_id, user_id):
 def pending_requests(request, club_id):
     club = Club.objects.get(id=club_id)
     pending = club.pending_members.all()
-    return render(request, 'pending_requests.html', {'pending':pending, 'club': club})
+    return render(request, 'pending_requests.html', {'pending_items':pending, 'club': club, })
 
 @login_required
 def all_pending_requests(request):
@@ -310,7 +310,7 @@ def all_pending_requests(request):
     for club in Club.objects.all():
         if request.user in (club.owner, club.admins.all()):
             pending.update({club: club.pending_members})
-    return render(request, 'pending_all_requests.html', {'pending': pending})
+    return render(request, 'pending_all_requests.html', {'pending_items': pending})
 
 @login_required
 def featured_book(request, club_id):

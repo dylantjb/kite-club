@@ -1,7 +1,5 @@
 {% extends 'base_content.html' %}
-{% block title %}
-  Club List
-{% endblock %}
+{% block title %}Club List{% endblock %}
 {% block content %}
     <script>
       var originalData;
@@ -36,7 +34,7 @@
                 </thead>
                 <tbody>
                     {% for club in clubs %}
-                        <tr class="table-active" >
+                        <tr class="table-active">
                             <td>
                                 <a href="{% url 'show_club' club.id %}" class="">{{ club.name }}</a>
                                 {% if request.user.id == club.owner.id %}<i class="fas fa-shield-alt"></i>{% endif %}
@@ -44,7 +42,7 @@
                                     {% if request.user.id == admin.id %}<i class="fas fa-shield-alt"></i>{% endif %}
                                 {% endfor %}
                             </td>
-                            <td>{{ club.theme }}</td>
+                            <td>{{ club }}</td>
                             <td>{{ club.members.count }}</td>
                             <td>{{ club.owner }}</td>
                         </tr>
