@@ -14,14 +14,23 @@
     </button>
   </div>
   {% endfor %}
-
+  <div class="container text-white stroke mt-4 p-4 shadow ">
+    <h1 class="cover-heading text-center">
+      Some reads for {{current_user.full_name}}:
+    </h1>
+    
+  </div>
+  {%include 'partials/book_top_picks.html' with random_books=random_books %} 
+  
   <div class="row">
     <div class="col-12">
-      <div class="card cover-card centered-card">
-        <h1 class="cover-heading">Feed</h1>
+      <div class="card cover-card centered-card p-4 shadow">
+        <h1 class="cover-heading text-center">Feed</h1>
         {% for club in clubs %}
     <div> 
-      {% include 'partials/posts_as_table.html' with posts=club.club_posts.all %} 
+      <h1 class="cover-heading text-white stroke">In {{club.name}}:</h1>
+      
+      {% include 'partials/posts_as_table.html' with posts=club.club_posts.all form=form%} 
     </div>
 
 {% endfor %}
@@ -30,7 +39,7 @@
     </div>
   </div>
 </div>
-{%include 'partials/book_top_picks.html' with random_books=random_books %} 
+
 
 {%endblock%}
 

@@ -31,6 +31,16 @@ def pending_requests_count(user):
             pending.append(p_member)
     return len(pending)
 
+def get_top_picks(feed_books=[]):
+    if Book.objects.all():
+        count = Book.objects.count()
+        for i in range(0,2):
+            feed_books.append(Book.objects.all()[randint(0, count - 1)])
+    return feed_books
+
+
+
+
 class UpdateClubView(LoginRequiredMixin, UpdateView):
     model = Club
     form = CreateClubForm
@@ -78,16 +88,31 @@ class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChange
         return reverse_lazy("home")
 
 
+"""
+Definition of the home controller. 
+If user is authenticated, the feed view serves as the home page for the logged in user
+"""
 def home(request):
     if request.user.is_authenticated:
-        random_books = []
-        clubs = Club.objects.all()
-        if Book.objects.all():
-            count = Book.objects.count()
-            for i in range(0,2):
-                random_books.append(Book.objects.all()[randint(0, count - 1)])
-        return render(request, 'feed.html', {'clubs': clubs, 'pending': pending_requests_count(request.user), 'random_books': random_books})
+        return redirect('feed')
     return render(request, 'home.html', {'form': LogInForm()})
+
+"""
+Definition of the feed controller. 
+If user is authenticated, the feed view serves as the home page for the logged in user
+"""
+@login_required
+def feed(request):
+    clubs = Club.objects.all()
+    form = CommentForm()
+    random_books = get_top_picks()
+    context = {'clubs': clubs, 
+               'pending': pending_requests_count(request.user), 
+               'current_user': request.user,
+               'random_books': random_books, 
+               'comment_form':form
+              }
+    return render(request, 'feed.html', context)
 
 def about(request):
     return render(request, 'about.html')
@@ -134,7 +159,7 @@ def log_in(request):
             user = authenticate(username = username, password = password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('feed')
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     return render(request, 'log_in.html', {'form': LogInForm()})
 
