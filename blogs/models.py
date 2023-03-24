@@ -36,12 +36,15 @@ class User(AbstractUser):
 
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
-        return self.gravatar(size=30)
+        return self.gravatar(size=60)
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
 
 
+"""
+Book model for book dataset loading
+"""
 class Book(models.Model):
     isbn = models.CharField(_("ISBN"),max_length=255)
     book_title = models.CharField(_("Book-Title"),max_length=255)
@@ -51,7 +54,11 @@ class Book(models.Model):
     image_url_s = models.CharField(_("Image-URL-S"),max_length=255)
     image_url_m = models.CharField(_("Image-URL-M"),max_length=255)
     image_url_l = models.CharField(_("Image-URL-L"),max_length=255)
-
+    
+    
+"""
+Book model storing user-provided books
+"""
 class FeaturedBook(models.Model):
     book_title = models.CharField(max_length=255, blank=False)
     book_author = models.CharField(max_length=255, blank=False)
@@ -76,10 +83,14 @@ class Club(models.Model):
     book = models.ForeignKey(FeaturedBook, on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
-        return self.get_theme_display()
+        return self.theme.get_theme_display()
 
 
-
+"""
+Models required for the social networking functionality:
+- Posts
+- Comments
+"""
 class Post(models.Model):
     """Posts by users in a given club."""
 
@@ -107,8 +118,10 @@ class Comments(models.Model):
     
     text = models.CharField(max_length = 280)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    
 
-
+"""Club events model"""
 class Event(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='upcoming_events')
     title = models.CharField(max_length=50, blank=False, unique=True)
