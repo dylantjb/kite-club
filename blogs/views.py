@@ -400,10 +400,18 @@ def delete_user(request):
             request.user.delete()
             messages.success(request, 'Your account has been deleted.')
             return log_out(request)
-        else:
-            messages.error(request, "Invalid password.")
-            return redirect("account_details")
+        messages.error(request, "Invalid password.")
+        return redirect("account_details")
     return redirect("home")
+
+@login_required
+def leave_club(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
+    if request.user in club.members.all():
+        club.members.remove(request.user)
+    elif request.user in club.admins.all():
+        club.admins.remove(request.user)
+    return redirect("club_page", club_id)
 
 # @login_required
 # def add_comment(request, post_id):
@@ -415,17 +423,20 @@ def delete_user(request):
 #             if form.is_valid():
 #                 text = form.cleaned_data.get('
 
-def searchbar(request, search_string):
-    club_name = search_string[6:]
 
-    try:
-        print(club_name)
-        club = Club.objects.filter(name = club_name).first()
-        print(club)
-        club_id = club.id
-        print(club_id)
-        return redirect('club_dashboard', club.id)
-    except:
-        messages.error(request, "Sorry we cant find this club. ")
+# def searchbar(request, search_string):
+#     club_name = search_string[6:]
 
-    return redirect('user_dashboard', club.id)
+#     try:
+#         print(club_name)
+#         club = Club.objects.filter(name = club_name).first()
+#         print(club)
+#         club_id = club.id
+#         print(club_id)
+#         return redirect('club_dashboard', club.id)
+#     except:
+#         messages.error(request, "Sorry we cant find this club. ")
+
+#     return redirect('user_dashboard', club.id)
+
+
