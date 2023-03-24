@@ -17,7 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import CreateClubForm, LogInForm, SignUpForm, UserForm, PostForm, EventForm, BookForm, CommentForm
 from .models import Club, User, Post, Book, Event, Comments
 
-from .helpers import login_prohibited, active_count, pending_requests_count, get_top_picks
+from .utils import login_prohibited, active_count, pending_requests_count, get_top_picks
 
 
 
