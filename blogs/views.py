@@ -184,20 +184,12 @@ def attend_event(request, event_id):
     event = Event.objects.get(id=event_id)
     club = event.club
     # club = Club.objects.get(id=event.club.id)
-    if request.user in (club.members.all(), club.admins.all()):
+    if request.user in club.members.all() or request.user in club.admins.all():
         if request.user not in event.attendees.all():
             event.attendees.add(request.user)
         else:
             event.attendees.remove(request.user)
     return redirect('show_club', club_id = club.id)
-
-# @login_required
-# def unattend_event(request, event_id):
-#     event = Event.objects.get(id=event_id)
-#     club = event.club
-#     if request.user in event.attendees.all():
-#         event.attendees.remove(request.user)
-#     return redirect('show_club', club_id = club.id)
 
 @login_required
 def add_comment(request, post_id):
@@ -253,7 +245,6 @@ def club(request, club_id):
             is_member = True
         if request.user in club.pending_members.all():
             applied = True
-            return render(request, 'club_page.html', {'club': club, 'form': form, 'posts': posts, 'applied': applied, 'is_member': is_member, 'pending': pending_requests_count(request.user)})
         return render(request, 'club_page.html', {'club': club,
                                                   'events': events,
                                                   'form': form,
@@ -414,6 +405,7 @@ def delete_user(request):
         return redirect("account_details")
     return redirect("home")
 
+
 @login_required
 def leave_club(request, club_id):
     club = get_object_or_404(Club, id=club_id)
@@ -423,15 +415,6 @@ def leave_club(request, club_id):
         club.admins.remove(request.user)
     return redirect("club_page", club_id)
 
-# @login_required
-# def add_comment(request, post_id):
-#     post = Post.objects.get(id=post_id)
-#     if request.method == 'POST':
-#         if request.user.is_authenticated:
-#             current_user = request.user
-#             form = CommentForm(request.POST)
-#             if form.is_valid():
-#                 text = form.cleaned_data.get('
 
 
 # def searchbar(request, search_string):

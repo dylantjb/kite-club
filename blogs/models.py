@@ -65,7 +65,7 @@ class Club(models.Model):
     name = models.CharField(
         max_length = 50,
         validators = [RegexValidator(
-            regex = r'^[a-zA-Z]*$',
+            regex = r'^[a-zA-Z0-9_ ]*$',
             message = 'Club name cannot contain numbers and special characters in their name.'
         )]
     )
@@ -74,6 +74,10 @@ class Club(models.Model):
     rules = models.CharField(max_length = 1000, blank = True)
     theme = models.CharField(max_length = 2, choices = get_themes(), blank=False, default="")
     book = models.ForeignKey(FeaturedBook, on_delete=models.CASCADE, null=True, blank=True)
+    
+    def __str__(self):
+        return self.get_theme_display()
+
 
 
 class Post(models.Model):

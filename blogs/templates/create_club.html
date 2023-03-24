@@ -3,15 +3,15 @@
 {% block body_credits %}
     {% include 'partials/navbar.html' with pending=pending %}
     <div class="blur">
-        <div style="margin:30px; margin-bottom: 50px;">
-            <div class="container" style="background-color: #f2f2f2; padding: 20px;">
+        <div class="container pt-5 pb-0">
+            <div class="container rounded shadow p-3" style="background-color: #f2f2f2;">
                 <center>
-                    <h3>Club Creation Form</h3>
+                    <h3>Create your own club</h3>
                 </center>
                 <form action="{% url 'create_club' %}" method="post">
                     {% csrf_token %}
                     {% include 'partials/bootstrap_form.html' %}
-                    <input class="btn btn-dark btn-lg btn-block"
+                    <input class="btn btn-dark btn-lg btn-block pb-2"
                            type="submit"
                            value="Create Club">
                 </form>

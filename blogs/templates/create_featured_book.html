@@ -1,25 +1,40 @@
 {% extends 'base_content.html' %}
+{% load static %}
 {% block body_credits %}
 {%include 'partials/navbar.html' with pending=pending%} 
 <div class="blur" style="height:100vh">
 
 
-    <div class="container pb-5 pt-3">
+    <div class="container pt-5">
+        <div class="card rounded shadow mt-5 p-3">
+    
       
         <div class="row">
-          <div class="col-12">
-            <h1 class="d-flex text-center">Add your book {{club.name}}</h1>
-            <p> Please ensure the book corresponds with the club theme</p>
-    
-            <form action="{% url 'featured_book' club.id %}" method="post">
-              {% csrf_token %}
-              {% include 'partials/bootstrap_form.html' %}
-              <input class="btn btn-dark btn-lg btn-block" type="submit" value = "Add your book">
-            </form>
+          <div class="col-sm-6">
+            <div class="card bg-dark  text-white  fw-semibold stroke">
+              <img class="card-img img-fluid " src='{% static 'images/Library.jpg' %}' alt="Card image">
+              <div class="card-img-overlay">
+                <h5 class="card-title adjust-paragraph-font">Some insights from us:</h5>
+                <p class="card-text ">Our clubs represent a space where everyone can indulge in their favourite reads. 
+                  To make this possible, please proceed to choose the club's featured book if it is agreed upon everyone else in it.
+                </p>
+                <p class="card-text adjust-paragraph-font">Enjoy reading between the clouds!</p>
+              </div>
+            </div>
           </div>
-        </div>
-
+          <div class="col-sm-6">
+              <h1 class="d-flex text-center">Add your pick for: {{club.name}}</h1>
+              <p> Please ensure the book corresponds with the club theme</p>
       
+              <form action="{% url 'featured_book' club.id %}" method="post">
+                {% csrf_token %}
+                {% include 'partials/bootstrap_form.html' %}
+                <input class="btn btn-dark btn-lg btn-block" type="submit" value = "Add your book">
+              </form>
+            </div>
+          </div>
+
+      </div>
     </div>
 
 </div>
