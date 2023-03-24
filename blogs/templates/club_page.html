@@ -103,7 +103,9 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
                                     <div class="h6 text-muted bi bi-clouds-fill"> Cloud Theme</div> 
-                                    <div class="h5">{{ club.theme }}</div>
+                                    <!--Display the theme in the human-friendly way-->
+                                    <div class="h5">{{ club.get_theme_display }}</div>
+                                    
                                 </li>
                                 <li class="list-group-item">
                                     <div class="h6 text-muted">Owned by</div>
@@ -160,20 +162,6 @@
                             
                             
                         </div> 
-                       
-                        {% comment %} <div class="card shadow p-2" style="height:100%">
-                            <img class="img-fluid card-img-top img-thumbnail " src='{% static 'images/book-placeholder.jpeg' %}' alt="Card image cap">
-                            <div class="card-body">
-                              <h5 class="card-title">Card title</h5>
-  
-                              <a href="#" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div> {% endcomment %}
-                        {% comment %} </div> {% endcomment %}
-                        {% comment %} <div class="card shadow p-2" style="height:100%">
-
-                        <img src='{% static 'images/book-placeholder.jpeg' %}' class="img-fluid rounded img-thumbnail float-right" width="50%"alt="">
-                        </div> {% endcomment %}
                     </div>
                     <div class=" mt-3 border-bottom mb-0"></div>
                     <div class="container mx-0 my-3">
