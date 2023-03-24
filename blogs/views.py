@@ -452,7 +452,7 @@ def all_pending_requests(request):
     for club in Club.objects.all():
         if request.user in (club.owner, club.admins.all()):
             pending.update({club: club.pending_members})
-    return render(request, 'pending_all_requests.html', {'pending_members': pending, 'pending': pending_requests_count(request.user)})
+    return render(request, 'pending_all_requests.html', {'pending_items': pending, 'pending': pending_requests_count(request.user)})
 
 
 """
