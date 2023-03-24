@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% block title %}Pending requests{% endblock %}
 {% block body_credits %}
     {% include 'partials/navbar.html' %}
     <div style="margin-top: 10px;">
@@ -13,7 +14,7 @@
             </div>
         </div>
     </div>
-    {% for user in pending %}
+    {% for user in pending_items %}
         <div>
             <div class="container" style="background-color: #f2f2f2; padding: 20px;">
                 <div class="row align-items-center">

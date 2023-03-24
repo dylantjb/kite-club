@@ -24,11 +24,10 @@ from random import randint
 
 """SETUP"""
 def pending_requests_count(user):
-    pending =[]
-    clubs = Club.objects.filter(owner = user)
-    for club in clubs:
-        for p_member in club.pending_members.all():
-            pending.append(p_member)
+    pending = []
+    for club in Club.objects.all():
+        if user in (club.owner, club.admins.all()):
+            pending.extend(club.pending_members.all())
     return len(pending)
 
 def get_top_picks(feed_books=[]):
@@ -328,7 +327,7 @@ def admin_decline_request(request, club_id, user_id):
 def pending_requests(request, club_id):
     club = Club.objects.get(id=club_id)
     pending = club.pending_members.all()
-    return render(request, 'pending_requests.html', {'pending':pending, 'club': club})
+    return render(request, 'pending_requests.html', {'pending_items':pending, 'club': club, })
 
 @login_required
 def all_pending_requests(request):
@@ -337,6 +336,7 @@ def all_pending_requests(request):
         if request.user in (club.owner, club.admins.all()):
             pending.update({club: club.pending_members})
     return render(request, 'pending_all_requests.html', {'pending_members': pending, 'pending': pending_requests_count(request.user)})
+
 
 @login_required
 def featured_book(request, club_id):
@@ -369,7 +369,6 @@ def promote_admin(request, club_id, user_id):
     if request.method == "POST":
         club.admins.add(request.user)
         club.admins.remove(user)
-        print(club.owner)
         club.owner = user
         club.save()
         messages.success(request, f'{user.first_name} {user.last_name} has been promoted to owner.')

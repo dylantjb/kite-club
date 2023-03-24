@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
+{% block title %}Pending requests{% endblock %}
 {% block body_credits %}
     {% include 'partials/navbar.html' %}
+
     {% for club, users in pending_members.items %}
         <div style="margin-top: 10px;">
             <div class="container" style="background-color: #f2f2f2; padding: 20px;">
@@ -14,9 +16,12 @@
                     <div class="col-12 col-md-4">
                         <h5>Actions</h5>
                     </div>
+
                 </div>
             </div>
         </div>
+    </div>
+    {% for club, users in pending_items.items %}
         {% for user in users.all %}
             <div>
                 <div class="container" style="background-color: #f2f2f2; padding: 20px;">
