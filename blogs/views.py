@@ -82,9 +82,10 @@ def home(request):
     if request.user.is_authenticated:
         random_books = []
         clubs = Club.objects.all()
-        count = Book.objects.count()
-        for i in range(0,2):
-            random_books.append(Book.objects.all()[randint(0, count - 1)])
+        if Book.objects.all():
+            count = Book.objects.count()
+            for i in range(0,2):
+                random_books.append(Book.objects.all()[randint(0, count - 1)])
         return render(request, 'feed.html', {'clubs': clubs, 'pending': pending_requests_count(request.user), 'random_books': random_books})
     return render(request, 'home.html', {'form': LogInForm()})
 
@@ -95,6 +96,15 @@ def about(request):
 def profile(request, user_id):
     try:
         user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist:
+        raise Http404
+    user_posts = [post for post in Post.objects.all() if request.user == post.author]
+    return render(request, 'profile.html', {'user': user, 'posts': user_posts, 'pending': pending_requests_count(request.user)})
+
+@login_required
+def user_profile(request):
+    try:
+        user = User.objects.get(id=request.user.id)
     except ObjectDoesNotExist:
         raise Http404
     user_posts = [post for post in Post.objects.all() if request.user == post.author]
@@ -391,22 +401,35 @@ def delete_user(request):
             request.user.delete()
             messages.success(request, 'Your account has been deleted.')
             return log_out(request)
-        else:
-            messages.error(request, "Invalid password.")
-            return redirect("account_details")
+        messages.error(request, "Invalid password.")
+        return redirect("account_details")
     return redirect("home")
 
-def searchbar(request, search_string):
-    club_name = search_string[6:]
 
-    try:
-        print(club_name)
-        club = Club.objects.filter(name = club_name).first()
-        print(club)
-        club_id = club.id
-        print(club_id)
-        return redirect('club_dashboard', club.id)
-    except:
-        messages.error(request, "Sorry we cant find this club. ")
+@login_required
+def leave_club(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
+    if request.user in club.members.all():
+        club.members.remove(request.user)
+    elif request.user in club.admins.all():
+        club.admins.remove(request.user)
+    return redirect("club_page", club_id)
 
-    return redirect('user_dashboard', club.id)
+
+
+# def searchbar(request, search_string):
+#     club_name = search_string[6:]
+
+#     try:
+#         print(club_name)
+#         club = Club.objects.filter(name = club_name).first()
+#         print(club)
+#         club_id = club.id
+#         print(club_id)
+#         return redirect('club_dashboard', club.id)
+#     except:
+#         messages.error(request, "Sorry we cant find this club. ")
+
+#     return redirect('user_dashboard', club.id)
+
+

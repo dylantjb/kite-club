@@ -36,7 +36,7 @@ class User(AbstractUser):
 
     def mini_gravatar(self):
         """Return a URL to a miniature version of the user's gravatar."""
-        return self.gravatar(size=60)
+        return self.gravatar(size=30)
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'

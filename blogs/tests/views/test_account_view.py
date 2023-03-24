@@ -46,7 +46,7 @@ class ProfileViewTest(TestCase):
             response, redirect_url, status_code=302, target_status_code=200
         )
 
-    def test_unsuccesful_profile_update(self):
+    def test_unsuccessful_profile_update(self):
         self.client.login(username=self.user.username, password="Password123")
         self.form_input["username"] = "BAD_USERNAME"
         before_count = User.objects.count()
@@ -84,7 +84,7 @@ class ProfileViewTest(TestCase):
         self.assertEqual(self.user.email, "johnsmith@example.org")
         self.assertEqual(self.user.bio, "Hello, I'm John Smith.")
 
-    def test_succesful_profile_update(self):
+    def test_successful_profile_update(self):
         self.client.login(username=self.user.username, password="Password123")
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)

@@ -5,7 +5,7 @@
          id="tab">
         <a class="nav-link"
            id="profile-tab"
-           href="{% url 'profile' request.user.id %}">Profile</a>
+           href="{% url 'user_profile' %}">Profile</a>
         <a class="nav-link {% if nbar == 'account' %}active{% endif %}"
            id="account-tab"
            href="{% if nbar == 'account' %}#{{ nbar }}{% else %}{% url 'account_details' %}{% endif %}">Settings</a>
