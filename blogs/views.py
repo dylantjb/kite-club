@@ -26,6 +26,7 @@ class UpdateClubView(LoginRequiredMixin, UpdateView):
     model = Club
     form = CreateClubForm
     template_name = "club_settings.html"
+    fields = ['name', 'theme', 'bio', 'rules']
 
     def get(self, request, club_id, *args, **kwargs):
         club = get_object_or_404(Club, id=club_id)
@@ -33,12 +34,15 @@ class UpdateClubView(LoginRequiredMixin, UpdateView):
         return self.render_to_response(
             {"request": request, "club": club, "form": form, 'pending': pending_requests_count(request.user)}, *args, **kwargs
         )
+    def get_object(self, queryset=None):
+        club_id = self.kwargs['club_id']
+        return get_object_or_404(Club, id=club_id)
 
     def get_success_url(self):
         messages.add_message(
             self.request, messages.SUCCESS, "Your club has been updated successfully!"
         )
-        return redirect("club_list") # club may be deleted
+        return reverse_lazy("club_list") # club may be deleted
 
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
@@ -397,7 +401,7 @@ def leave_club(request, club_id):
         club.members.remove(request.user)
     elif request.user in club.admins.all():
         club.admins.remove(request.user)
-    return redirect("club_page", club_id)
+    return redirect("show_club", club_id)
 
 @login_required
 def join_request_club(request, club_id):
