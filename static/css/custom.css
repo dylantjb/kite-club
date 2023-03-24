@@ -55,17 +55,7 @@
   height: 100%;
   overflow-y: scroll;
 }
-/* .bkg{
-  background-image: url('/static/images/Bg_white_modern.jpg');
-  Full height
-  height: 100%; 
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  background-size: cover;
-  position: absolute; width: 100%;
-  margin:0;
-} */
+
 .blur {
   background: rgba(255, 255, 255, 0.2); 
   backdrop-filter: blur(8px); 
@@ -279,16 +269,19 @@ box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0,
 .adjust-font{
   font-size: 12rem;
 }
+.adjust-paragraph-font{
+  font-size: 2rem;
+}
 
 h1 {
-  font-size: 5.9vw;
+  font-size: 3.2vw;
 }
-h2 {
+/* h2 {
   font-size: 3.0vh;
 }
 p {
-  font-size: 2vmin;
-}
+  font-size: 2vmin; } */
+
 
 table.dataTable thead .sorting:after,
 table.dataTable thead .sorting:before,
@@ -301,4 +294,10 @@ table.dataTable thead .sorting_desc:before,
 table.dataTable thead .sorting_desc_disabled:after,
 table.dataTable thead .sorting_desc_disabled:before {
     bottom: .5em;
+}
+
+.stroke {
+  color: rgb(255, 255, 255);
+ 
+  text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
 }
