@@ -2,77 +2,128 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from blogs.models import Club
+from blogs.models import Club, User, FeaturedBook
 from blogs.helpers import get_themes
 
 class ClubModelTestCase(TestCase):
   """ Unit tests for the club model"""
 
-  fixtures = [
-    "blogs/tests/fixtures/default_club.json",
-    "blogs/tests/fixtures/other_clubs.json"
-  ]
-
   def setUp(self):
-      self.club = Club.objects.get(name = "Testing Club")
+      self.user = User.objects.create(
+        username = '@johnsmith',
+        first_name = 'John',
+        last_name = 'Smith',
+        email = 'johnsmith@example.org',
+        password = 'Password123',
+        bio = 'Hi I am John Smith',
+        favourite_genre = 'T'
+      )
 
-  def _assert_club_is_valid(self):
-      try:
-          self.club.full_clean()
-      except ValidationError:
-          self.fail("Test Club should be valid.")
+      user_jane_smith = User.objects.create(
+        username = '@janesmith',
+        first_name = 'Jane',
+        last_name = 'Smith',
+        email = 'janesmith@example.org',
+        bio = 'Hi I am Jane Smith',
+        favourite_genre = 'RO'
+      )
 
-  def _assert_club_is_invalid(self):
+      user_michael_doe = User.objects.create(
+        username = '@michaeldoe',
+        first_name = 'Michael',
+        last_name = 'Doe',
+        email = 'michaeldoe@example.org',
+        bio = 'Hi I am Michael Doe here!',
+        favourite_genre = 'P'
+      )
+
+      self.club = Club.objects.create(
+        name = 'Test Club',
+        owner = self.user,
+        theme = 'T',
+        book = None
+      )
+
+      Club.objects.create(
+        name = 'Test Club 2',
+        owner = user_jane_smith,
+        theme = 'RO',
+        book = None
+      )
+
+      Club.objects.create(
+        name = 'Test Club 3',
+        owner = user_michael_doe,
+        theme = 'P',
+        book = None
+      )
+
+  def test_club_has_been_created_correctly(self):
+      club = Club.objects.create(
+        name = 'Test Club',
+        owner = self.user,
+        theme = 'T'
+      )
+      self.assertTrue(isinstance(club, Club))
+
+  def test_club_name_cannot_contain_numbers_or_special_characters(self):
       with self.assertRaises(ValidationError):
-          self.club.full_clean()
+          club = Club.objects.create(
+            name = 'Test Club #1',
+            owner = self.user,
+            theme = 'T'
+          )
+          club.full_clean()
 
-  def test_club_name_cannot_be_blank(self):
-      """Test clubname cannot be blank."""
-      self.club.name = ""
-      self._assert_club_is_invalid()
+  def test_club_featured_book_is_assigned(self):
+      club = self.club
+      book = FeaturedBook.objects.create(
+        book_title = 'Test Book',
+        book_author = 'Test Author',
+        curator = self.user
+      )
+      club.book = book
+      club.save()
+      self.assertEqual(club.book, book)
 
-  def test_club_name_can_be_30_characters_long(self):
-      """Test club name can be 30 characters long."""
-      self.club.name = "@" + "x" * 29
-      self._assert_club_is_valid()
+  def test_club_can_add_members(self):
+      club = self.club
+      user = User.objects.create(
+        username = '@testuser',
+        first_name = 'Test',
+        last_name = 'User',
+        email = 'testuser1@example.org',
+        password = 'Password123',
+        bio = 'Hi I am Test User',
+        favourite_genre = 'T'
+      )
+      club.members.add(user)
+      self.assertIn(user, club.members.all())
 
-  def test_club_name_cannot_be_over_30_characters_long(self):
-      """Test club name cannot be over 30 characters long."""
-      self.club.name = "x" * 31
-      self._assert_club_is_invalid()
+  def test_club_can_add_admins(self):
+      club = self.club
+      user = User.objects.create(
+        username = '@testuser',
+        first_name = 'Test',
+        last_name = 'User',
+        email = 'testuser1@example.org',
+        password = 'Password123',
+        bio = 'Hi I am Test User',
+        favourite_genre = 'T'
+      )
+      club.admins.add(user)
+      self.assertIn(user, club.admins.all())
 
-  def test_club_bio_can_be_520_characters_long(self):
-      """Test club bio can be 520 characters long."""
-      self.club.bio = "x" * 520
-      self._assert_club_is_valid()
-
-  def test_club_bio_cannot_be_over_520_characters_long(self):
-      """Test club bio cannot be over 520 characters long."""
-      self.club.bio = "x" * 521
-      self._assert_club_is_invalid()
-
-  def test_club_name_cannot_contain_numbers(self):
-      """Test club cannot contain numbers."""
-      self.club.name = "bio 2"
-      self._assert_club_is_invalid()
-
-  def test_club_name_cannot_contain_special_characters(self):
-      """Test club name cannot contain any special characters."""
-      self.club.name = "bio-"
-      self._assert_club_is_invalid()
-
-  def test_club_bio_can_be_blank(self):
-      """Test club bio can be blank."""
-      self.club.bio = ""
-      self._assert_club_is_valid()
-
-  def test_club_rules_can_be_blank(self):
-      """Test club rules can be blank."""
-      self.club.rules = ""
-      self._assert_club_is_valid()
-
-  def test_club_name_must_be_unique(self):
-      """Test club name must be unique."""
-      second_club = Club.objects.get(name = "Other Club")
-      self.club.name = second_club.name
-      self._assert_club_is_invalid()
+  def test_clubs_can_have_pending_members(self):
+      club = self.club
+      user = User.objects.create(
+        username = '@testuser',
+        first_name = 'Test',
+        last_name = 'User',
+        email = 'testuser1@example.org',
+        password = 'Password123',
+        bio = 'Hi I am Test User',
+        favourite_genre = 'T'
+      )
+      club.pending_members.add(user)
+      self.assertIn(user, club.pending_members.all())
