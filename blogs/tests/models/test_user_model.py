@@ -2,8 +2,8 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from blogs.models import User
 from blogs.helpers import get_themes
+from blogs.models import User
 
 
 class UserModelTestCase(TestCase):

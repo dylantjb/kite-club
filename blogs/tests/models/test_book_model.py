@@ -1,21 +1,22 @@
-from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.test import TestCase
 
 from blogs.models import Book
+
 
 class BookModelTestCase(TestCase):
     """Unit tests of the book model"""
 
     def setUp(self):
         self.books = Book.objects.create(
-            isbn = "978-0547928202",
-            book_title = "The Hobbit",
-            book_author = "J.R.R Tolkien",
-            year_of_publication = "1937",
-            publisher = "Houghton Mifflin Harcourt",
-            image_url_s = "http://images.example.org/hobbit_small.jpg",
-            image_url_m = "http://images.example.org/hobbit_medium.jpg",
-            image_url_l = "http://images.example.org/hobbit_large.jpg"
+            isbn="978-0547928202",
+            book_title="The Hobbit",
+            book_author="J.R.R Tolkien",
+            year_of_publication="1937",
+            publisher="Houghton Mifflin Harcourt",
+            image_url_s="http://images.example.org/hobbit_small.jpg",
+            image_url_m="http://images.example.org/hobbit_medium.jpg",
+            image_url_l="http://images.example.org/hobbit_large.jpg",
         )
 
     def _assert_book_is_valid(self):
@@ -34,9 +35,15 @@ class BookModelTestCase(TestCase):
         self.assertEqual(self.books.book_author, "J.R.R Tolkien")
         self.assertEqual(self.books.year_of_publication, "1937")
         self.assertEqual(self.books.publisher, "Houghton Mifflin Harcourt")
-        self.assertEqual(self.books.image_url_s, "http://images.example.org/hobbit_small.jpg")
-        self.assertEqual(self.books.image_url_m, "http://images.example.org/hobbit_medium.jpg")
-        self.assertEqual(self.books.image_url_l, "http://images.example.org/hobbit_large.jpg")
+        self.assertEqual(
+            self.books.image_url_s, "http://images.example.org/hobbit_small.jpg"
+        )
+        self.assertEqual(
+            self.books.image_url_m, "http://images.example.org/hobbit_medium.jpg"
+        )
+        self.assertEqual(
+            self.books.image_url_l, "http://images.example.org/hobbit_large.jpg"
+        )
 
     def test_year_of_publication_cannot_exceed_four_digits(self):
         self.books.year_of_publication = "19320"

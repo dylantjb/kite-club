@@ -1,6 +1,5 @@
-
-
 """----------------------------HELPER FUNCTIONS----------------------------------"""
+
 
 def get_genres():
     return [  # Taken from Google Books
@@ -36,11 +35,10 @@ def get_genres():
 def get_themes():
     return get_genres()[1:]
 
+
 def active_count(club):
     count = 0
     for user in club.members.all():
         if user.is_active:
-            count+=1
+            count += 1
     return count
-
-

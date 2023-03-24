@@ -1,21 +1,23 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from blogs.models import Post, User, Club
+
+from blogs.models import Club, Post, User
+
 
 class PostTest(TestCase):
     fixtures = [
         "blogs/tests/fixtures/default_club.json",
         "blogs/tests/fixtures/default_user.json",
     ]
-    
+
     def setUp(self):
         super(TestCase, self).setUp()
-        self.club = Club.objects.get(name = 'Testing Club')
-        self.user = User.objects.get(username = '@johnsmith')
+        self.club = Club.objects.get(name="Testing Club")
+        self.user = User.objects.get(username="@johnsmith")
         self.post = Post(
             author=self.user,
             text="The quick brown fox jumps over the lazy dog.",
-            in_club=self.club     
+            in_club=self.club,
         )
 
     def test_valid_message(self):
@@ -30,15 +32,15 @@ class PostTest(TestCase):
             self.post.full_clean()
 
     def test_text_must_not_be_blank(self):
-        self.post.text = ''
+        self.post.text = ""
         with self.assertRaises(ValidationError):
             self.post.full_clean()
 
     def test_text_must_not_be_overlong(self):
-        self.post.text = 'x' * 281
+        self.post.text = "x" * 281
         with self.assertRaises(ValidationError):
             self.post.full_clean()
-            
+
     def test_club_must_not_be_blank(self):
         self.post.in_club = None
         with self.assertRaises(ValidationError):
