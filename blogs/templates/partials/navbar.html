@@ -4,12 +4,13 @@
     <a class="navbar-brand" href="{% url 'home'%}">
       <img src='{% static 'logos/logo-no-background.png' %}' class="img-fluid rounded img-thumbnail" width="150" height="150" alt="">
     </a>
-    <form class="form-inline d-flex my-2 my-lg-0">
+    <form class="form-inline d-flex my-2 my-lg-0 " action="{% url 'search' %}" method="post">
+      {% csrf_token %}
       <div class="form-group has-search">
         <span class="bi bi-search form-control-feedback"></span>
-        <input type="text" class="form-control" placeholder="Search">
+        <input type="text" class="form-control" placeholder="Clubs, users..." name="searched">
       </div>
-      <script></script>
+    
 
     </form>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

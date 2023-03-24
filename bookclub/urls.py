@@ -68,5 +68,8 @@ urlpatterns = [
     # path("book_list/<int:club_id>", views.book_list, name="book_list"),
    
     # path("book_choice/<int:club_id>/<int:book_id>", views.book_choice, name="book_choice")
+    
+    #search results
+    path('search_results', views.search, name='search')
 ]
 

@@ -447,20 +447,20 @@ def leave_club(request, club_id):
     return redirect("club_page", club_id)
 
 
-
-# def searchbar(request, search_string):
-#     club_name = search_string[6:]
-
-#     try:
-#         print(club_name)
-#         club = Club.objects.filter(name = club_name).first()
-#         print(club)
-#         club_id = club.id
-#         print(club_id)
-#         return redirect('club_dashboard', club.id)
-#     except:
-#         messages.error(request, "Sorry we cant find this club. ")
-
-#     return redirect('user_dashboard', club.id)
+"""
+Controller that implements the search bar.
+Filter any CLUB or USERS that might contain the string retrieved from the post request
+"""
+def search(request):
+    if request.method =="POST":
+        searched = request.POST['searched']
+        clubs = Club.objects.filter(name__contains=searched)
+        users = User.objects.filter(username__contains=searched)
+        return render(request, 'search_results.html', { 'searched': searched,
+                                                        'clubs': clubs,
+                                                        'users': users, 
+                                                        'pending': pending_requests_count(request.user)})
+    else:
+        return render(request, 'search_results.html', {'pending': pending_requests_count(request.user)})
 
 
