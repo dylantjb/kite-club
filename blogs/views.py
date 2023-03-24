@@ -30,6 +30,16 @@ def pending_requests_count(user):
             pending.extend(club.pending_members.all())
     return len(pending)
 
+def get_top_picks(feed_books=[]):
+    if Book.objects.all():
+        count = Book.objects.count()
+        for i in range(0,2):
+            feed_books.append(Book.objects.all()[randint(0, count - 1)])
+    return feed_books
+
+
+
+
 class UpdateClubView(LoginRequiredMixin, UpdateView):
     model = Club
     form = CreateClubForm
@@ -39,7 +49,7 @@ class UpdateClubView(LoginRequiredMixin, UpdateView):
         club = get_object_or_404(Club, id=club_id)
         form = CreateClubForm(instance=club)
         return self.render_to_response(
-            {"request": request, "club": club, "form": form}, *args, **kwargs
+            {"request": request, "club": club, "form": form, 'pending': pending_requests_count(request.user)}, *args, **kwargs
         )
 
     def get_success_url(self):
@@ -77,16 +87,31 @@ class ChangePasswordView(LoginRequiredMixin, SuccessMessageMixin, PasswordChange
         return reverse_lazy("home")
 
 
+"""
+Definition of the home controller. 
+If user is authenticated, the feed view serves as the home page for the logged in user
+"""
 def home(request):
     if request.user.is_authenticated:
-        random_books = []
-        clubs = Club.objects.all()
-        if Book.objects.all():
-            count = Book.objects.count()
-            for i in range(0,2):
-                random_books.append(Book.objects.all()[randint(0, count - 1)])
-        return render(request, 'feed.html', {'clubs': clubs, 'pending': pending_requests_count(request.user), 'random_books': random_books})
+        return redirect('feed')
     return render(request, 'home.html', {'form': LogInForm()})
+
+"""
+Definition of the feed controller. 
+If user is authenticated, the feed view serves as the home page for the logged in user
+"""
+@login_required
+def feed(request):
+    clubs = Club.objects.all()
+    form = CommentForm()
+    random_books = get_top_picks()
+    context = {'clubs': clubs, 
+               'pending': pending_requests_count(request.user), 
+               'current_user': request.user,
+               'random_books': random_books, 
+               'comment_form':form
+              }
+    return render(request, 'feed.html', context)
 
 def about(request):
     return render(request, 'about.html')
@@ -133,7 +158,7 @@ def log_in(request):
             user = authenticate(username = username, password = password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('feed')
             messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
     return render(request, 'log_in.html', {'form': LogInForm()})
 
@@ -310,7 +335,8 @@ def all_pending_requests(request):
     for club in Club.objects.all():
         if request.user in (club.owner, club.admins.all()):
             pending.update({club: club.pending_members})
-    return render(request, 'pending_all_requests.html', {'pending_items': pending})
+    return render(request, 'pending_all_requests.html', {'pending_members': pending, 'pending': pending_requests_count(request.user)})
+
 
 @login_required
 def featured_book(request, club_id):
@@ -420,20 +446,20 @@ def leave_club(request, club_id):
     return redirect("club_page", club_id)
 
 
-
-# def searchbar(request, search_string):
-#     club_name = search_string[6:]
-
-#     try:
-#         print(club_name)
-#         club = Club.objects.filter(name = club_name).first()
-#         print(club)
-#         club_id = club.id
-#         print(club_id)
-#         return redirect('club_dashboard', club.id)
-#     except:
-#         messages.error(request, "Sorry we cant find this club. ")
-
-#     return redirect('user_dashboard', club.id)
+"""
+Controller that implements the search bar.
+Filter any CLUB or USERS that might contain the string retrieved from the post request
+"""
+def search(request):
+    if request.method =="POST":
+        searched = request.POST['searched']
+        clubs = Club.objects.filter(name__contains=searched)
+        users = User.objects.filter(username__contains=searched)
+        return render(request, 'search_results.html', { 'searched': searched,
+                                                        'clubs': clubs,
+                                                        'users': users, 
+                                                        'pending': pending_requests_count(request.user)})
+    else:
+        return render(request, 'search_results.html', {'pending': pending_requests_count(request.user)})
 
 

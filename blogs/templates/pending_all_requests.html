@@ -2,17 +2,21 @@
 {% block title %}Pending requests{% endblock %}
 {% block body_credits %}
     {% include 'partials/navbar.html' %}
-    <div style="margin-top: 10px;">
-        <div class="container" style="background-color: #f2f2f2; padding: 20px;">
-            <div class="row align-items-center">
-                <div class="col-12 col-md-4">
-                    <h5>Club Name</h5>
-                </div>
-                <div class="col-12 col-md-4">
-                    <h5>Username</h5>
-                </div>
-                <div class="col-12 col-md-4">
-                    <h5>Actions</h5>
+
+    {% for club, users in pending_members.items %}
+        <div style="margin-top: 10px;">
+            <div class="container" style="background-color: #f2f2f2; padding: 20px;">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-4">
+                        <h5>Club Name</h5>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <h5>Username</h5>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <h5>Actions</h5>
+                    </div>
+
                 </div>
             </div>
         </div>
