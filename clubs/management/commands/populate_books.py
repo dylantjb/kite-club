@@ -3,7 +3,7 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from blogs.models import Book, FeaturedBook
+from clubs.models import Book, FeaturedBook
 
 """ Clear all data and creates addresses """
 MODE_REFRESH = "refresh"

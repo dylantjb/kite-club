@@ -2,8 +2,8 @@ from django import forms
 from django.contrib.auth.hashers import check_password
 from django.test import TestCase
 
-from blogs.forms import SignUpForm
-from blogs.models import User
+from clubs.forms import SignUpForm
+from clubs.models import User
 
 
 class SignUpFormTestCase(TestCase):

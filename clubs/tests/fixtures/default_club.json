@@ -1,6 +1,6 @@
 [
     {
-      "model": "blogs.club",
+      "model": "clubs.club",
       "pk": 1,
       "fields": {
         "name": "Testing Club",

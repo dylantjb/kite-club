@@ -2,13 +2,13 @@ from django.contrib.auth.hashers import check_password
 from django.test import TestCase
 from django.urls import reverse
 
-from blogs.forms import SignUpForm
-from blogs.models import User
-from blogs.tests.helpers import LogInTester
+from clubs.forms import SignUpForm
+from clubs.models import User
+from clubs.tests.helpers import LogInTester
 
 
 class SignUpViewTestCase(TestCase, LogInTester):
-    fixtures = ["blogs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/default_user.json"]
 
     def setUp(self):
         self.url = reverse("sign_up")

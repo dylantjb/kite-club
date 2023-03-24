@@ -1,15 +1,15 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from blogs.models import Club, User
+from clubs.models import Club, User
 
 
 class ClubPageTest(TestCase):
     fixtures = [
-        "blogs/tests/fixtures/default_club.json",
-        "blogs/tests/fixtures/other_clubs.json",
-        "blogs/tests/fixtures/other_users.json",
-        "blogs/tests/fixtures/default_user.json",
+        "clubs/tests/fixtures/default_club.json",
+        "clubs/tests/fixtures/other_clubs.json",
+        "clubs/tests/fixtures/other_users.json",
+        "clubs/tests/fixtures/default_user.json",
     ]
 
     def setUp(self):

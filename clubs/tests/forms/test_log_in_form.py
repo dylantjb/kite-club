@@ -1,12 +1,12 @@
 from django import forms
 from django.test import TestCase
 
-from blogs.forms import LogInForm
-from blogs.models import User
+from clubs.forms import LogInForm
+from clubs.models import User
 
 
 class LogInFormTestCase(TestCase):
-    fixtures = ["blogs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/default_user.json"]
 
     def setUp(self):
         self.form_input = {"username": "@janedoe", "password": "Password123"}

@@ -3,17 +3,17 @@ from django.contrib import messages
 from django.test import TestCase
 from django.urls import reverse
 
-from blogs.forms import UserForm
-from blogs.models import User
-from blogs.tests.helpers import reverse_with_next
+from clubs.forms import UserForm
+from clubs.models import User
+from clubs.tests.helpers import reverse_with_next
 
 
 class ProfileViewTest(TestCase):
     """Test suite for the profile view."""
 
     fixtures = [
-        "blogs/tests/fixtures/default_user.json",
-        "blogs/tests/fixtures/other_users.json",
+        "clubs/tests/fixtures/default_user.json",
+        "clubs/tests/fixtures/other_users.json",
     ]
 
     def setUp(self):

@@ -5,8 +5,8 @@ from django.core.management.base import BaseCommand
 from faker import Faker
 from faker.providers import internet, person
 
-from blogs.helpers import get_genres, get_themes
-from blogs.models import Club, Post, User
+from clubs.helpers import get_genres, get_themes
+from clubs.models import Club, Post, User
 
 """ Clear all data and creates addresses """
 MODE_REFRESH = "refresh"

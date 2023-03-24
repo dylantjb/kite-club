@@ -2,16 +2,16 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from blogs.helpers import get_themes
-from blogs.models import User
+from clubs.helpers import get_themes
+from clubs.models import User
 
 
 class UserModelTestCase(TestCase):
     """Unit tests of the user model."""
 
     fixtures = [
-        "blogs/tests/fixtures/default_user.json",
-        "blogs/tests/fixtures/other_users.json",
+        "clubs/tests/fixtures/default_user.json",
+        "clubs/tests/fixtures/other_users.json",
     ]
 
     def setUp(self):

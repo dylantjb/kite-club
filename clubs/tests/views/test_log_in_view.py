@@ -3,13 +3,13 @@ from django.contrib import messages
 from django.test import TestCase
 from django.urls import reverse
 
-from blogs.forms import LogInForm
-from blogs.models import User
-from blogs.tests.helpers import LogInTester
+from clubs.forms import LogInForm
+from clubs.models import User
+from clubs.tests.helpers import LogInTester
 
 
 class LogInViewTestCase(TestCase, LogInTester):
-    fixtures = ["blogs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/default_user.json"]
 
     def setUp(self):
         self.url = reverse("log_in")

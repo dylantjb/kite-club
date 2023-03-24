@@ -1,12 +1,12 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from blogs.models import User
-from blogs.tests.helpers import LogInTester
+from clubs.models import User
+from clubs.tests.helpers import LogInTester
 
 
 class LogOutViewTestCase(TestCase, LogInTester):
-    fixtures = ["blogs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/default_user.json"]
 
     def setUp(self):
         self.url = reverse("log_out")

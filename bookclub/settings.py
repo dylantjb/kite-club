@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "blogs",
+    "clubs",
     "recommenderSystem",
     "widget_tweaks",
 ]
@@ -130,7 +130,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "blogs.User"
+AUTH_USER_MODEL = "clubs.User"
 
 # Message level tags should use Bootstrap terms
 MESSAGE_TAGS = {

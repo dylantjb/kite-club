@@ -2,8 +2,8 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from blogs.helpers import get_themes
-from blogs.models import Club, FeaturedBook, User
+from clubs.helpers import get_themes
+from clubs.models import Club, FeaturedBook, User
 
 
 class ClubModelTestCase(TestCase):

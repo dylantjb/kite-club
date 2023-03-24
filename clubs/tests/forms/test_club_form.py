@@ -3,15 +3,15 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.test import Client, TestCase
 
-from blogs.forms import CreateClubForm
-from blogs.models import Club, User
+from clubs.forms import CreateClubForm
+from clubs.models import Club, User
 
 
 # Not finished - may need to test views create_club method directly
 class ClubFormTestCase(TestCase):
     """Unit tests of the club form."""
 
-    fixtures = ["blogs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/default_user.json"]
 
     def setUp(self):
         self.user = User.objects.get(username="@johnsmith")

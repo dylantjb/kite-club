@@ -1,13 +1,13 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from blogs.models import Club, Post, User
+from clubs.models import Club, Post, User
 
 
 class PostTest(TestCase):
     fixtures = [
-        "blogs/tests/fixtures/default_club.json",
-        "blogs/tests/fixtures/default_user.json",
+        "clubs/tests/fixtures/default_club.json",
+        "clubs/tests/fixtures/default_user.json",
     ]
 
     def setUp(self):

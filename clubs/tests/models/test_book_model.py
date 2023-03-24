@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from blogs.models import Book
+from clubs.models import Book
 
 
 class BookModelTestCase(TestCase):

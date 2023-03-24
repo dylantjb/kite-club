@@ -79,7 +79,7 @@ class Migration(migrations.Migration):
                 ('text', models.CharField(max_length=280)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('in_club', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='club_posts', to='blogs.club')),
+                ('in_club', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='club_posts', to='clubs.club')),
             ],
             options={
                 'ordering': ['-created_at'],
@@ -106,15 +106,15 @@ class Migration(migrations.Migration):
                 ('startTime', models.TimeField()),
                 ('endTime', models.TimeField()),
                 ('eventLink', models.CharField(blank=True, max_length=200)),
-                ('attendees', models.ManyToManyField(related_name='upcoming_events', through='blogs.AttendEvent', to=settings.AUTH_USER_MODEL)),
-                ('club', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='upcoming_events', to='blogs.club')),
-                ('selectedBook', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='club_events', to='blogs.book')),
+                ('attendees', models.ManyToManyField(related_name='upcoming_events', through='clubs.AttendEvent', to=settings.AUTH_USER_MODEL)),
+                ('club', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='upcoming_events', to='clubs.club')),
+                ('selectedBook', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='club_events', to='clubs.book')),
             ],
         ),
         migrations.AddField(
             model_name='club',
             name='book',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='blogs.featuredbook'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='clubs.featuredbook'),
         ),
         migrations.AddField(
             model_name='club',
@@ -134,7 +134,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attendevent',
             name='event',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='attend_event', to='blogs.event'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='attend_event', to='clubs.event'),
         ),
         migrations.AddField(
             model_name='attendevent',
@@ -148,9 +148,9 @@ class Migration(migrations.Migration):
                 ('text', models.CharField(max_length=280)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='published_comments', to=settings.AUTH_USER_MODEL)),
-                ('club', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_comments', to='blogs.club')),
+                ('club', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_comments', to='clubs.club')),
                 ('commented_user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='received_comments', to=settings.AUTH_USER_MODEL)),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='blogs.post')),
+                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='clubs.post')),
             ],
             options={
                 'ordering': ['-created_at'],

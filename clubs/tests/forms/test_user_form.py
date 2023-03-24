@@ -2,14 +2,14 @@
 from django import forms
 from django.test import TestCase
 
-from blogs.forms import UserForm
-from blogs.models import User
+from clubs.forms import UserForm
+from clubs.models import User
 
 
 class UpdateProfileFormTestCase(TestCase):
     """Unit tests of the user form."""
 
-    fixtures = ["blogs/tests/fixtures/default_user.json"]
+    fixtures = ["clubs/tests/fixtures/default_user.json"]
 
     def setUp(self):
         self.form_input = {
