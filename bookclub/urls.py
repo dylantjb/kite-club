@@ -33,6 +33,7 @@ urlpatterns = [
     path('join-request/<int:club_id>', views.join_request_club, name = 'join_request_club'),
     path('cancel-request/<int:club_id>', views.cancel_request, name = 'cancel_request'),
     path('user/<int:user_id>', views.profile, name = 'profile'),
+    path('profile/', views.user_profile, name = 'user_profile'),
     path('pending-users/<int:club_id>', views.pending_requests, name = 'pending_requests'),
     path('pending-users', views.all_pending_requests, name = 'all_pending_requests'),
     path('accept-request/<int:club_id>/<int:user_id>', views.admin_accept_request, name = 'admin_accept_request'),

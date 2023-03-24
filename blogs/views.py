@@ -82,9 +82,10 @@ def home(request):
     if request.user.is_authenticated:
         random_books = []
         clubs = Club.objects.all()
-        count = Book.objects.count()
-        for i in range(0,2):
-            random_books.append(Book.objects.all()[randint(0, count - 1)])
+        if Book.objects.all():
+            count = Book.objects.count()
+            for i in range(0,2):
+                random_books.append(Book.objects.all()[randint(0, count - 1)])
         return render(request, 'feed.html', {'clubs': clubs, 'pending': pending_requests_count(request.user), 'random_books': random_books})
     return render(request, 'home.html', {'form': LogInForm()})
 
@@ -95,6 +96,15 @@ def about(request):
 def profile(request, user_id):
     try:
         user = User.objects.get(id=user_id)
+    except ObjectDoesNotExist:
+        raise Http404
+    user_posts = [post for post in Post.objects.all() if request.user == post.author]
+    return render(request, 'profile.html', {'user': user, 'posts': user_posts, 'pending': pending_requests_count(request.user)})
+
+@login_required
+def user_profile(request):
+    try:
+        user = User.objects.get(id=request.user.id)
     except ObjectDoesNotExist:
         raise Http404
     user_posts = [post for post in Post.objects.all() if request.user == post.author]
