@@ -50,7 +50,7 @@ class UpdateClubView(LoginRequiredMixin, UpdateView):
         club = get_object_or_404(Club, id=club_id)
         form = CreateClubForm(instance=club)
         return self.render_to_response(
-            {"request": request, "club": club, "form": form}, *args, **kwargs
+            {"request": request, "club": club, "form": form, 'pending': pending_requests_count(request.user)}, *args, **kwargs
         )
 
     def get_success_url(self):
@@ -336,7 +336,7 @@ def all_pending_requests(request):
     for club in Club.objects.all():
         if request.user in (club.owner, club.admins.all()):
             pending.update({club: club.pending_members})
-    return render(request, 'pending_all_requests.html', {'pending': pending})
+    return render(request, 'pending_all_requests.html', {'pending_members': pending, 'pending': pending_requests_count(request.user)})
 
 @login_required
 def featured_book(request, club_id):
