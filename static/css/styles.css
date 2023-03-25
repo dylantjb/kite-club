@@ -80,7 +80,6 @@ html {
 }
 
 body{
-  /* background-image: url("images/Bg_white_modern.jpg"); */
   background-color: black;
   margin: 0;
   height: 100%;
@@ -96,7 +95,7 @@ body{
 
 .bg-image { 
   /* The image used */
-  background-image: url("images/Bg_white_modern.jpg");
+  background-image: url("../images/Bg_white_modern.jpg");
 
   /* Full height */
   height: 100%; 
@@ -118,7 +117,7 @@ hr:not([size]) {
   height: 1px;
 }
 #cover-image {
-  background: url('static/images/Bg_white_modern.jpg');
+  background: url('../images/Bg_white_modern.jpg');
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;

@@ -27,23 +27,23 @@
 
 @font-face {
   font-family: "MonaqiBold";
-  src: url("static/fonts/MonaqiBold-L3Bzn.ttf") format("truetype");
+  src: url("../fonts/MonaqiBold-L3Bzn.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Nexus";
-  src: url("static/fonts/Nexus-ZV54m.ttf") format("truetype");
+  src: url("../fonts/Nexus-ZV54m.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Zilap";
-  src: url("static/fonts/ZilapMinimalistDemo-nR1vg.ttf") format("truetype");
+  src: url("../fonts/ZilapMinimalistDemo-nR1vg.ttf") format("truetype");
 }
 html {
   height: 100%;
 }
 body{
-  background-image: url("images/Bg_white_modern.jpg");
+  background-image: url("../images/Bg_white_modern.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -56,7 +56,7 @@ body{
 }
 .bg-image { 
   /* The image used */
-  background-image: url("images/Bg_white_modern.jpg");
+  background-image: url("../images/Bg_white_modern.jpg");
 
   /* Full height */
   height: 100%; 
@@ -1263,12 +1263,6 @@ b {
   margin-top: 0px;
 }
 
-.bg-home {
-  background-image: url("../images/cartographer.png");
-  position: relative;
-  padding: 190px 0;
-}
-
 .home-title {
   font-size: 38px;
   line-height: 1.4;
@@ -1482,11 +1476,6 @@ b {
           box-shadow: 0px 0px 20px -4px #e8e8e8;
 }
 
-.bg-client {
-  background-image: url("../images/cartographer.png");
-  position: relative;
-}
-
 .bg-client .testi-user {
   width: 85px !important;
   margin-right: 15px;
@@ -1573,11 +1562,6 @@ textarea.form-control {
   font-size: 20px;
 }
 
-.footer {
-  background-image: url("../images/cartographer.png");
-  position: relative;
-}
-
 .social .social-icon {
   border: 2px solid #868e96;
   border-radius: 50%;
@@ -1605,11 +1589,6 @@ textarea.form-control {
   content: "|";
   margin: 0 20px;
   color: #757575;
-}
-
-.bg-login {
-  background-image: url(../images/cartographer.png);
-  height: 100vh;
 }
 
 .login-form .form-control {
@@ -1845,4 +1824,3 @@ ul.pattern .color6 {
     max-width: 1140px !important;
   }
 }
-/*# sourceMappingURL=style.css.map */
