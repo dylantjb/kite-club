@@ -146,8 +146,4 @@ LOGIN_URL = "log_in"
 
 BOOKS_PER_PAGE = 20
 
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
