@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "clubs",
     "recommenderSystem",

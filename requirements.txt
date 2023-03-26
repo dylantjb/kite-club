@@ -13,3 +13,4 @@ pandas==1.5.3
 seaborn==0.12.2
 matplotlib==3.7.1
 whitenoise==6.4.0
+gunicorn==20.1.0
